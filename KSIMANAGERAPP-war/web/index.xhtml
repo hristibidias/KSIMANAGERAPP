@@ -83,9 +83,9 @@
                                     <p:menuitem value="#{lm.MesPermission}" url="#" />
                                 </p:submenu>
                                 <p:submenu label="#{lm.Reglage}" icon="ui-icon-gear">
-                                    <p:menuitem value="#{lm.ListeCompte}" />
+                                    <p:menuitem immediate="true" action="utilisateurs.xhtml?faces-redirect=true" value="#{lm.ListeCompte}" />
                                     <p:menuitem value="#{lm.MonCompte}" url="#" /> 
-                                    <p:menuitem value="#{lm.GererPrivileges}"/>
+                                    <p:menuitem immediate="true" action="privileges.xhtml?faces-redirect=true" value="#{lm.GererPrivileges}"/>
                                     <p:menuitem value="#{lm.Journalisation}" url="#" />
                                 </p:submenu>
                             </p:menubar>

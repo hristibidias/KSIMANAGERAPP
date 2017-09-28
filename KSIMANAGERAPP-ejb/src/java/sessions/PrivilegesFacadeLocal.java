@@ -30,4 +30,6 @@ public interface PrivilegesFacadeLocal {
 
     int count();
     
+    Privileges findByPersMenu(int idpers, int idmenu);
+    
 }

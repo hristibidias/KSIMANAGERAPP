@@ -5,13 +5,14 @@
  */
 package controllers;
 
+import java.io.Serializable;
 import javax.faces.context.FacesContext;
 
 /**
  *
  * @author Hristi
  */
-public class SessionController {
+public class SessionController implements Serializable{
 
     private String langue = "fr";
     /**

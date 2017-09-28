@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Privileges.findAll", query = "SELECT p FROM Privileges p")
+    , @NamedQuery(name = "Privileges.findByPersMenu", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idpers = :idpers AND p.privilegesPK.idmenu = :idmenu")
     , @NamedQuery(name = "Privileges.findByIdpers", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idpers = :idpers")
     , @NamedQuery(name = "Privileges.findByIdmenu", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idmenu = :idmenu")
     , @NamedQuery(name = "Privileges.findByRole", query = "SELECT p FROM Privileges p WHERE p.role = :role")})
@@ -109,5 +110,5 @@ public class Privileges implements Serializable {
     public String toString() {
         return "entities.Privileges[ privilegesPK=" + privilegesPK + " ]";
     }
-    
+
 }

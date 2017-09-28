@@ -33,8 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "personnel")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Personnel.findAll", query = "SELECT p FROM Personnel p")
+    @NamedQuery(name = "Personnel.nextId", query = "SELECT MAX(p.idpers) FROM Personnel p")
+    ,@NamedQuery(name = "Personnel.findAll", query = "SELECT p FROM Personnel p")
     , @NamedQuery(name = "Personnel.findByIdpers", query = "SELECT p FROM Personnel p WHERE p.idpers = :idpers")
+    , @NamedQuery(name = "Personnel.findByLoginMdp", query = "SELECT p FROM Personnel p WHERE p.login = :login AND p.password = :password")
     , @NamedQuery(name = "Personnel.findByLogin", query = "SELECT p FROM Personnel p WHERE p.login = :login")
     , @NamedQuery(name = "Personnel.findByPassword", query = "SELECT p FROM Personnel p WHERE p.password = :password")
     , @NamedQuery(name = "Personnel.findByDatedeb", query = "SELECT p FROM Personnel p WHERE p.datedeb = :datedeb")
@@ -490,5 +492,5 @@ public class Personnel implements Serializable {
     public String toString() {
         return "entities.Personnel[ idpers=" + idpers + " ]";
     }
-    
+
 }

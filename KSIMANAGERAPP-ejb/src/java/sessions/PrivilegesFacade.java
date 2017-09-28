@@ -5,10 +5,13 @@
  */
 package sessions;
 
+import entities.Personnel;
 import entities.Privileges;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,14 @@ public class PrivilegesFacade extends AbstractFacade<Privileges> implements Priv
         super(Privileges.class);
     }
     
+    @Override
+    public Privileges findByPersMenu(int idpers, int idmenu) {
+	    try {
+            Query query = em.createNamedQuery("Privileges.findByPersMenu");
+            query.setParameter("idpers", idpers).setParameter("idmenu", idmenu);
+            return (Privileges) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

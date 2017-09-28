@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content"> 
+                <h:form id="liste_user">
+                    <center>
+                        <h:outputText value="#{lm.ListeUtilisateur}" style="color: #009900; font-size: 20px;"/>
+                        <h:outputText id="msg" value="#{personnelController.msg}" style="color: red; font-size: 20px;"/>
+                    </center>      
+                    <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{personnelController.listPersonnel}" var="item" rowKey="#{item.idpers}" selectionMode="single" selection="#{personnelController.personnel}">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column sortBy="#{item.matricule}" filterBy="#{item.matricule}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Matricule}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.matricule}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.nompers}" filterBy="#{item.nompers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Nom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nompers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.prenompers}" filterBy="#{item.prenompers}" filterMatchMode="contains">
+                            <f:facet name="header"> 
+                                <h:outputText value="#{lm.Prenom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenompers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.login}" filterBy="#{item.login}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Login}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.login}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.password}" filterBy="#{item.password}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.MotDePasse}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.password}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.nbrconnect}" filterBy="#{item.nbrconnect}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.NbreConnexion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nbrconnect}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.lastconnect}" filterBy="#{item.lastconnect}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.DerConnexion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastconnect}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.lastlogout}" filterBy="#{item.lastlogout}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.DerDeconnexion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastlogout}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable> 
+
+                    <p:separator/>
+
+                    <div class="row" style="margin: auto;">
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="add"  actionListener="#{personnelController.prepareCreate}" update="msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modify"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="delete"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consult"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </div> 
+                </h:form>
+                <h:form id="form_tr">
+                    <p:dialog modal="true" id="fm_utilisateur" widgetVar="wv_utilisateur">
+                        <center>
+                            <f:facet name="header">
+                                <h:outputText rendered="#{!personnelController.operation.equals('consult') and !personnelController.operation.equals('delete') and !personnelController.operation.equals('modify')}" value="Ajouter un utilisateur" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!personnelController.operation.equals('consult') and !personnelController.operation.equals('delete') and !personnelController.operation.equals('add')}" value="Modifier un utilisateur" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!personnelController.operation.equals('consult') and !personnelController.operation.equals('add') and !personnelController.operation.equals('modify')}" value="Supprimer un utilisateur" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!personnelController.operation.equals('add') and !personnelController.operation.equals('delete') and !personnelController.operation.equals('modify')}" value="Consulter un utilisateur" class="green-text" style="font-weight: bold;"/>
+                            </f:facet>
+                        </center>
+                        <h:panelGrid id="inputs" columns="4">
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Matricule:" for="matricule" />
+                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Matricule" id="matricule" value="#{personnelController.personnel.matricule}" title="Matricule" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Nompers:" for="nompers" />
+                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Nom" id="nompers" value="#{personnelController.personnel.nompers}" title="Nom" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Prenompers:" for="prenompers" />
+                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Prénom" id="prenompers" value="#{personnelController.personnel.prenompers}" title="Prénom" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Email:" for="email" />
+                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" type="email" required="true" placeholder="exemple@gmail.com" class="email" id="email" value="#{personnelController.personnel.email}" title="Email" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Login:" for="login" />
+                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Login" id="login" value="#{personnelController.personnel.login}" title="Login" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Password:" for="password" />
+                            <p:password disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" feedback="true" required="true" placeholder="Mot de passe" id="password" value="#{personnelController.personnel.password}" title="Password" />
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton  rendered="#{!personnelController.operation.equals('consult') and !personnelController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_user:table,:liste_user:msg,:liste_user:" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton  rendered="#{!personnelController.operation.equals('consult') and !personnelController.operation.equals('add') and !personnelController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_user:table,:liste_user:msg,:liste_user:" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+
+
+</html>

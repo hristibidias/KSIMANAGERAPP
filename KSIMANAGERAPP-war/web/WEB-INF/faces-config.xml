@@ -25,4 +25,14 @@
         <managed-bean-class>controllers.UtilisateurController</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>personnelController</managed-bean-name>
+        <managed-bean-class>controllers.PersonnelController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>privilegesController</managed-bean-name>
+        <managed-bean-class>controllers.PrivilegesController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

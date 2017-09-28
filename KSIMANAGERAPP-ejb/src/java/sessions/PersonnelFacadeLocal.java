@@ -30,4 +30,9 @@ public interface PersonnelFacadeLocal {
 
     int count();
     
+    Integer nextId();
+    
+    Personnel findByLoginMdp(String login, String password);
+    
+    List<Personnel> findByLogin(String login);
 }
