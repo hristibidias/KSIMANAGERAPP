@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="liste_pres">
+                    <center>
+                        <h:outputText value="Liste des prestataires" style="color: #009900; font-size: 20px;"/>
+                        <h:outputText id="msg" value="#{prestataireController.msg}" style="color: red; font-size: 20px;"/>
+                    </center>
+                    <p:dataTable scrollWidth="true" rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{prestataireController.listPrestataire}" var="item" rowKey="#{item.idpers}" selectionMode="single" selection="#{prestataireController.prestataire}">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column sortBy="#{item.nompers}" filterBy="#{item.nompers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Nompers"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nompers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.prenompers}" filterBy="#{item.prenompers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Prenompers"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenompers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.sexe}" filterBy="#{item.sexe}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Sexe"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexe}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.typeprestation}" filterBy="#{item.typeprestation}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Typeprestation"/>
+                            </f:facet>
+                            <h:outputText value="#{item.typeprestation}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.cnipers}" filterBy="#{item.cnipers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Cnipers"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cnipers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.email}" filterBy="#{item.email}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.tel}" filterBy="#{item.tel}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Tel"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tel}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.pays}" filterBy="#{item.pays}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Pays"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pays}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.ville}" filterBy="#{item.ville}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Ville"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ville}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.quartier}" filterBy="#{item.quartier}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Quartier"/>
+                            </f:facet>
+                            <h:outputText value="#{item.quartier}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.datenaisspers}" filterBy="#{item.datenaisspers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Datenaisspers"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datenaisspers}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.photos}" filterBy="#{item.photos}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Photos"/>
+                            </f:facet>
+                            <h:outputText value="#{item.photos}"/>
+                        </p:column>
+                    </p:dataTable> 
+
+                    <p:separator/>
+
+                    <div class="row" style="margin: auto;">
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addPrestataire"  actionListener="#{prestataireController.prepareCreate}" update="msg,:form_prestataire:fm_prestataire" partialSubmit="true" oncomplete="PF('wv_prestataire').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyPrestataire"  actionListener="#{prestataireController.action}" update="msg,:form_prestataire:fm_prestataire" partialSubmit="true" oncomplete="PF('wv_prestataire').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deletePrestataire"  actionListener="#{prestataireController.action}" update="msg,:form_prestataire:fm_prestataire" partialSubmit="true" oncomplete="PF('wv_prestataire').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultPrestataire"  actionListener="#{prestataireController.action}" update="msg,:form_prestataire:fm_prestataire" partialSubmit="true" oncomplete="PF('wv_prestataire').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{prestataireController.initPrestataire()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </div> 
+                </h:form>
+
+                <h:form id="form_prestataire">
+                    <p:dialog modal="true" id="fm_prestataire" widgetVar="wv_prestataire">
+                        <center>
+                            <f:facet name="header">
+                                <h:outputText rendered="#{!prestataireController.operation.equals('consultPrestataire') and !prestataireController.operation.equals('deletePrestataire') and !prestataireController.operation.equals('modifyPrestataire')}" value="Ajouter un prestataire" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!prestataireController.operation.equals('consultPrestataire') and !prestataireController.operation.equals('deletePrestataire') and !prestataireController.operation.equals('addPrestataire')}" value="Modifier un prestataire" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!prestataireController.operation.equals('consultPrestataire') and !prestataireController.operation.equals('addPrestataire') and !prestataireController.operation.equals('modifyPrestataire')}" value="Supprimer un prestataire" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!prestataireController.operation.equals('addPrestataire') and !prestataireController.operation.equals('deletePrestataire') and !prestataireController.operation.equals('modifyPrestataire')}" value="Consulter un prestataire" class="green-text" style="font-weight: bold;"/>
+                            </f:facet>
+                        </center>
+                        <h:panelGrid id="inputs" columns="6">
+                            <p:outputLabel value="Nompers:" for="nompers" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="nompers" value="#{prestataireController.prestataire.nompers}" title="Nompers" /> 
+                            <p:outputLabel value="Prenompers:" for="prenompers" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="prenompers" value="#{prestataireController.prestataire.prenompers}" title="Prenompers" />
+                            <p:outputLabel value="Sexe:" for="sexe" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="sexe" value="#{prestataireController.prestataire.sexe}" title="Sexe" />
+                            <p:outputLabel value="Typeprestation:" for="typeprestation" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="typeprestation" value="#{prestataireController.prestataire.typeprestation}" title="Typeprestation" />
+                            <p:outputLabel value="Cnipers:" for="cnipers" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="cnipers" value="#{prestataireController.prestataire.cnipers}" title="Cnipers" />
+                            <p:outputLabel value="Email:" for="email" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="email" value="#{prestataireController.prestataire.email}" title="Email" />
+                            <p:outputLabel value="Tel:" for="tel" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="tel" value="#{prestataireController.prestataire.tel}" title="Tel" />
+                            <p:outputLabel value="Pays:" for="pays" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="pays" value="#{prestataireController.prestataire.pays}" title="Pays" />
+                            <p:outputLabel value="Ville:" for="ville" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="ville" value="#{prestataireController.prestataire.ville}" title="Ville" />
+                            <p:outputLabel value="Quartier:" for="quartier" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="quartier" value="#{prestataireController.prestataire.quartier}" title="Quartier" />
+                            <p:outputLabel value="Datenaisspers:" for="datenaisspers" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="datenaisspers" value="#{prestataireController.prestataire.datenaisspers}" title="Datenaisspers" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText>
+                            <p:outputLabel value="Photos:" for="photos" />
+                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="photos" value="#{prestataireController.prestataire.photos}" title="Photos" />
+                            <p:outputLabel value="PerIdpers:" for="perIdpers" />
+                            <!--<p:inputText disabled="true" style="font-weight: bold;" id="perIdpers" value="# {sessionController.currentUser.idpers}" />-->
+                            <!--<p:inputText style="font-weight: bold;" id="perIdpers" value="#{prestataireController.prestataire.perIdpers}" />-->
+                            <p:selectOneMenu id="perIdpers" value="#{prestataireController.prestataire.perIdpers}" required="true" requiredMessage="Valeur obligatoire!">
+                                <f:selectItem itemLabel="" itemValue="" />
+                                <f:selectItems value="#{prestataireController.listPersonnel}" var="users" itemLabel="#{users.nompers} #{users.prenompers}" itemValue="#{prestataireController.personnel.idpers}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton  rendered="#{!prestataireController.operation.equals('consultPrestataire') and !prestataireController.operation.equals('deletePrestataire')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{prestataireController.persist()}" update="inputs,:liste_pres:table,:liste_pres:msg" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton  rendered="#{!prestataireController.operation.equals('consultPrestataire') and !prestataireController.operation.equals('addPrestataire') and !prestataireController.operation.equals('modifyPrestataire')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{prestataireController.persist()}" update="inputs,:liste_pres:table,:liste_pres:msg" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

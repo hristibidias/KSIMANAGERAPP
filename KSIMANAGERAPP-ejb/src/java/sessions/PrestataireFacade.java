@@ -9,6 +9,7 @@ import entities.Prestataire;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +30,13 @@ public class PrestataireFacade extends AbstractFacade<Prestataire> implements Pr
         super(Prestataire.class);
     }
     
+    @Override
+    public Integer nextId(){
+        try {
+            Query query = em.createNamedQuery("Prestataire.nextId");
+            return ((Integer) query.getSingleResult()) + 1;
+        } catch (Exception e) {
+            return 1;
+        }
+    }
 }

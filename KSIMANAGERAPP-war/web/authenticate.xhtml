@@ -13,38 +13,39 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
         <title>KsiManager</title>
     </h:head>
-    <h:body>
-        <h:form>
-            <p:fieldset style="font-size: 10pt; font-weight: bold; font-style: italic; margin: auto; margin-top: 13%; width: 39%;">
-                <f:facet name="header">
-                    <h:outputText style="font-size: 20pt;" value="KSIMANAGER" />
-                </f:facet>
-
-                <p:panel style="width: 100%; text-align: center;" id="form_con">
-                    <f:facet name="header">
-                        <h:outputText style="font-size: 12pt;" value="Authentification" />
+    <h:body style="background-color: green; background-image: url('resources/images/toff/fontauthenticate.jpg'); background-repeat: no-repeat; background-size: 100%;">
+        <f:view locale="#{sessionController.langue}">
+            <h:form>
+                <p:fieldset style="font-size: 10pt; font-weight: bold; font-style: italic; margin: auto; margin-top: 13%; width: 39%;">
+                    <f:facet name="legend">
+                        <h:outputText style="font-size: 20pt;" value="KSIMANAGER" />
                     </f:facet>
 
-                    <h:panelGrid style="text-align: justify;" columns="3">
-                        <p:outputLabel value="Login:" for="login" />
-                        <p:inputText style="font-size: 10pt; font-weight: normal; font-style: italic;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Valeur obligatoire!" />
-                        <p:message for="login"/>
+                    <p:panel style="width: 100%; text-align: center;" id="form_con">
+                        <center>
+                            <h:outputText style="font-size: 22pt; color: green; box-shadow: 2px 1px 1px 1px; font-weight: bold; font-style: italic;" value="Connectez-vous" />
+                        </center>
+                        <h:panelGrid style="text-align: justify;" columns="3">
+                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Login} : " for="login" />
+                            <p:inputText style="font-size: 10pt; font-weight: normal; font-style: italic;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Valeur obligatoire!" />
+                            <p:message for="login"/>
 
-                        <p:outputLabel value="Mot de passe:" for="mdp" />
-                        <p:inputText style="font-size: 10pt; font-weight: normal; font-style: italic;" type="password" id="mdp" value="#{sessionController.currentUser.password}" title="Mot de passe" size="30" required="true" requiredMessage="Valeur obligatoire!" />
-                        <p:message for="mdp"/>
-                    </h:panelGrid>
-
-                    <f:facet name="footer">
-                        <h:panelGrid style="width: 100%;" columns="2">
-                           <p:commandButton id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con" />
+                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.MotDePasse} : " for="mdp" />
+                            <p:inputText style="font-size: 10pt; font-weight: normal; font-style: italic;" type="password" id="mdp" value="#{sessionController.currentUser.password}" title="Mot de passe" size="30" required="true" requiredMessage="Valeur obligatoire!" />
+                            <p:message for="mdp"/>
                         </h:panelGrid>
-                    </f:facet>
-                </p:panel>
 
-            </p:fieldset>
-        <p:defaultCommand target="ok" />
-        </h:form>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con" />
+                            </center> 
+                        </f:facet>
+                    </p:panel>
+
+                </p:fieldset>
+                <p:defaultCommand target="ok" />
+            </h:form>
+        </f:view>
     </h:body>
 </html>
 

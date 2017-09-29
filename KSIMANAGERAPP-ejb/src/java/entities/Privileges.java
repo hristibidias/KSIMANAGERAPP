@@ -5,6 +5,8 @@
  */
 package entities;
 
+import static entities.Partenaires_.idpers;
+import static entities.PrivilegesPK_.idmenu;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -42,6 +44,8 @@ public class Privileges implements Serializable {
     @JoinColumn(name = "idpers", referencedColumnName = "idpers", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Personnel personnel;
+    private int idmenu;
+    private int idpers;
 
     public Privileges() {
     }
@@ -84,6 +88,24 @@ public class Privileges implements Serializable {
 
     public void setPersonnel(Personnel personnel) {
         this.personnel = personnel;
+    }
+    
+ 
+
+    public int getIdpers() {
+        return idpers;
+    }
+
+    public void setIdpers(int idpers) {
+        this.idpers = idpers;
+    }
+
+    public int getIdmenu() {
+        return idmenu;
+    }
+
+    public void setIdmenu(int idmenu) {
+        this.idmenu = idmenu;
     }
 
     @Override

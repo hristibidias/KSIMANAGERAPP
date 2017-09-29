@@ -8,12 +8,14 @@ package controllers;
 import entities.Menu;
 import entities.Personnel;
 import entities.Privileges;
+import entities.PrivilegesPK;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
+import static jdk.nashorn.internal.runtime.ListAdapter.create;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import sessions.MenuFacadeLocal;
@@ -24,45 +26,55 @@ import sessions.PrivilegesFacadeLocal;
  *
  * @author Hristi
  */
-public class PrivilegesController implements Serializable  {
+public class PrivilegesController implements Serializable {
 
     @EJB
     private PrivilegesFacadeLocal privilegesFacade;
     private List<Privileges> listPrivileges = new ArrayList<>();
     private Privileges privileges = new Privileges();
+
+    private PrivilegesPK privilegespk = new PrivilegesPK();
     private String operation;
     private String msg;
+    private Integer idPersonnel;
+    private Integer idMenu;
+    private Integer roles;
     @EJB
     private PersonnelFacadeLocal personnelFacade;
     private List<Personnel> listPersonnel = new ArrayList<>();
     private Personnel personnel = new Personnel();
-    private Integer idPersonnel;
     @EJB
     private MenuFacadeLocal menuFacade;
     private List<Menu> listMenu = new ArrayList<>();
     private Menu menu = new Menu();
-    private Integer idMenu;
+
     /**
      * Creates a new instance of PrivilegesController
      */
     public PrivilegesController() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         listPrivileges.clear();
         listPrivileges.addAll(privilegesFacade.findAll());
         chargeListMenu();
         chargeListPersonnel();
     }
-    
-    public void chargeListMenu(){
+
+    public void chargeListMenu() {
         listMenu.clear();
         listMenu.addAll(menuFacade.findAll());
     }
-    public void chargeListPersonnel(){
+
+    public void chargeListPersonnel() {
         listPersonnel.clear();
         listPersonnel.addAll(personnelFacade.findAll());
+    }
+
+    protected void setEmbeddableKeys() {
+        privileges.getPrivilegesPK().setIdpers(privileges.getPersonnel().getIdpers());
+        privileges.getPrivilegesPK().setIdmenu(privileges.getMenu().getIdmenu());
     }
 
     public void action(ActionEvent e) {
@@ -76,11 +88,19 @@ public class PrivilegesController implements Serializable  {
         msg = "";
         action(e);
     }
-    
+
     public void savePrivileges() {
         try {
-            //privilegesFacade.create(privileges);
-            privilegesFacade.create(privileges);
+//            privileges.getPrivilegesPK().setIdpers(idPersonnel);
+//            privileges.getPrivilegesPK().setIdmenu(idMenu);
+//            privileges.setRole(roles);
+//            privileges.setMenu(menu);
+//            privilegespk.setIdmenu(idMenu);
+//            privilegespk.setIdpers(idPersonnel);
+//            privileges.setIdmenu(idMenu);
+//            privileges.setIdpers(idPersonnel); 
+//            //privilegesFacade.create(privileges);
+            privilegesFacade.create(privileges(idPersonnel, idMenu));
             msg = "Opération effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_privileges').hide()");
         } catch (Exception e) {
@@ -150,7 +170,6 @@ public class PrivilegesController implements Serializable  {
 //        }
 //        return FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo() + "?faces-redirect=true";
 //    }
-    
     public PrivilegesFacadeLocal getPrivilegesFacade() {
         return privilegesFacade;
     }
@@ -238,7 +257,7 @@ public class PrivilegesController implements Serializable  {
     public void setListMenu(List<Menu> listMenu) {
         this.listMenu = listMenu;
     }
-    
+
     public Menu getMenu() {
         return menu;
     }
@@ -254,6 +273,29 @@ public class PrivilegesController implements Serializable  {
     public void setIdMenu(Integer idMenu) {
         this.idMenu = idMenu;
     }
-    
+
+    public PrivilegesPK getPrivilegespk() {
+        return privilegespk;
+    }
+
+    public void setPrivilegespk(PrivilegesPK privilegespk) {
+        this.privilegespk = privilegespk;
+    }
+
+    public Integer getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Integer roles) {
+        this.roles = roles;
+    }
+
+    private Privileges privileges(Integer idPersonnel, Integer idMenu) {
+        privileges.getPrivilegesPK().setIdpers(idPersonnel);
+            privileges.getPrivilegesPK().setIdmenu(idMenu);
+            privileges.setRole(roles);
+            return null;
+    }
+
     
 }

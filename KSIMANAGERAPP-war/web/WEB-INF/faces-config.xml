@@ -35,4 +35,9 @@
         <managed-bean-class>controllers.PrivilegesController</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>prestataireController</managed-bean-name>
+        <managed-bean-class>controllers.PrestataireController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

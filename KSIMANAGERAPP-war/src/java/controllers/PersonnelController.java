@@ -55,11 +55,11 @@ public class PersonnelController implements Serializable {
 
     public void saveAccoun() {
         try {
-                personnel.setIdpers(personnelFacade.nextId());
-                personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
-                personnelFacade.create(personnel);
-                msg = "Enregistrement effectué avec succès";
-                RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
+            personnel.setIdpers(personnelFacade.nextId());
+            personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
+            personnelFacade.create(personnel);
+            msg = "Enregistrement effectué avec succès";
+            RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'enregistrement";
@@ -67,6 +67,7 @@ public class PersonnelController implements Serializable {
             init();
         }
     }
+
     public void saveAccount() {
         try {
             if (personnelFacade.findByLogin(personnel.getLogin()).isEmpty()) {
@@ -118,6 +119,46 @@ public class PersonnelController implements Serializable {
         }
     }
 
+    public void savePersonnel() {
+        try {
+            personnel.setIdpers(personnelFacade.nextId());
+            personnelFacade.create(personnel);
+            msg = "Enrégistrement effectué avec succès!";
+            RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Echec de l'opération!";
+        } finally {
+            init();
+        }
+    }
+
+    public void modifyPersonnel() {
+        try {
+            personnelFacade.edit(personnel);
+            msg = "Modification effectuée avec succès!";
+            RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Echec de l'opération!";
+        } finally {
+            init();
+        }
+    }
+
+    public void deletePersonnel() {
+        try {
+            personnelFacade.remove(personnel);
+            msg = "Suppression effectuée avec succès!";
+            RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Echec de la suppression!";
+        } finally {
+            init();
+        }
+    }
+
     public void persist() {
         switch (operation) {
             case "add":
@@ -128,6 +169,15 @@ public class PersonnelController implements Serializable {
                 break;
             case "delete":
                 deleteAccount();
+                break;
+            case "addPersonnel":
+                savePersonnel();
+                break;
+            case "modifyPersonnel":
+                modifyPersonnel();
+                break;
+            case "deletePersonnel":
+                deletePersonnel();
                 break;
         }
     }

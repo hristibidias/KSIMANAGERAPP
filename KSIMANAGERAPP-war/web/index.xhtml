@@ -37,8 +37,8 @@
                                                         <img src="resources/images/toff/passi.JPG"></img>
                                                     </div>
                                                     <a href="#!user"><img class="circle" src="resources/images/toff/jolie fille.jpg"></img></a>
-                                                    <a href="#!name"><span class="white-text name">Pascal Bidias</span></a>
-                                                    <a href="#!email"><span class="white-text email">pascalbidias@gmail.fr</span></a>
+                                                    <a href="#!name"><span class="white-text name">#{sessionController.currentUser.nompers} #{sessionController.currentUser.prenompers}</span></a>
+                                                    <a href="#!email"><span class="white-text email">#{sessionController.currentUser.email}</span></a>
                                                 </div>
                                             </center>
                                         </li>
@@ -65,11 +65,11 @@
                                     <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
                                 </p:menuitem>
 
-                                <p:menuitem value="KsiManager" icon="ui-icon-home"/>
+                                <p:menuitem immediate="true" action="index.xhtml?faces-redirect=true" value="KsiManager" icon="ui-icon-home"/>
                                 <p:submenu label="#{lm.Personnel}" icon="ui-icon-person">
                                     <p:submenu label="#{lm.ListePersonnel}">
-                                        <p:menuitem value="#{lm.Permanent}"/>
-                                        <p:menuitem value="#{lm.prestataire}"/>
+                                        <p:menuitem immediate="true" action="personnels.xhtml?faces-redirect=true" value="#{lm.Permanent}"/>
+                                        <p:menuitem immediate="true" action="prestataires.xhtml?faces-redirect=true" value="#{lm.prestataire}"/>
                                     </p:submenu>
                                     <p:menuitem value="#{lm.GererCarriere}"/>
                                 </p:submenu>
@@ -95,7 +95,7 @@
                             </p:menubar>
                         </f:facet>
                         <f:facet name="right">
-                            <p:commandButton value="#{lm.Deconnexion}" icon="ui-icon-extlink" />
+                            <p:commandButton actionListener="#{sessionController.logOut()}" value="#{lm.Deconnexion}" icon="ui-icon-extlink" />
                         </f:facet>
                     </p:toolbar>
                 </h:form>

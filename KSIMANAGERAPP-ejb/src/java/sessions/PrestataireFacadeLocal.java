@@ -30,4 +30,6 @@ public interface PrestataireFacadeLocal {
 
     int count();
     
+    Integer nextId();
+    
 }

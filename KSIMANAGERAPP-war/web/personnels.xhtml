@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form id="liste_pers">
+                    <center>
+                        <h:outputText value="#{lm.ListeUtilisateur}" style="color: #009900; font-size: 20px;"/>
+                        <h:outputText id="msg" value="#{personnelController.msg}" style="color: red; font-size: 20px;"/>
+                    </center>      
+                    <p:dataTable scrollWidth="true" rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{personnelController.listPersonnel}" var="item" rowKey="#{item.idpers}" selectionMode="single" selection="#{personnelController.personnel}">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column sortBy="#{item.matricule}" filterBy="#{item.matricule}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Matricule}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.matricule}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.nompers}" filterBy="#{item.nompers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Nom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nompers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.prenompers}" filterBy="#{item.prenompers}" filterMatchMode="contains">
+                            <f:facet name="header"> 
+                                <h:outputText value="#{lm.Prenom}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenompers}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.poste}" filterBy="#{item.poste}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Poste}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.poste}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.sexe}" filterBy="#{item.sexe}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Sexe}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexe}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.cnipers}" filterBy="#{item.cnipers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.CNI}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cnipers}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.email}" filterBy="#{item.email}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Email}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.tel}" filterBy="#{item.tel}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Telephone}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tel}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.pays}" filterBy="#{item.pays}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Pays}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pays}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.ville}" filterBy="#{item.ville}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Ville}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ville}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.quartier}" filterBy="#{item.quartier}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Quartier}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.quartier}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.datenaisspers}" filterBy="#{item.datenaisspers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Datenaiss}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datenaisspers}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.datedeb}" filterBy="#{item.datedeb}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="#{lm.Dateembauche}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datedeb}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.photos}" filterBy="#{item.photos}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Photo"/>
+                            </f:facet>
+                            <h:outputText value="#{item.photos}"/>
+                        </p:column>
+                    </p:dataTable> 
+
+                    <p:separator/>
+
+                    <div class="row" style="margin: auto;">
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addPersonnel"  actionListener="#{personnelController.prepareCreate}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyPersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deletePersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultPersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </div> 
+                </h:form>
+                <h:form id="form_tr">
+                    <p:dialog modal="true" id="fm_personnel" widgetVar="wv_personnel">
+                        <center>
+                            <f:facet name="header">
+                                <h:outputText rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel') and !personnelController.operation.equals('modifyPersonnel')}" value="Ajouter un personnel" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel') and !personnelController.operation.equals('addPersonnel')}" value="Modifier un personnel" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('addPersonnel') and !personnelController.operation.equals('modifyPersonnel')}" value="Supprimer un personnel" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!personnelController.operation.equals('addPersonnel') and !personnelController.operation.equals('deletePersonnel') and !personnelController.operation.equals('modifyPersonnel')}" value="Consulter un personnel" class="green-text" style="font-weight: bold;"/>
+                            </f:facet>
+                        </center>
+                        <h:panelGrid id="inputs" columns="6">
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Matricule: " for="matricule" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Matricule" id="matricule" value="#{personnelController.personnel.matricule}" title="Matricule" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Nompers: " for="nompers" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Nom" id="nompers" value="#{personnelController.personnel.nompers}" title="Nom" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Prenompers: " for="prenompers" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Prénom" id="prenompers" value="#{personnelController.personnel.prenompers}" title="Prénom" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Email: " for="email" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" type="email" placeholder="exemple@gmail.com" class="email" id="email" value="#{personnelController.personnel.email}" title="Email" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Pays: " for="pays" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="pays" id="pays" value="#{personnelController.personnel.pays}" title="pays" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Ville: " for="ville" />
+                            <p:password disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" feedback="true" placeholder="ville" id="ville" value="#{personnelController.personnel.ville}" title="ville" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Poste: " for="poste" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="poste" id="poste" value="#{personnelController.personnel.poste}" title="poste" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="CNI:" for="cnipers" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="cnipers" id="cnipers" value="#{personnelController.personnel.cnipers}" title="cnipers" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="sexe:" for="sexe" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="sexe" id="sexe" value="#{personnelController.personnel.sexe}" title="sexe" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="tel:" for="tel" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="tel" id="tel" value="#{personnelController.personnel.tel}" title="tel" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="quartier" for="quartier" />
+                            <p:password disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" feedback="true" placeholder="quartier" id="quartier" value="#{personnelController.personnel.quartier}" title="quartier" />
+                            <p:outputLabel style="font-weight: bold; color: black;" value="datenaisspers" for="datenaisspers" />
+                            <p:calendar showOn="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datenaisspers" id="datenaisspers" value="#{personnelController.personnel.datenaisspers}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:outputLabel style="font-weight: bold; color: black;" value="datedeb" for="datedeb" />
+                            <p:calendar showOn="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datedeb" id="datedeb" value="#{personnelController.personnel.datedeb}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton  rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_pers:table,:liste_pers:msg,:liste_pers:" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton  rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('addPersonnel') and !personnelController.operation.equals('modifyPersonnel')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_pers:table,:liste_pers:msg,:liste_pers:" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

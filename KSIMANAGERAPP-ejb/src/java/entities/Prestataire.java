@@ -35,8 +35,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "prestataire")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Prestataire.findAll", query = "SELECT p FROM Prestataire p")
-    , @NamedQuery(name = "Prestataire.findByIdpers", query = "SELECT p FROM Prestataire p WHERE p.idpers = :idpers")
+    @NamedQuery(name = "Prestataire.nextId", query = "SELECT MAX(p.idpers) FROM Prestataire p")
+    , @NamedQuery(name = "Prestataire.findAll", query = "SELECT p FROM Prestataire p")
+    ,@NamedQuery(name = "Prestataire.findByIdpers", query = "SELECT p FROM Prestataire p WHERE p.idpers = :idpers")
     , @NamedQuery(name = "Prestataire.findByTypeprestation", query = "SELECT p FROM Prestataire p WHERE p.typeprestation = :typeprestation")
     , @NamedQuery(name = "Prestataire.findByNompers", query = "SELECT p FROM Prestataire p WHERE p.nompers = :nompers")
     , @NamedQuery(name = "Prestataire.findByPrenompers", query = "SELECT p FROM Prestataire p WHERE p.prenompers = :prenompers")
