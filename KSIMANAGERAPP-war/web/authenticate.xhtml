@@ -34,7 +34,9 @@
                             <p:inputText style="font-size: 10pt; font-weight: normal; font-style: italic;" type="password" id="mdp" value="#{sessionController.currentUser.password}" title="Mot de passe" size="30" required="true" requiredMessage="Valeur obligatoire!" />
                             <p:message for="mdp"/>
                         </h:panelGrid>
-
+                        <center>
+                            <h:outputText id="msg" value="#{sessionController.msg}" style="color: red; font-size: 20px;"/>
+                        </center>
                         <f:facet name="footer">
                             <center>
                                 <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con" />

@@ -66,31 +66,31 @@
                                 </p:menuitem>
 
                                 <p:menuitem immediate="true" action="index.xhtml?faces-redirect=true" value="KsiManager" icon="ui-icon-home"/>
-                                <p:submenu label="#{lm.Personnel}" icon="ui-icon-person">
-                                    <p:submenu label="#{lm.ListePersonnel}">
-                                        <p:menuitem immediate="true" action="personnels.xhtml?faces-redirect=true" value="#{lm.Permanent}"/>
-                                        <p:menuitem immediate="true" action="prestataires.xhtml?faces-redirect=true" value="#{lm.prestataire}"/>
+                                <p:submenu rendered="#{sessionController.pers}" label="#{lm.Personnel}" icon="ui-icon-person">
+                                    <p:submenu rendered="#{sessionController.listepersonnel}" label="#{lm.ListePersonnel}">
+                                        <p:menuitem rendered="#{sessionController.permanent}" immediate="true" action="personnels.xhtml?faces-redirect=true" value="#{lm.Permanent}"/>
+                                        <p:menuitem rendered="#{sessionController.prestataire}" immediate="true" action="prestataires.xhtml?faces-redirect=true" value="#{lm.prestataire}"/>
                                     </p:submenu>
-                                    <p:menuitem value="#{lm.GererCarriere}"/>
+                                    <p:menuitem rendered="#{sessionController.gerercar}" value="#{lm.GererCarriere}"/>
                                 </p:submenu>
 
-                                <p:submenu label="#{lm.Mission}" icon="ui-icon-document">  
-                                    <p:menuitem value="#{lm.ListeMission}" url="#" />
-                                    <p:menuitem value="#{lm.AjouterMission}" url="#" />
+                                <p:submenu rendered="#{sessionController.miss}" label="#{lm.Mission}" icon="ui-icon-document">  
+                                    <p:menuitem rendered="#{sessionController.listemission}" value="#{lm.ListeMission}" url="#" />
+                                    <p:menuitem rendered="#{sessionController.ajoutermiss}" value="#{lm.AjouterMission}" url="#" />
                                 </p:submenu>
-                                <p:submenu label="#{lm.Conge}" icon="ui-icon-document">
-                                    <p:menuitem value="#{lm.ListeConge}" url="#" />
-                                    <p:menuitem value="#{lm.MesConge}" url="#" />
+                                <p:submenu rendered="#{sessionController.conge}" label="#{lm.Conge}" icon="ui-icon-document">
+                                    <p:menuitem immediate="true" action="conges.xhtml?faces-redirect=true" rendered="#{sessionController.listecompte}" value="#{lm.ListeConge}" />
+                                    <p:menuitem immediate="true" action="mesconges.xhtml?faces-redirect=true" rendered="#{sessionController.mesconge}" value="#{lm.MesConge}" />
                                 </p:submenu>
-                                <p:submenu label="#{lm.Permission}" icon="ui-icon-document">
-                                    <p:menuitem value="#{lm.ListePermission}" url="#" />
-                                    <p:menuitem value="#{lm.MesPermission}" url="#" />
+                                <p:submenu rendered="#{sessionController.perm}" label="#{lm.Permission}" icon="ui-icon-document">
+                                    <p:menuitem immediate="true" action="permissions.xhtml?faces-redirect=true" rendered="#{sessionController.listeperm}" value="#{lm.ListePermission}" />
+                                    <p:menuitem immediate="true" action="mespermissions.xhtml?faces-redirect=true" rendered="#{sessionController.mespermission}" value="#{lm.MesPermission}" />
                                 </p:submenu>
-                                <p:submenu label="#{lm.Reglage}" icon="ui-icon-gear">
-                                    <p:menuitem immediate="true" action="utilisateurs.xhtml?faces-redirect=true" value="#{lm.ListeCompte}" />
-                                    <p:menuitem value="#{lm.MonCompte}" url="#" /> 
-                                    <p:menuitem immediate="true" action="privileges.xhtml?faces-redirect=true" value="#{lm.GererPrivileges}"/>
-                                    <p:menuitem value="#{lm.Journalisation}" url="#" />
+                                <p:submenu rendered="#{sessionController.regl}" label="#{lm.Reglage}" icon="ui-icon-gear">
+                                    <p:menuitem rendered="#{sessionController.listecompte}" immediate="true" action="utilisateurs.xhtml?faces-redirect=true" value="#{lm.ListeCompte}" />
+                                    <p:menuitem rendered="#{sessionController.moncompte}" value="#{lm.MonCompte}" url="#" /> 
+                                    <p:menuitem rendered="#{sessionController.gererpriv}" immediate="true" action="privileges.xhtml?faces-redirect=true" value="#{lm.GererPrivileges}"/>
+                                    <p:menuitem immediate="true" action="journalisation.xhtml?faces-redirect=true" rendered="#{sessionController.journal}" value="#{lm.Journalisation}"/>
                                 </p:submenu>
                             </p:menubar>
                         </f:facet>

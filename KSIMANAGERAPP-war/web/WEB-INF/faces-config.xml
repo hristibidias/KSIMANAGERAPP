@@ -40,4 +40,19 @@
         <managed-bean-class>controllers.PrestataireController</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>journalisationController</managed-bean-name>
+        <managed-bean-class>controllers.JournalisationController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>congesController</managed-bean-name>
+        <managed-bean-class>controllers.CongesController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>permissionsController</managed-bean-name>
+        <managed-bean-class>controllers.PermissionsController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

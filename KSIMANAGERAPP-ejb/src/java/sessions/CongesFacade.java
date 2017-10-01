@@ -9,6 +9,7 @@ import entities.Conges;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +30,23 @@ public class CongesFacade extends AbstractFacade<Conges> implements CongesFacade
         super(Conges.class);
     }
     
+    @Override
+    public Integer nextId(){
+        try {
+            Query query = em.createNamedQuery("Conges.nextId");
+            return ((Integer) query.getSingleResult()) + 1;
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+    
+//    @Override
+//    public Integer FindByMesconges(int idpers){
+//        try {
+//            Query query = em.createNamedQuery("Conges.FindByMesconges");
+//            return ((Integer) query.getSingleResult()) + 1;
+//        } catch (Exception e) {
+//            return 1;
+//        }
+//    }
 }

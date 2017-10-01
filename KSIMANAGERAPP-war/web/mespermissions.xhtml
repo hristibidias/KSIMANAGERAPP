@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form  id="liste_permission">
+                    <center>
+                        <h4><h:outputText value="Liste des demandes de permission" style="color: green;"/></h4>
+                        <h6><h:outputText id="msg" value="#{permissionsController.msg}" style="color: green;"/></h6>
+                    </center>
+                    <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{permissionsController.listePermission}" var="item" rowKey="#{item.idpermission}" selectionMode="single" selection="#{permissionsController.permission}">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.datedep}" filterBy="#{item.datedep}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Date de depart"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datedep}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.dateretour}" filterBy="#{item.dateretour}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Date de retour"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateretour}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.motif}" filterBy="#{item.motif}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Motif"/>
+                            </f:facet>
+                            <h:outputText value="#{item.motif}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.nbrpermission}" filterBy="#{item.nbrpermission}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Nombre de permission"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nbrpermission}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.idpers.nompers}" filterBy="#{item.idpers.nompers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Demandeur"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idpers.nompers} #{item.idpers.prenompers}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <div class="row" style="margin: auto;">
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addpermission"  actionListener="#{permissionsController.prepareCreate}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifypermission"  actionListener="#{permissionsController.action}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deletepermission"  actionListener="#{permissionsController.action}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultpermission"  actionListener="#{permissionsController.action}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.initpermission()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </div> 
+                </h:form>
+                <h:form id="form_permission">
+                    <p:dialog modal="true" id="fm_permission" widgetVar="wv_permission">
+                        <center>
+                            <f:facet name="header">
+                                <h:outputText rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('deletepermission') and !permissionsController.operation.equals('modifypermission')}" value="Ajouter un permission" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('deletepermission') and !permissionsController.operation.equals('addpermission')}" value="Modifier un permission" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('addpermission') and !permissionsController.operation.equals('modifypermission')}" value="Supprimer un permission" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!permissionsController.operation.equals('addpermission') and !permissionsController.operation.equals('deletepermission') and !permissionsController.operation.equals('modifypermission')}" value="Consulter un permission" class="green-text" style="font-weight: bold;"/>
+                            </f:facet>
+                        </center>
+                        <h:panelGrid id="inputs" columns="2">
+                            <p:outputLabel value="Date de depart : " for="datedep" />
+                            <p:calendar showOn="button" id="datedep" value="#{permissionsController.permission.datedep}" title="Date de depart" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:outputLabel value="Date de retour : " for="dateretour" />
+                            <p:calendar showOn="button" id="dateretour" value="#{permissionsController.permission.dateretour}" title="Date de retour" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:outputLabel value="Motif : " for="motif" />
+                            <p:inputTextarea id="motif" value="#{permissionsController.permission.motif}" title="Motif" />
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton  rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('deletepermission')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.persist()}" update="inputs,:liste_permission:table,:liste_permission:msg" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton  rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('addpermission') and !permissionsController.operation.equals('modifypermission')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.persist()}" update="inputs,:liste_permission:table,:liste_permission:msg" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

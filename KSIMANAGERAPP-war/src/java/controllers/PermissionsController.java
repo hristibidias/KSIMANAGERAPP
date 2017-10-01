@@ -6,8 +6,8 @@
 package controllers;
 
 import entities.Journalisation;
+import entities.Permission;
 import entities.Personnel;
-import entities.Prestataire;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -21,20 +21,22 @@ import javax.servlet.ServletRequest;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import sessions.JournalisationFacadeLocal;
+import sessions.PermissionFacadeLocal;
 import sessions.PersonnelFacadeLocal;
-import sessions.PrestataireFacadeLocal;
 
 /**
  *
  * @author Hristi
  */
-public class PrestataireController implements Serializable{
+public class PermissionsController implements Serializable {
 
     @EJB
-    private PrestataireFacadeLocal prestataireFacade;
-    private List<Prestataire> listPrestataire = new ArrayList<>();
-    private Prestataire prestataire = new Prestataire();
+    private PermissionFacadeLocal permissionFacade;
+    private List<Permission> listePermission = new ArrayList<>();
+    private List<Permission> listeMesPermission = new ArrayList<>();
+    private Permission permission = new Permission();
     private int idpersonnel;
+    private int idpermission;
     private String operation;
     private String msg;
     @EJB
@@ -43,21 +45,22 @@ public class PrestataireController implements Serializable{
     private Personnel personnel = new Personnel();
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
-    
     /**
-     * Creates a new instance of PrestataireController
+     * Creates a new instance of PermissionsController
      */
-    public PrestataireController() {
+    public PermissionsController() {
     }
     
     @PostConstruct
-    public void initPrestataire() {
-        listPrestataire.clear();
-        listPrestataire.addAll(prestataireFacade.findAll());
+    public void initconges() {
+        listePermission.clear();
+        listePermission.addAll(permissionFacade.findAll());
+        listeMesPermission.clear();
+        listeMesPermission.addAll(permissionFacade.findAll());
         listPersonnel.clear();
         listPersonnel.addAll(personnelFacade.findAll());
     }
-
+    
     public void action(ActionEvent e) {
         CommandButton btn = (CommandButton) e.getSource();
         operation = btn.getWidgetVar();
@@ -65,65 +68,65 @@ public class PrestataireController implements Serializable{
     }
 
     public void prepareCreate(ActionEvent e) {
-        prestataire = new Prestataire();
+        permission = new Permission();
         msg = "";
         action(e);
     }
 
-    public void savePrestataire() {
+    public void savePermission() {
         try {
-            prestataire.setIdpers(prestataireFacade.nextId());
-            prestataire.setPerIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
-            prestataireFacade.create(prestataire);
-            logFile("Ajouter un prestataire",prestataire.getNompers() + prestataire.getPrenompers());
+            permission.setIdpermission(permissionFacade.nextId());
+            permission.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            permissionFacade.create(permission);
+            logFile("Initier une demande de permission", permission.getMotif());
             msg = "Enregistrement effectué avec succès";
-            RequestContext.getCurrentInstance().execute("PF('wv_prestataire').hide()");
+            RequestContext.getCurrentInstance().execute("PF('wv_permission').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'enregistrement";
         } finally {
-            initPrestataire();
+            initconges();
         }
     }
 
-    public void modifyPrestataire() {
+    public void modifyPermission() {
         try {
-                prestataireFacade.edit(prestataire);
-            logFile("Modifier un prestataire",prestataire.getNompers() + prestataire.getPrenompers());
+                permissionFacade.edit(permission);
+            logFile("Modifier une demande de permission", permission.getMotif());
                 msg = "Modification effectuée avec succès!";
-                RequestContext.getCurrentInstance().execute("PF('wv_prestataire').hide()");
+                RequestContext.getCurrentInstance().execute("PF('wv_permission').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'opération!";
         } finally {
-            initPrestataire();
+            initconges();
         }
     }
 
-    public void deletePrestataire() {
+    public void deletePermission() {
         try {
-            prestataireFacade.remove(prestataire);
-            logFile("Supprimer un prestataire",prestataire.getNompers() + prestataire.getPrenompers());
+            permissionFacade.remove(permission);
+            logFile("Supprimer un permission", permission.getMotif());
             msg = "Suppression effectuée avec succès!";
-            RequestContext.getCurrentInstance().execute("PF('wv_prestataire').hide()");
+            RequestContext.getCurrentInstance().execute("PF('wv_permission').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de la suppression!";
         } finally {
-            initPrestataire();
+            initconges();
         }
     }
     
     public void persist() {
         switch (operation) {
-            case "addPrestataire":
-                savePrestataire();
+            case "addpermission":
+                savePermission();
                 break;
-            case "modifyPrestataire":
-                modifyPrestataire();
+            case "modifypermission":
+                modifyPermission();
                 break;
-            case "deletePrestataire":
-                deletePrestataire();
+            case "deletepermission":
+                deletePermission();
                 break;
         }
     }
@@ -143,28 +146,52 @@ public class PrestataireController implements Serializable{
         }
     }
 
-    public PrestataireFacadeLocal getPrestataireFacade() {
-        return prestataireFacade;
+    public PermissionFacadeLocal getPermissionFacade() {
+        return permissionFacade;
     }
 
-    public void setPrestataireFacade(PrestataireFacadeLocal prestataireFacade) {
-        this.prestataireFacade = prestataireFacade;
+    public void setPermissionFacade(PermissionFacadeLocal permissionFacade) {
+        this.permissionFacade = permissionFacade;
     }
 
-    public List<Prestataire> getListPrestataire() {
-        return listPrestataire;
+    public List<Permission> getListePermission() {
+        return listePermission;
     }
 
-    public void setListPrestataire(List<Prestataire> listPrestataire) {
-        this.listPrestataire = listPrestataire;
+    public void setListePermission(List<Permission> listePermission) {
+        this.listePermission = listePermission;
     }
 
-    public Prestataire getPrestataire() {
-        return prestataire;
+    public List<Permission> getListeMesPermission() {
+        return listeMesPermission;
     }
 
-    public void setPrestataire(Prestataire prestataire) {
-        this.prestataire = prestataire;
+    public void setListeMesPermission(List<Permission> listeMesPermission) {
+        this.listeMesPermission = listeMesPermission;
+    }
+
+    public Permission getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Permission permission) {
+        this.permission = permission;
+    }
+
+    public int getIdpersonnel() {
+        return idpersonnel;
+    }
+
+    public void setIdpersonnel(int idpersonnel) {
+        this.idpersonnel = idpersonnel;
+    }
+
+    public int getIdpermission() {
+        return idpermission;
+    }
+
+    public void setIdpermission(int idpermission) {
+        this.idpermission = idpermission;
     }
 
     public String getOperation() {
@@ -207,14 +234,6 @@ public class PrestataireController implements Serializable{
         this.personnel = personnel;
     }
 
-    public int getIdpersonnel() {
-        return idpersonnel;
-    }
-
-    public void setIdpersonnel(int idpersonnel) {
-        this.idpersonnel = idpersonnel;
-    }
-
     public JournalisationFacadeLocal getJournalisationFacade() {
         return journalisationFacade;
     }
@@ -222,6 +241,7 @@ public class PrestataireController implements Serializable{
     public void setJournalisationFacade(JournalisationFacadeLocal journalisationFacade) {
         this.journalisationFacade = journalisationFacade;
     }
+    
     
     
 }

@@ -5,15 +5,21 @@
  */
 package controllers;
 
+import entities.Journalisation;
 import entities.Personnel;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletRequest;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
+import sessions.JournalisationFacadeLocal;
 import sessions.PersonnelFacadeLocal;
 
 /**
@@ -28,6 +34,8 @@ public class PersonnelController implements Serializable {
     private Personnel personnel = new Personnel();
     private String operation;
     private String msg;
+    @EJB
+    private JournalisationFacadeLocal journalisationFacade;
 
     /**
      * Creates a new instance of PersonnelController
@@ -74,6 +82,7 @@ public class PersonnelController implements Serializable {
                 personnel.setIdpers(personnelFacade.nextId());
                 personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
                 personnelFacade.create(personnel);
+            logFile("Ajouter un compte utilisateur",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
                 msg = "Enrégistrement effectué avec succès!";
                 RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
             } else {
@@ -93,6 +102,7 @@ public class PersonnelController implements Serializable {
             if (personnelFacade.findByLogin(personnel.getLogin()).isEmpty()) {
                 personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
                 personnelFacade.edit(personnel);
+            logFile("Modifier un compte utilisateur",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
                 msg = "Modification effectuée avec succès!";
                 RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
             } else {
@@ -109,6 +119,7 @@ public class PersonnelController implements Serializable {
     public void deleteAccount() {
         try {
             personnelFacade.remove(personnel);
+            logFile("Supprimer un compte utilisateur",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Suppression effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
         } catch (Exception e) {
@@ -123,6 +134,7 @@ public class PersonnelController implements Serializable {
         try {
             personnel.setIdpers(personnelFacade.nextId());
             personnelFacade.create(personnel);
+            logFile("Enregistrer un personnel",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Enrégistrement effectué avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -136,6 +148,7 @@ public class PersonnelController implements Serializable {
     public void modifyPersonnel() {
         try {
             personnelFacade.edit(personnel);
+            logFile("Modifier un personnel",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Modification effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -149,6 +162,7 @@ public class PersonnelController implements Serializable {
     public void deletePersonnel() {
         try {
             personnelFacade.remove(personnel);
+            logFile("Supprimer un personnel",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Suppression effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -179,6 +193,20 @@ public class PersonnelController implements Serializable {
             case "deletePersonnel":
                 deletePersonnel();
                 break;
+        }
+    }
+    public void logFile(String name, String target) {
+        try {
+            Journalisation op = new Journalisation();
+            op.setDate(new Date(System.currentTimeMillis()));
+            op.setIp(((ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr());
+            op.setNom(name);
+            op.setCible(target);
+            op.setHeure(new Time(System.currentTimeMillis()));
+            op.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            journalisationFacade.create(op);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

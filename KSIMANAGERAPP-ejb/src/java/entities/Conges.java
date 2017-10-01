@@ -32,7 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "conges")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Conges.findAll", query = "SELECT c FROM Conges c")
+    @NamedQuery(name = "Conges.FindByMesconges", query = "SELECT c FROM Conges c WHERE c.idpers = :idpers")
+    ,@NamedQuery(name = "Conges.nextId", query = "SELECT MAX(c.idconges) FROM Conges c")
+    , @NamedQuery(name = "Conges.findAll", query = "SELECT c FROM Conges c")
     , @NamedQuery(name = "Conges.findByIdconges", query = "SELECT c FROM Conges c WHERE c.idconges = :idconges")
     , @NamedQuery(name = "Conges.findByDatedep", query = "SELECT c FROM Conges c WHERE c.datedep = :datedep")
     , @NamedQuery(name = "Conges.findByDateretour", query = "SELECT c FROM Conges c WHERE c.dateretour = :dateretour")

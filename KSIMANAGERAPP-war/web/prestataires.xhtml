@@ -6,6 +6,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+    </f:metadata>
     <body>
 
         <ui:composition template="./index.xhtml">
@@ -144,18 +147,12 @@
                             <p:outputLabel value="Quartier:" for="quartier" />
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="quartier" value="#{prestataireController.prestataire.quartier}" title="Quartier" />
                             <p:outputLabel value="Datenaisspers:" for="datenaisspers" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="datenaisspers" value="#{prestataireController.prestataire.datenaisspers}" title="Datenaisspers" >
+                            <p:calendar showOn="button" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="datenaisspers" value="#{prestataireController.prestataire.datenaisspers}" title="Datenaisspers" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </p:inputText>
+                            </p:calendar>
                             <p:outputLabel value="Photos:" for="photos" />
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="photos" value="#{prestataireController.prestataire.photos}" title="Photos" />
-                            <p:outputLabel value="PerIdpers:" for="perIdpers" />
-                            <!--<p:inputText disabled="true" style="font-weight: bold;" id="perIdpers" value="# {sessionController.currentUser.idpers}" />-->
-                            <!--<p:inputText style="font-weight: bold;" id="perIdpers" value="#{prestataireController.prestataire.perIdpers}" />-->
-                            <p:selectOneMenu id="perIdpers" value="#{prestataireController.prestataire.perIdpers}" required="true" requiredMessage="Valeur obligatoire!">
-                                <f:selectItem itemLabel="" itemValue="" />
-                                <f:selectItems value="#{prestataireController.listPersonnel}" var="users" itemLabel="#{users.nompers} #{users.prenompers}" itemValue="#{prestataireController.personnel.idpers}"/>
-                            </p:selectOneMenu>
+                            
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>

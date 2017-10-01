@@ -65,6 +65,9 @@ public class Menu implements Serializable {
         this.idmenu = idmenu;
     }
 
+    public Menu(String cle) {
+        this.cle = cle;
+    }
     public Integer getIdmenu() {
         return idmenu;
     }
@@ -72,6 +75,7 @@ public class Menu implements Serializable {
     public void setIdmenu(Integer idmenu) {
         this.idmenu = idmenu;
     }
+    
 
     public String getNom() {
         return nom;
@@ -129,7 +133,7 @@ public class Menu implements Serializable {
             return false;
         }
         Menu other = (Menu) object;
-        if ((this.idmenu == null && other.idmenu != null) || (this.idmenu != null && !this.idmenu.equals(other.idmenu))) {
+        if ((this.cle == null && other.cle != null) || (this.cle != null && !this.cle.equals(other.cle))) {
             return false;
         }
         return true;

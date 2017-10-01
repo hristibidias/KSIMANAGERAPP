@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "permission")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Permission.findAll", query = "SELECT p FROM Permission p")
+    @NamedQuery(name = "Permission.nextId", query = "SELECT MAX(p.idpermission) FROM Permission p")
+    ,@NamedQuery(name = "Permission.findAll", query = "SELECT p FROM Permission p")
     , @NamedQuery(name = "Permission.findByIdpermission", query = "SELECT p FROM Permission p WHERE p.idpermission = :idpermission")
     , @NamedQuery(name = "Permission.findByDatedep", query = "SELECT p FROM Permission p WHERE p.datedep = :datedep")
     , @NamedQuery(name = "Permission.findByDateretour", query = "SELECT p FROM Permission p WHERE p.dateretour = :dateretour")

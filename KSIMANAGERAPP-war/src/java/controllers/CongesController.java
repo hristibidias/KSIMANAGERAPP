@@ -5,9 +5,9 @@
  */
 package controllers;
 
+import entities.Conges;
 import entities.Journalisation;
 import entities.Personnel;
-import entities.Prestataire;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -20,21 +20,23 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequest;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
+import sessions.CongesFacadeLocal;
 import sessions.JournalisationFacadeLocal;
 import sessions.PersonnelFacadeLocal;
-import sessions.PrestataireFacadeLocal;
 
 /**
  *
  * @author Hristi
  */
-public class PrestataireController implements Serializable{
+public class CongesController implements Serializable{
 
     @EJB
-    private PrestataireFacadeLocal prestataireFacade;
-    private List<Prestataire> listPrestataire = new ArrayList<>();
-    private Prestataire prestataire = new Prestataire();
+    private CongesFacadeLocal congesFacade;
+    private List<Conges> listeConges = new ArrayList<>();
+    private List<Conges> listeMesConges = new ArrayList<>();
+    private Conges conges = new Conges();
     private int idpersonnel;
+    private int idconge;
     private String operation;
     private String msg;
     @EJB
@@ -43,21 +45,30 @@ public class PrestataireController implements Serializable{
     private Personnel personnel = new Personnel();
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
-    
     /**
-     * Creates a new instance of PrestataireController
+     * Creates a new instance of CongesController
      */
-    public PrestataireController() {
+    public CongesController() {
     }
     
     @PostConstruct
-    public void initPrestataire() {
-        listPrestataire.clear();
-        listPrestataire.addAll(prestataireFacade.findAll());
+    public void initconges() {
+        listeConges.clear();
+        listeConges.addAll(congesFacade.findAll());
+        listPersonnel.clear();
+        listPersonnel.addAll(personnelFacade.findAll());
+    }
+    
+    public void initmesconges() {
+        listeMesConges.clear();
+        listeMesConges.addAll(congesFacade.findAll());
         listPersonnel.clear();
         listPersonnel.addAll(personnelFacade.findAll());
     }
 
+    public void findMesConges(int idconge, int idpersonnel){
+        
+    }
     public void action(ActionEvent e) {
         CommandButton btn = (CommandButton) e.getSource();
         operation = btn.getWidgetVar();
@@ -65,65 +76,65 @@ public class PrestataireController implements Serializable{
     }
 
     public void prepareCreate(ActionEvent e) {
-        prestataire = new Prestataire();
+        conges = new Conges();
         msg = "";
         action(e);
     }
 
-    public void savePrestataire() {
+    public void saveConge() {
         try {
-            prestataire.setIdpers(prestataireFacade.nextId());
-            prestataire.setPerIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
-            prestataireFacade.create(prestataire);
-            logFile("Ajouter un prestataire",prestataire.getNompers() + prestataire.getPrenompers());
+            conges.setIdconges(congesFacade.nextId());
+            conges.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            congesFacade.create(conges);
+            logFile("Initier une demande de congé", conges.getMotif() + conges.getTypeconge());
             msg = "Enregistrement effectué avec succès";
-            RequestContext.getCurrentInstance().execute("PF('wv_prestataire').hide()");
+            RequestContext.getCurrentInstance().execute("PF('wv_conges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'enregistrement";
         } finally {
-            initPrestataire();
+            initconges();
         }
     }
 
-    public void modifyPrestataire() {
+    public void modifyConge() {
         try {
-                prestataireFacade.edit(prestataire);
-            logFile("Modifier un prestataire",prestataire.getNompers() + prestataire.getPrenompers());
+                congesFacade.edit(conges);
+            logFile("Modifier une demande de congés", conges.getMotif() + conges.getTypeconge());
                 msg = "Modification effectuée avec succès!";
-                RequestContext.getCurrentInstance().execute("PF('wv_prestataire').hide()");
+                RequestContext.getCurrentInstance().execute("PF('wv_conges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'opération!";
         } finally {
-            initPrestataire();
+            initconges();
         }
     }
 
-    public void deletePrestataire() {
+    public void deleteConge() {
         try {
-            prestataireFacade.remove(prestataire);
-            logFile("Supprimer un prestataire",prestataire.getNompers() + prestataire.getPrenompers());
+            congesFacade.remove(conges);
+            logFile("Supprimer un congé", conges.getMotif() + conges.getTypeconge());
             msg = "Suppression effectuée avec succès!";
-            RequestContext.getCurrentInstance().execute("PF('wv_prestataire').hide()");
+            RequestContext.getCurrentInstance().execute("PF('wv_conges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de la suppression!";
         } finally {
-            initPrestataire();
+            initconges();
         }
     }
     
     public void persist() {
         switch (operation) {
-            case "addPrestataire":
-                savePrestataire();
+            case "addConge":
+                saveConge();
                 break;
-            case "modifyPrestataire":
-                modifyPrestataire();
+            case "modifyConge":
+                modifyConge();
                 break;
-            case "deletePrestataire":
-                deletePrestataire();
+            case "deleteConge":
+                deleteConge();
                 break;
         }
     }
@@ -143,28 +154,29 @@ public class PrestataireController implements Serializable{
         }
     }
 
-    public PrestataireFacadeLocal getPrestataireFacade() {
-        return prestataireFacade;
+    public CongesFacadeLocal getCongesFacade() {
+        return congesFacade;
     }
 
-    public void setPrestataireFacade(PrestataireFacadeLocal prestataireFacade) {
-        this.prestataireFacade = prestataireFacade;
+    public void setCongesFacade(CongesFacadeLocal congesFacade) {
+        this.congesFacade = congesFacade;
     }
 
-    public List<Prestataire> getListPrestataire() {
-        return listPrestataire;
+
+    public Conges getConges() {
+        return conges;
     }
 
-    public void setListPrestataire(List<Prestataire> listPrestataire) {
-        this.listPrestataire = listPrestataire;
+    public void setConges(Conges conges) {
+        this.conges = conges;
     }
 
-    public Prestataire getPrestataire() {
-        return prestataire;
+    public int getIdpersonnel() {
+        return idpersonnel;
     }
 
-    public void setPrestataire(Prestataire prestataire) {
-        this.prestataire = prestataire;
+    public void setIdpersonnel(int idpersonnel) {
+        this.idpersonnel = idpersonnel;
     }
 
     public String getOperation() {
@@ -207,14 +219,6 @@ public class PrestataireController implements Serializable{
         this.personnel = personnel;
     }
 
-    public int getIdpersonnel() {
-        return idpersonnel;
-    }
-
-    public void setIdpersonnel(int idpersonnel) {
-        this.idpersonnel = idpersonnel;
-    }
-
     public JournalisationFacadeLocal getJournalisationFacade() {
         return journalisationFacade;
     }
@@ -222,6 +226,31 @@ public class PrestataireController implements Serializable{
     public void setJournalisationFacade(JournalisationFacadeLocal journalisationFacade) {
         this.journalisationFacade = journalisationFacade;
     }
+
+    public List<Conges> getListeConges() {
+        return listeConges;
+    }
+
+    public void setListeConges(List<Conges> listeConges) {
+        this.listeConges = listeConges;
+    }
+
+    public List<Conges> getListeMesConges() {
+        return listeMesConges;
+    }
+
+    public void setListeMesConges(List<Conges> listeMesConges) {
+        this.listeMesConges = listeMesConges;
+    }
+
+    public int getIdconge() {
+        return idconge;
+    }
+
+    public void setIdconge(int idconge) {
+        this.idconge = idconge;
+    }
+    
     
     
 }

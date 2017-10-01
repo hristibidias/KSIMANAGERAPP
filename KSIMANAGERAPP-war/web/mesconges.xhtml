@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="content">
+                <h:form  id="liste_conge">
+                    <center>
+                        <h4><h:outputText value="Liste des demandes de congé" style="color: green;"/></h4>
+                        <h6><h:outputText id="msg" value="#{congesController.msg}" style="color: green;"/></h6>
+                    </center>
+                    <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{congesController.listeConges}" var="item" rowKey="#{item.idconges}" selectionMode="single" selection="#{congesController.conges}">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{item.datedep}" filterBy="#{item.datedep}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Date  départ"/>
+                            </f:facet>
+                            <h:outputText value="#{item.datedep}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.dateretour}" filterBy="#{item.dateretour}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Date de retour"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateretour}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.typeconge}" filterBy="#{item.typeconge}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Type de congé"/>
+                            </f:facet>
+                            <h:outputText value="#{item.typeconge}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.motif}" filterBy="#{item.motif}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Motif"/>
+                            </f:facet>
+                            <h:outputText value="#{item.motif}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.idpers.nompers}" filterBy="#{item.idpers.nompers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Nom du demandeur"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idpers.nompers} #{item.idpers.prenompers}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+
+                    <div class="row" style="margin: auto;">
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addConge"  actionListener="#{congesController.prepareCreate}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyConge"  actionListener="#{congesController.action}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deleteConge"  actionListener="#{congesController.action}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultConge"  actionListener="#{congesController.action}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.initconges()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </div> 
+                </h:form>
+                <h:form id="form_conges">
+                    <p:dialog modal="true" id="fm_conges" widgetVar="wv_conges">
+                        <center>
+                            <f:facet name="header">
+                                <h:outputText rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge') and !congesController.operation.equals('modifyConge')}" value="Ajouter un conge" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge') and !congesController.operation.equals('addConge')}" value="Modifier un conge" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('addConge') and !congesController.operation.equals('modifyConge')}" value="Supprimer un conge" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!congesController.operation.equals('addConge') and !congesController.operation.equals('deleteConge') and !congesController.operation.equals('modifyConge')}" value="Consulter un conge" class="green-text" style="font-weight: bold;"/>
+                            </f:facet>
+                        </center>
+                        <h:panelGrid id="inputs" columns="3">
+                            <p:outputLabel value="Date de depart : " for="datedep" />
+                            <p:calendar showOn="button" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="datedep" value="#{congesController.conges.datedep}" title="Datedep" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:message for="datedep"/>
+                            <p:outputLabel value="Date de retour : " for="dateretour" />
+                            <p:calendar showOn="button" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="dateretour" value="#{congesController.conges.dateretour}" title="Dateretour" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:message for="dateretour"/>
+                            <p:outputLabel value="Type de conge:" for="typeconge" />
+                            <p:selectOneMenu required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="typeconge" value="#{congesController.conges.typeconge}" >
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Annuel" itemValue="Annuel"/>
+                                <f:selectItem itemLabel="Maladie" itemValue="Maladie"/>
+                                <f:selectItem itemLabel="Maternité" itemValue="Maternité"/>
+                                <f:selectItem itemLabel="Paternité" itemValue="Paternité"/>
+                            </p:selectOneMenu>
+                            <p:message for="typeconge"/>
+                            <p:outputLabel value="Motif :" for="motif" /> 
+                            <p:inputTextarea required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="motif" value="#{congesController.conges.motif}" title="Motif" />
+                            <p:message for="motif"/>
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('addConge') and !congesController.operation.equals('modifyConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

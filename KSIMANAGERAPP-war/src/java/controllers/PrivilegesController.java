@@ -5,19 +5,25 @@
  */
 package controllers;
 
+import entities.Journalisation;
 import entities.Menu;
 import entities.Personnel;
 import entities.Privileges;
 import entities.PrivilegesPK;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletRequest;
 import static jdk.nashorn.internal.runtime.ListAdapter.create;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
+import sessions.JournalisationFacadeLocal;
 import sessions.MenuFacadeLocal;
 import sessions.PersonnelFacadeLocal;
 import sessions.PrivilegesFacadeLocal;
@@ -47,6 +53,8 @@ public class PrivilegesController implements Serializable {
     private MenuFacadeLocal menuFacade;
     private List<Menu> listMenu = new ArrayList<>();
     private Menu menu = new Menu();
+    @EJB
+    private JournalisationFacadeLocal journalisationFacade;
 
     /**
      * Creates a new instance of PrivilegesController
@@ -72,10 +80,10 @@ public class PrivilegesController implements Serializable {
         listPersonnel.addAll(personnelFacade.findAll());
     }
 
-    protected void setEmbeddableKeys() {
-        privileges.getPrivilegesPK().setIdpers(privileges.getPersonnel().getIdpers());
-        privileges.getPrivilegesPK().setIdmenu(privileges.getMenu().getIdmenu());
-    }
+//    protected void setEmbeddableKeys() {
+//        privileges.getPrivilegesPK().setIdpers(privileges.getPersonnel().getIdpers());
+//        privileges.getPrivilegesPK().setIdmenu(privileges.getMenu().getIdmenu());
+//    }
 
     public void action(ActionEvent e) {
         CommandButton btn = (CommandButton) e.getSource();
@@ -98,14 +106,19 @@ public class PrivilegesController implements Serializable {
 //            privilegespk.setIdmenu(idMenu);
 //            privilegespk.setIdpers(idPersonnel);
 //            privileges.setIdmenu(idMenu);
-//            privileges.setIdpers(idPersonnel); 
+//            privileges.setIdpers(idPersonnel);  
 //            //privilegesFacade.create(privileges);
-            privilegesFacade.create(privileges(idPersonnel, idMenu));
+            //privileges.setIdmenu(idMenu);
+            //privileges.setIdpers(idPersonnel);
+            //privileges.setRole(roles);
+            //privilegesFacade.create(privileges(idPersonnel, idMenu));
+            privilegesFacade.create(privileges);
+            logFile("Gérer les privilèges",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Opération effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_privileges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
-            msg = "Echec de l'opération!";
+            msg = "Echec de l'opération!" + idMenu + idPersonnel;
         } finally {
             init();
         }
@@ -148,6 +161,21 @@ public class PrivilegesController implements Serializable {
             case "deletePrivileges":
                 deletePrivileges();
                 break;
+        }
+    }
+    
+    public void logFile(String name, String target) {
+        try {
+            Journalisation op = new Journalisation();
+            op.setDate(new Date(System.currentTimeMillis()));
+            op.setIp(((ServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRemoteAddr());
+            op.setNom(name);
+            op.setCible(target);
+            op.setHeure(new Time(System.currentTimeMillis()));
+            op.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            journalisationFacade.create(op);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -290,11 +318,19 @@ public class PrivilegesController implements Serializable {
         this.roles = roles;
     }
 
-    private Privileges privileges(Integer idPersonnel, Integer idMenu) {
-        privileges.getPrivilegesPK().setIdpers(idPersonnel);
-            privileges.getPrivilegesPK().setIdmenu(idMenu);
-            privileges.setRole(roles);
-            return null;
+//    private Privileges privileges(Integer idPersonnel, Integer idMenu) {
+//        privileges.getPrivilegesPK().setIdpers(idPersonnel);
+//            privileges.getPrivilegesPK().setIdmenu(idMenu);
+//            privileges.setRole(roles);
+//            return null;
+//    }
+
+    public JournalisationFacadeLocal getJournalisationFacade() {
+        return journalisationFacade;
+    }
+
+    public void setJournalisationFacade(JournalisationFacadeLocal journalisationFacade) {
+        this.journalisationFacade = journalisationFacade;
     }
 
     
