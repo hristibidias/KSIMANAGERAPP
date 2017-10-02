@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletRequest;
@@ -35,7 +36,8 @@ public class CongesController implements Serializable{
     private List<Conges> listeConges = new ArrayList<>();
     private List<Conges> listeMesConges = new ArrayList<>();
     private Conges conges = new Conges();
-    private int idpersonnel;
+    private Integer idperson = 14;
+    private int idpersonnel = 13;
     private int idconge;
     private String operation;
     private String msg;
@@ -43,6 +45,7 @@ public class CongesController implements Serializable{
     private PersonnelFacadeLocal personnelFacade;
     private List<Personnel> listPersonnel = new ArrayList<>();
     private Personnel personnel = new Personnel();
+    private Personnel personnelId = new Personnel();
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
     /**
@@ -52,19 +55,39 @@ public class CongesController implements Serializable{
     }
     
     @PostConstruct
-    public void initconges() {
+    public void initconges() { 
         listeConges.clear();
         listeConges.addAll(congesFacade.findAll());
         listPersonnel.clear();
         listPersonnel.addAll(personnelFacade.findAll());
+        personnel = ((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+        //personnel = personnelFacade.find(conges.getIdpers());
+        //chargeListMesConge();
+        listeMesConges.clear();
+        listeMesConges.addAll(personnel.getCongesCollection());
     }
     
-    public void initmesconges() {
+//    public void chargeListMesConge() {
+//        listeMesConges.clear();
+//        listeMesConges.addAll(personnel.getCongesCollection());
+//    }
+
+    public void selectUtilisateur() {
+        personnel = ((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+        //personnel = personnelFacade.find(conges.getIdpers());
+        //chargeListMesConge();
         listeMesConges.clear();
-        listeMesConges.addAll(congesFacade.findAll());
-        listPersonnel.clear();
-        listPersonnel.addAll(personnelFacade.findAll());
+        listeMesConges.addAll(personnel.getCongesCollection());
     }
+
+//    public void initmesconges() {
+//        //idpersonnel = 13;
+//        //msg = "voici l'id : " + idperson;
+//        selectUtilisateur();
+//        listeMesConges.clear();
+//        listeMesConges.addAll(personnel.getCongesCollection());
+//    }
+    
 
     public void findMesConges(int idconge, int idpersonnel){
         
@@ -87,11 +110,13 @@ public class CongesController implements Serializable{
             conges.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
             congesFacade.create(conges);
             logFile("Initier une demande de congé", conges.getMotif() + conges.getTypeconge());
-            msg = "Enregistrement effectué avec succès";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Enregistrement effectué."));
+            //msg = "Enregistrement effectué" + idpersonnel;
             RequestContext.getCurrentInstance().execute("PF('wv_conges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
-            msg = "Echec de l'enregistrement";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Echec de l'enregistrement."));
+            //msg = "Echec de l'enregistrement";
         } finally {
             initconges();
         }
@@ -249,6 +274,22 @@ public class CongesController implements Serializable{
 
     public void setIdconge(int idconge) {
         this.idconge = idconge;
+    }
+
+    public Integer getIdperson() {
+        return idperson;
+    }
+
+    public void setIdperson(Integer idperson) {
+        this.idperson = idperson;
+    }
+
+    public Personnel getPersonnelId() {
+        return personnelId;
+    }
+
+    public void setPersonnelId(Personnel personnelId) {
+        this.personnelId = personnelId;
     }
     
     

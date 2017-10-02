@@ -32,6 +32,6 @@ public interface CongesFacadeLocal {
     
     Integer nextId();
     
-    //Integer FindByMesconges(int idpers);
+    List<Conges> FindByMesconges(Integer idpers);
     
 }

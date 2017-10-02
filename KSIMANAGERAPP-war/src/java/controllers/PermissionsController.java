@@ -52,13 +52,14 @@ public class PermissionsController implements Serializable {
     }
     
     @PostConstruct
-    public void initconges() {
+    public void initPermission() {
         listePermission.clear();
         listePermission.addAll(permissionFacade.findAll());
-        listeMesPermission.clear();
-        listeMesPermission.addAll(permissionFacade.findAll());
         listPersonnel.clear();
         listPersonnel.addAll(personnelFacade.findAll());
+        personnel = ((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+        listeMesPermission.clear();
+        listeMesPermission.addAll(personnel.getPermissionCollection());
     }
     
     public void action(ActionEvent e) {
@@ -85,7 +86,7 @@ public class PermissionsController implements Serializable {
             e.printStackTrace();
             msg = "Echec de l'enregistrement";
         } finally {
-            initconges();
+            initPermission();
         }
     }
 
@@ -99,7 +100,7 @@ public class PermissionsController implements Serializable {
             e.printStackTrace();
             msg = "Echec de l'opération!";
         } finally {
-            initconges();
+            initPermission();
         }
     }
 
@@ -113,7 +114,7 @@ public class PermissionsController implements Serializable {
             e.printStackTrace();
             msg = "Echec de la suppression!";
         } finally {
-            initconges();
+            initPermission();
         }
     }
     

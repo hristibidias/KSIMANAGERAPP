@@ -6,6 +6,7 @@
 package sessions;
 
 import entities.Conges;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -49,4 +50,15 @@ public class CongesFacade extends AbstractFacade<Conges> implements CongesFacade
 //            return 1;
 //        }
 //    }
+    
+    @Override
+    public List<Conges> FindByMesconges(Integer idpers) {
+	    try {
+            Query query = em.createNamedQuery("Conges.FindByMesconges");
+            query.setParameter("idpers", idpers);
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

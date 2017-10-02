@@ -6,6 +6,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+    </f:metadata>
     <body>
 
         <ui:composition template="./index.xhtml">
@@ -16,7 +19,7 @@
                         <h4><h:outputText value="Liste des demandes de congé" style="color: green;"/></h4>
                         <h6><h:outputText id="msg" value="#{congesController.msg}" style="color: green;"/></h6>
                     </center>
-                    <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{congesController.listeConges}" var="item" rowKey="#{item.idconges}" selectionMode="single" selection="#{congesController.conges}">
+                    <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{congesController.listeMesConges}" var="item" rowKey="#{item.idconges}" selectionMode="single" selection="#{congesController.conges}">
                         <f:facet name="header">
                             <p:outputPanel>
                                 <h:outputText value=" #{lm.Rechercher}  :" />
@@ -57,6 +60,12 @@
                             </f:facet>
                             <h:outputText value="#{item.idpers.nompers} #{item.idpers.prenompers}"/>
                         </p:column>
+                        <p:column sortBy="#{item.idpers.idpers}" filterBy="#{item.idpers.idpers}" filterMatchMode="contains">
+                            <f:facet name="header">
+                                <h:outputText value="Id du demandeur"/>
+                            </f:facet>
+                            <h:outputText value="#{item.idpers.idpers}"/>
+                        </p:column>
                     </p:dataTable>
                     <p:separator/>
 
@@ -65,7 +74,7 @@
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyConge"  actionListener="#{congesController.action}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Modifier}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deleteConge"  actionListener="#{congesController.action}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Supprimer}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultConge"  actionListener="#{congesController.action}" update="msg,:form_conges:fm_conges" partialSubmit="true" oncomplete="PF('wv_conges').show()" value="#{lm.Consulter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.initconges()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.initconges()}" update="table" value="#{lm.Rafraichir}"/>
                     </div> 
                 </h:form>
                 <h:form id="form_conges">
