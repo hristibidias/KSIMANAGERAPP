@@ -33,11 +33,6 @@
                                                     <span>#{lm.Prenom} : #{sessionController.currentUser.prenompers}</span>
                                                 </center>
                                             </div>
-                                            <div class="card-action">
-                                                <center>
-                                                    <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyPersonnel"  actionListener="#{personnelController.action}" update=":form_mon_compte:fm_mon_compte" partialSubmit="true" oncomplete="PF('wv_mon_compte').show()" value="#{lm.Modifier}"/>
-                                                </center>
-                                            </div>
                                         </div>
                                     </h:form>
                                 </div>
@@ -104,36 +99,43 @@
                                     <div class="collapsible-body">
                                         <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Login} :    #{sessionController.currentUser.login}</span><br/>
                                         <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.MotDePasse} :    #{sessionController.currentUser.password}</span>
-                                    </div>
+                                    </div><br/>
+                                    <h:form id="form_infos">
+                                        <center>
+                                            <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="modifyProfil"  actionListener="#{personnelController.action}" update=":form_mon_compte:fm_mon_compte" partialSubmit="true" oncomplete="PF('wv_mon_compte').show()" value="#{lm.Modifier}"/>
+                                        </center>
+                                    </h:form>
                                 </li>
                             </ul>
                         </p:layoutUnit>
 
                         <h:form id="form_mon_compte" enctype="multipart/form-data">
                             <p:dialog  id="fm_mon_compte" widgetVar="wv_mon_compte">
-                                <h:panelGrid style="text-align: justify;" columns="4">
+                                <h:panelGrid style="text-align: justify;" columns="2">
+                                    <!--<p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="ID : " for="idpers" />
+                                    <p:inputText disabled="true" style="color: green; font-weight: bold;" value="# {sessionController.currentPersonnel.}" id="idpers" />-->
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Email} : " for="email" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.email}" id="email" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.email}" id="email" />
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Telephone} : " for="tel" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.tel}" id="tel" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.tel}" id="tel" />
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Quartier} : " for="quartier" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.quartier}" id="quartier" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.quartier}" id="quartier" />
                                     <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.Login} : " for="login" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.login}" id="login" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.login}" id="login" />
                                     <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.MotDePasse} : " for="password" />
-                                    <p:inputText  style="color: green; font-weight: bold;" value="#{sessionController.currentUser.password}" id="password" />
-                                    <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.Photo} : " />
+                                    <p:password  style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.password}" id="password" />
+                                    <!--<p:outputLabel style="color: green; font-weight: bold;" value="# {lm.Photo} : " />
                                     <p:growl id="messages" showDetail="true" />
 
-                                    <p:fileUpload value=" #{sessionController.file}" mode="simple" disabled="false" />
+                                    <p:fileUpload value=" # {sessionController.file}" mode="simple" disabled="false" />
 
-                                    <p:commandButton value="Submit" ajax="false" actionListener="#{sessionController.upload()}" disabled="false" />
+                                    <p:commandButton value="Submit" ajax="false" actionListener="# {sessionController.upload()}" disabled="false" />-->
 
                                 </h:panelGrid>
                                 <p:separator/>
                                 <f:facet name="footer">
                                     <center>
-                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Modifier}" action="#{personnelController.persist()}" />
+                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
                                     </center> 
                                 </f:facet>
                             </p:dialog>

@@ -66,7 +66,7 @@ public class PrivilegesController implements Serializable {
     @PostConstruct
     public void init() {
         listPrivileges.clear();
-        listPrivileges.addAll(privilegesFacade.findByIdpers(testPrivilege));
+        listPrivileges.addAll(privilegesFacade.findAll());
         
         chargeListMenu();
         chargeListPersonnel();

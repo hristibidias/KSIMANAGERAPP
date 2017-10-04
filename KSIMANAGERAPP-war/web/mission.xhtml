@@ -122,8 +122,10 @@
                             </div>
                             <f:facet name="footer">
                                 <center>
-                                    <p:commandButton  rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Enregistrer"/>
-                                    <p:commandButton  rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('add') and !missionController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Supprimer"/>
+                                    <a onclick="Materialize.toast('#{missionController.msg}', 4000)">
+                                        <p:commandButton  rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Enregistrer"/>
+                                        <p:commandButton  rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('add') and !missionController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Supprimer"/>
+                                    </a>
                                 </center>
                             </f:facet>
                         </p:dialog>

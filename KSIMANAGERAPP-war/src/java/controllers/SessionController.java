@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.UploadedFile;
 import sessions.JournalisationFacadeLocal;
 import sessions.PersonnelFacadeLocal;
@@ -33,6 +34,7 @@ public class SessionController implements Serializable {
     @EJB
     private PersonnelFacadeLocal personnelFacade;
     private Personnel currentUser = new Personnel();
+    private Personnel currentPersonnel = new Personnel();
     private String langue = "fr";
     private String msg;
     private Boolean pers = false;
@@ -75,6 +77,8 @@ public class SessionController implements Serializable {
     private int permanentT = 18;
     private int prestataireT = 19;
 
+    private String message;
+
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
     @EJB
@@ -102,6 +106,13 @@ public class SessionController implements Serializable {
         }
     }
 
+    public void saveMessage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("Successful", msg));
+        context.addMessage(null, new FacesMessage("Second Message", "Additional Message Detail"));
+    }
+
     public void UserPrivileges() {
         int idpersonn = currentUser.getIdpers();
         //configuaration des privilèges
@@ -118,7 +129,11 @@ public class SessionController implements Serializable {
         try {
             currentUser = personnelFacade.findByLoginMdp(currentUser.getLogin(), ((Integer) currentUser.getPassword().hashCode()).toString());
             if (currentUser != null) {
-                msg = "";
+                msg = "Bienvenu  " + currentUser.getNompers();
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Successful", msg));
+                //msg = "";
+                saveMessage();
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
                 logFile("Connexion", "Système");
                 int idpersonn = currentUser.getIdpers();
@@ -157,61 +172,61 @@ public class SessionController implements Serializable {
                 prestataire = false;
                 for (int i = 0; i < listPrivileges.size(); i++) {
                     int idpriv1 = listPrivileges.get(i).getMenu().getIdmenu();
-                    if(idpriv1 == persT){
+                    if (idpriv1 == persT) {
                         pers = true;
                     }
-                    if(idpriv1 == missT){
+                    if (idpriv1 == missT) {
                         miss = true;
                     }
-                    if(idpriv1 == congeT){
+                    if (idpriv1 == congeT) {
                         conge = true;
                     }
-                    if(idpriv1 == permT){
+                    if (idpriv1 == permT) {
                         perm = true;
                     }
-                    if(idpriv1 == reglT){
+                    if (idpriv1 == reglT) {
                         regl = true;
                     }
-                    if(idpriv1 == listepersonnelT){
+                    if (idpriv1 == listepersonnelT) {
                         listepersonnel = true;
                     }
-                    if(idpriv1 == gerercarT){
+                    if (idpriv1 == gerercarT) {
                         gerercar = true;
                     }
-                    if(idpriv1 == listemissionT){
+                    if (idpriv1 == listemissionT) {
                         listemission = true;
                     }
-                    if(idpriv1 == ajoutermissT){
+                    if (idpriv1 == ajoutermissT) {
                         ajoutermiss = true;
                     }
-                    if(idpriv1 == listecongeT){
+                    if (idpriv1 == listecongeT) {
                         listeconge = true;
                     }
-                    if(idpriv1 == mescongeT){
+                    if (idpriv1 == mescongeT) {
                         mesconge = true;
                     }
-                    if(idpriv1 == listepermT){
+                    if (idpriv1 == listepermT) {
                         listeperm = true;
                     }
-                    if(idpriv1 == mespermissionT){
+                    if (idpriv1 == mespermissionT) {
                         mespermission = true;
                     }
-                    if(idpriv1 == listecompteT){
+                    if (idpriv1 == listecompteT) {
                         listecompte = true;
                     }
-                    if(idpriv1 == moncompteT){
+                    if (idpriv1 == moncompteT) {
                         moncompte = true;
                     }
-                    if(idpriv1 == gererprivT){
+                    if (idpriv1 == gererprivT) {
                         gererpriv = true;
                     }
-                    if(idpriv1 == journalT){
+                    if (idpriv1 == journalT) {
                         journal = true;
                     }
-                    if(idpriv1 == permanentT){
+                    if (idpriv1 == permanentT) {
                         permanent = true;
                     }
-                    if(idpriv1 == prestataireT){
+                    if (idpriv1 == prestataireT) {
                         prestataire = true;
                     }
                     System.out.println("le privilège numéro " + i + " de l'utilisateur courant est " + listPrivileges.get(i));
@@ -221,6 +236,9 @@ public class SessionController implements Serializable {
 
             } else {
                 msg = "Login ou mot de passe incorrecte";
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage("Failed", msg));
+                context.addMessage(null, new FacesMessage("Second Message", "Veillez rééssayer"));
                 currentUser = new Personnel();
                 return "authenticate.xhtml?faces-redirect=true";
             }
@@ -229,6 +247,21 @@ public class SessionController implements Serializable {
             msg = "Login ou mot de passe incorrecte";
             currentUser = new Personnel();
             return "authenticate.xhtml?faces-redirect=true";
+        }
+    }
+
+    public void modifyProfil() {
+        try {
+            //recupIdpers.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            //int idrecup = recupIdpers.getIdpers();
+            currentPersonnel.setIdpers(currentUser.getIdpers());
+            personnelFacade.edit(currentPersonnel);
+            logFile("Modifier mon profil", currentPersonnel.getMatricule() + currentPersonnel.getNompers() + currentPersonnel.getPrenompers());
+            msg = "Modification effectuée avec succès!";
+            RequestContext.getCurrentInstance().execute("PF('wv_mon_compte').hide()");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Echec de l'opération!";
         }
     }
 
@@ -668,7 +701,21 @@ public class SessionController implements Serializable {
     public void setPrivilegespk(PrivilegesPK privilegespk) {
         this.privilegespk = privilegespk;
     }
-    
-    
+
+    public Personnel getCurrentPersonnel() {
+        return currentPersonnel;
+    }
+
+    public void setCurrentPersonnel(Personnel currentPersonnel) {
+        this.currentPersonnel = currentPersonnel;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }

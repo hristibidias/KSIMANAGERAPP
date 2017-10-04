@@ -63,7 +63,7 @@
                     <h:panelGrid columns="3" style="margin: auto;">
                         <p:commandButton widgetVar="addPrivileges" partialSubmit="true" actionListener="#{privilegesController.prepareCreate}" update="msg,:form_add_privileges:form_add_privileges_dialog" oncomplete="PF('wv_privileges').show()" value="#{lm.Ajouter}"/>
                         <p:commandButton value="#{lm.Supprimer}"/>
-                        <p:commandButton value="#{lm.Rafraichir}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{privilegesController.init()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
                     </h:panelGrid>
                 </h:form>
                 <h:form id="form_add_privileges">

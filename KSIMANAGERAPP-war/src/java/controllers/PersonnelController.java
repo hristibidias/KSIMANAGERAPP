@@ -36,6 +36,7 @@ public class PersonnelController implements Serializable {
     private String msg;
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
+    Journalisation recupIdpers = new Journalisation();
 
     /**
      * Creates a new instance of PersonnelController
@@ -158,6 +159,23 @@ public class PersonnelController implements Serializable {
             init();
         }
     }
+    
+    public void modifyProfil() {
+        try {
+            //recupIdpers.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            //int idrecup = recupIdpers.getIdpers();
+            personnel.setIdpers(1);
+            personnelFacade.edit(personnel);
+            logFile("Modifier mon profil",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            msg = "Modification effectuée avec succès!";
+            RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = "Echec de l'opération!";
+        } finally {
+            init();
+        }
+    }
 
     public void deletePersonnel() {
         try {
@@ -268,5 +286,23 @@ public class PersonnelController implements Serializable {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    public JournalisationFacadeLocal getJournalisationFacade() {
+        return journalisationFacade;
+    }
+
+    public void setJournalisationFacade(JournalisationFacadeLocal journalisationFacade) {
+        this.journalisationFacade = journalisationFacade;
+    }
+
+    public Journalisation getRecupIdpers() {
+        return recupIdpers;
+    }
+
+    public void setRecupIdpers(Journalisation recupIdpers) {
+        this.recupIdpers = recupIdpers;
+    }
+    
+    
 
 }

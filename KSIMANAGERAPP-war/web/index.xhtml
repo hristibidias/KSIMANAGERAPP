@@ -43,7 +43,7 @@
                                             </center>
                                         </li>
                                         <li><a href="#!"><i class="material-icons">cloud</i>First Link Width Icon</a></li>
-                                        <li><a href="#!">#{lm.MonProfil}</a></li>
+                                        <li><a href="moncompte.xhtml?faces-redirect=true">#{lm.MonProfil}</a></li>
                                         <center>
                                             <p:commandButton rendered="#{sessionController.langue.equals('en')}" immediate="true" action="#{sessionController.french()}" value="Français" icon="ui-icon-extlink" />
                                             <p:commandButton rendered="#{sessionController.langue.equals('fr')}" immediate="true" action="#{sessionController.english()}" value="Anglais" icon="ui-icon-extlink" />
@@ -158,6 +158,11 @@
     <script>
         $(function () {
             $(".button-collapse").sideNav();
+        });
+        $(function () {
+            $(document).ready(function () {
+                $('.tooltipped').tooltip({delay: 50});
+            });
         });
     </script>
 </html>

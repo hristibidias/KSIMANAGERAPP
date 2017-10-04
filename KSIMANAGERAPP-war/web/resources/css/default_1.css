@@ -1,16 +1,36 @@
 body {
-    background-color: #ffffff;
+/*    background-color: #ffffff;*/
+
+/*    background-image: url('../images/cargo.jpg');*/
     font-size: 12px;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     color: #000000;  
     margin: 10px;
-    background-image: url('resources/images/toff/fontauthenticate.jpg');
+/*    background-image: url('resources/images/toff/fontauthenticate.jpg');*/
     background-attachment: fixed;
     background-position: inherit;
     image-resolution: normal;
    
 }
 
+#arriere {
+	position: absolute;
+	height : 100%;
+	width : 100%;
+}
+
+#arriere img {
+	width : 100%;
+	height: 100%;
+}
+
+#arriere p {
+	position: absolute;	/* placement du texte par-dessus l'image */
+	top: 1em;
+	left: 1em;
+	font-size: 1.5em;
+	color: white;
+}
 h1 {
     font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     border-bottom: 1px solid #AFAFAF; 

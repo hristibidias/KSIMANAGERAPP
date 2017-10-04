@@ -68,7 +68,7 @@
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifypermission"  actionListener="#{permissionsController.action}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Modifier}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deletepermission"  actionListener="#{permissionsController.action}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Supprimer}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultpermission"  actionListener="#{permissionsController.action}" update="msg,:form_permission:fm_permission" partialSubmit="true" oncomplete="PF('wv_permission').show()" value="#{lm.Consulter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.initpermission()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.initPermission()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
                     </div> 
                 </h:form>
                 <h:form id="form_permission">
@@ -95,8 +95,10 @@
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>
-                                <p:commandButton  rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('deletepermission')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.persist()}" update="inputs,:liste_permission:table,:liste_permission:msg" partialSubmit="true" value="Enregistrer"/>
-                                <p:commandButton  rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('addpermission') and !permissionsController.operation.equals('modifypermission')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.persist()}" update="inputs,:liste_permission:table,:liste_permission:msg" partialSubmit="true" value="Supprimer"/>
+                                <a onclick="Materialize.toast('#{permissionsController.msg}', 4000)">
+                                    <p:commandButton  rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('deletepermission')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.persist()}" update="inputs,:liste_permission:table,:liste_permission:msg" partialSubmit="true" value="Enregistrer"/>
+                                    <p:commandButton  rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('addpermission') and !permissionsController.operation.equals('modifypermission')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{permissionsController.persist()}" update="inputs,:liste_permission:table,:liste_permission:msg" partialSubmit="true" value="Supprimer"/>
+                                </a>
                             </center>
                         </f:facet>
                     </p:dialog>
