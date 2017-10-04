@@ -40,6 +40,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Permission.findByNbrpermission", query = "SELECT p FROM Permission p WHERE p.nbrpermission = :nbrpermission")})
 public class Permission implements Serializable {
 
+    @Size(max = 20)
+    @Column(name = "Statut", length = 20)
+    private String statut;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,6 +143,14 @@ public class Permission implements Serializable {
     @Override
     public String toString() {
         return "entities.Permission[ idpermission=" + idpermission + " ]";
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
     
 }

@@ -5,7 +5,6 @@
  */
 package sessions;
 
-import entities.Personnel;
 import entities.Privileges;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -42,4 +41,27 @@ public class PrivilegesFacade extends AbstractFacade<Privileges> implements Priv
             return null;
         }
     }
+    
+    @Override
+    public List<Privileges> findByIdpers(int idpers) {
+	    try {
+            Query query = em.createNamedQuery("Privileges.findByIdpers");
+            query.setParameter("idpers", idpers);
+            return query.getResultList();
+        } catch (Exception e ) {
+            return null;
+        }
+    }
+    
+    @Override
+    public List<Privileges> findByIdPers(int idpers) {
+	    try {
+            Query query = em.createNamedQuery("Privileges.findByIdPers");
+            query.setParameter("idpers", idpers);
+            return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
+

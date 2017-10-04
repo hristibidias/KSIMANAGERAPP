@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-    
+
     <f:metadata>
         <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
     </f:metadata>
@@ -75,7 +75,7 @@
                                 </p:submenu>
 
                                 <p:submenu rendered="#{sessionController.miss}" label="#{lm.Mission}" icon="ui-icon-document">  
-                                    <p:menuitem rendered="#{sessionController.listemission}" value="#{lm.ListeMission}" url="#" />
+                                    <p:menuitem immediate="true" action="mission.xhtml?faces-redirect=true" rendered="#{sessionController.listemission}" value="#{lm.ListeMission}" />
                                     <p:menuitem rendered="#{sessionController.ajoutermiss}" value="#{lm.AjouterMission}" url="#" />
                                 </p:submenu>
                                 <p:submenu rendered="#{sessionController.conge}" label="#{lm.Conge}" icon="ui-icon-document">
@@ -100,12 +100,60 @@
                     </p:toolbar>
                 </h:form>
             </div>
-        
 
-        <div id="content" class="center_content">
-            <ui:insert name="content">Content</ui:insert>
-        </div>
-</f:view>
+
+            <div id="content" class="center_content">
+                <ui:insert name="content">
+                    <ul style="margin-left: 50px; margin-right: 50px; margin-top: 50px;" class="collapsible" data-collapsible="accordion">
+
+                        <li>
+                            <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                <!--<i class="material-icons">filter_drama</i>-->
+                                Actualité
+                                <span class="new badge" style="margin-left: 90%;">4</span>
+                            </div>
+                            <div class="collapsible-body">
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Veillez souhaiter la bienveneu au nouveau...</span><br/>
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Rapprochez vous du chef de transit pour votre ordre de mission pour la mission du...</span>
+                            </div>
+                        </li><br/>
+                        <li>
+                            <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                <!--<i class="material-icons">filter_drama</i>-->
+                                Notification Message
+                                <span class="new badge" style="margin-left: 82%;">4</span>
+                            </div>
+                            <div class="collapsible-body">
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Vous avez un message du Directeur Transit.</span><br/>
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Vous avez reçu un message du directeur.</span>
+                            </div>
+                        </li><br/>
+                        <li>
+                            <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                <!--<i class="material-icons">place</i>-->
+                                Notification Permission
+                                <span class="new badge" style="margin-left: 80.4%;">1</span>
+                            </div>
+                            <div class="collapsible-body">
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Votre de demande de permission du 12/10/2017 à été...</span><br/>
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Votre de demande de permission du 24/10/2017 à été...</span>
+                            </div>
+                        </li><br/>
+                        <li><br/>
+                            <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                <!--<i class="material-icons">place</i>-->
+                                Notification Congé
+                                <span class="new badge" style="margin-left: 83.6%;">1</span>
+                            </div>
+                            <div class="collapsible-body">
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Votre de demande de congé annuel du 8/10/2017 à été...</span><br/>
+                                <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">Votre de demande de congé maladie du 4/10/2017 à été...</span>
+                            </div>
+                        </li>
+                    </ul>
+                </ui:insert>
+            </div>
+        </f:view>
     </h:body>
     <script>
         $(function () {

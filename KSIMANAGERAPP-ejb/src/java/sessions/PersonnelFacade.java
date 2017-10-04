@@ -62,5 +62,4 @@ public class PersonnelFacade extends AbstractFacade<Personnel> implements Person
             return null;
         }
     }
-    
 }

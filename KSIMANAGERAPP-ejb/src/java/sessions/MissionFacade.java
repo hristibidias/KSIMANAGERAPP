@@ -9,6 +9,7 @@ import entities.Mission;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +28,16 @@ public class MissionFacade extends AbstractFacade<Mission> implements MissionFac
 
     public MissionFacade() {
         super(Mission.class);
+    }
+    
+    @Override
+    public Integer nextId(){
+        try {
+            Query query = em.createNamedQuery("Mission.nextId");
+            return ((Integer) query.getSingleResult()) + 1;
+        } catch (Exception e) {
+            return 1;
+        }
     }
     
 }

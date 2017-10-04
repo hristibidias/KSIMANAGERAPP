@@ -7,6 +7,7 @@ package sessions;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -61,4 +62,15 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
+    public List<T> createQuery(String requete, Class arg0){
+        EntityManager em = getEntityManager();
+        Query q;
+        try{
+            q = em.createQuery(requete,arg0);
+            return q.getResultList();
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

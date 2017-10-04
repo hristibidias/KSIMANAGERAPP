@@ -15,52 +15,131 @@
 
             <ui:define name="content">
                 <h:body>
-        <h:form>
-                <p:fieldset style="font-size: 10pt; font-weight: bold; font-style: italic; margin: auto; margin-top: 13%; width: 39%;">
-                    <f:facet name="legend">
-                        <h:outputText style="font-size: 16pt;" value="Mon compte" />
-                    </f:facet>
 
-                    <p:panel style="width: 100%; height: 100%; text-align: center;" id="form_con">
-                        
-                        <h:panelGrid style="text-align: justify;" columns="2">
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Matricule} : " for="matricule" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.matricule} : " for="matricule" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Nom} : " for="nompers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.nompers} : " for="nompers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Prenom} : " for="prenompers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.prenompers} : " for="prenompers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Datenaiss} : " for="datenaisspers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.datenaisspers} : " for="datenaisspers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Email} : " for="email" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.email} : " for="email" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.CNI} : " for="cnipers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.cnipers} : " for="cnipers" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Telephone} : " for="tel" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.tel} : " for="tel" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Pays} : " for="pays" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.pays} : " for="pays" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Ville} : " for="ville" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.ville} : " for="ville" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Quartier} : " for="quartier" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.quartier} : " for="quartier" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Dateembauche} : " for="datedeb" />
-                            <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{sessionController.currentUser.datedeb} : " for="datedeb" />
-                        </h:panelGrid>
-                        <center>
-                            <h:outputText id="msg" value="#{sessionController.msg}" style="color: red; font-size: 20px;"/>
-                        </center>
-                        <f:facet name="footer">
-                            <center>
-                                <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con" />
-                            </center> 
-                        </f:facet>
-                    </p:panel>
+                    <p:layout style="min-width:400px; min-height:200px; height: 100%; width: 90%;">
+                        <p:layoutUnit position="center">
+                            <div style="margin-left: 150px; margin-right: 150px;" class="row">
+                                <div class="col s12 m7">
+                                    <h:form>
+                                        <div style="height: 500px; width: 300px;" class="card">
+                                            <div class="card-image">
+                                                <img src="resources/images/toff/jolie fille.jpg"/>
+                                                <span class="card-title">Mon profil</span>
+                                            </div>
+                                            <div class="card-content">
+                                                <center style="font-size: 14px; font-weight: bold;">
+                                                    <span>#{lm.Matricule} : #{sessionController.currentUser.matricule}</span><br/>
+                                                    <span>#{lm.Nom} : #{sessionController.currentUser.nompers}</span><br/>
+                                                    <span>#{lm.Prenom} : #{sessionController.currentUser.prenompers}</span>
+                                                </center>
+                                            </div>
+                                            <div class="card-action">
+                                                <center>
+                                                    <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyPersonnel"  actionListener="#{personnelController.action}" update=":form_mon_compte:fm_mon_compte" partialSubmit="true" oncomplete="PF('wv_mon_compte').show()" value="#{lm.Modifier}"/>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                            <ul style="margin-left: 475px;" class="collapsible" data-collapsible="accordion">
 
-                </p:fieldset>
-                <p:defaultCommand target="ok" />
-            </h:form>
-    </h:body>
+                                <li style="margin-top: -515px;">
+                                    <div style="font-size: 14px; font-weight: bold; width: 100%;" class="collapsible-header">
+                                        <!--<i class="material-icons">filter_drama</i>-->
+                                        #{lm.Nom}, #{lm.Prenom}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Nom} :    #{sessionController.currentUser.nompers}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Prenom} :    #{sessionController.currentUser.prenompers}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="font-size: 14px; font-weight: bold; width: 100%;" class="collapsible-header">
+                                        <!--<i class="material-icons">filter_drama</i>-->
+                                        #{lm.Matricule}, #{lm.Poste}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Matricule} :    #{sessionController.currentUser.matricule}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Poste} :    #{sessionController.currentUser.poste}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                        <!--<i class="material-icons">place</i>-->
+                                        #{lm.Datenaiss}, #{lm.Dateembauche}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Datenaiss} :    #{sessionController.currentUser.datenaisspers}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Dateembauche} :    #{sessionController.currentUser.datedeb}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                        <!--<i class="material-icons">place</i>-->
+                                        #{lm.Email}, #{lm.CNI}, #{lm.Telephone}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Email} :    #{sessionController.currentUser.email}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.CNI} :    #{sessionController.currentUser.cnipers}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Telephone} :    #{sessionController.currentUser.tel}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                        <!--<i class="material-icons">place</i>-->
+                                        #{lm.Pays}, #{lm.Ville}, #{lm.Quartier}
+                                    </div>   
+                                    <div class="collapsible-body">
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Pays} :    #{sessionController.currentUser.pays}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Ville} :    #{sessionController.currentUser.ville}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Quartier} :    #{sessionController.currentUser.quartier}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
+                                        <!--<i class="material-icons">place</i>-->
+                                        #{lm.Login}, #{lm.MotDePasse}
+                                    </div>
+                                    <div class="collapsible-body">
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.Login} :    #{sessionController.currentUser.login}</span><br/>
+                                        <span class="text-lighten-1 waves-effect green-text" style="font-size: 14px; font-style: oblique; font-size-adjust: initial; font-weight: bold">#{lm.MotDePasse} :    #{sessionController.currentUser.password}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </p:layoutUnit>
+
+                        <h:form id="form_mon_compte" enctype="multipart/form-data">
+                            <p:dialog  id="fm_mon_compte" widgetVar="wv_mon_compte">
+                                <h:panelGrid style="text-align: justify;" columns="4">
+                                    <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Email} : " for="email" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.email}" id="email" />
+                                    <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Telephone} : " for="tel" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.tel}" id="tel" />
+                                    <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Quartier} : " for="quartier" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.quartier}" id="quartier" />
+                                    <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.Login} : " for="login" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.login}" id="login" />
+                                    <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.MotDePasse} : " for="password" />
+                                    <p:inputText  style="color: green; font-weight: bold;" value="#{sessionController.currentUser.password}" id="password" />
+                                    <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.Photo} : " />
+                                    <p:growl id="messages" showDetail="true" />
+
+                                    <p:fileUpload value=" #{sessionController.file}" mode="simple" disabled="false" />
+
+                                    <p:commandButton value="Submit" ajax="false" actionListener="#{sessionController.upload()}" disabled="false" />
+
+                                </h:panelGrid>
+                                <p:separator/>
+                                <f:facet name="footer">
+                                    <center>
+                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Modifier}" action="#{personnelController.persist()}" />
+                                    </center> 
+                                </f:facet>
+                            </p:dialog>
+                        </h:form>
+                    </p:layout>
+                </h:body>
             </ui:define>
 
         </ui:composition>

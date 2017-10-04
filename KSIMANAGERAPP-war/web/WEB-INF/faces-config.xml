@@ -55,4 +55,9 @@
         <managed-bean-class>controllers.PermissionsController</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>missionController</managed-bean-name>
+        <managed-bean-class>controllers.MissionController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

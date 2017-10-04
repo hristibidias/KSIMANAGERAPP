@@ -32,4 +32,10 @@ public interface PrivilegesFacadeLocal {
     
     Privileges findByPersMenu(int idpers, int idmenu);
     
+    List<Privileges> createQuery(String requete, Class arg0);
+    
+    List<Privileges> findByIdPers(int idpers);
+    
+    List<Privileges> findByIdpers(int idpers);
+    
 }

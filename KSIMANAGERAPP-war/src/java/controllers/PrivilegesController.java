@@ -45,6 +45,7 @@ public class PrivilegesController implements Serializable {
     private Integer idPersonnel;
     private Integer idMenu;
     private Integer roles;
+    private int testPrivilege = 14 ;
     @EJB
     private PersonnelFacadeLocal personnelFacade;
     private List<Personnel> listPersonnel = new ArrayList<>();
@@ -65,7 +66,8 @@ public class PrivilegesController implements Serializable {
     @PostConstruct
     public void init() {
         listPrivileges.clear();
-        listPrivileges.addAll(privilegesFacade.findAll());
+        listPrivileges.addAll(privilegesFacade.findByIdpers(testPrivilege));
+        
         chargeListMenu();
         chargeListPersonnel();
     }
@@ -84,7 +86,6 @@ public class PrivilegesController implements Serializable {
 //        privileges.getPrivilegesPK().setIdpers(privileges.getPersonnel().getIdpers());
 //        privileges.getPrivilegesPK().setIdmenu(privileges.getMenu().getIdmenu());
 //    }
-
     public void action(ActionEvent e) {
         CommandButton btn = (CommandButton) e.getSource();
         operation = btn.getWidgetVar();
@@ -112,9 +113,22 @@ public class PrivilegesController implements Serializable {
             //privileges.setIdpers(idPersonnel);
             //privileges.setRole(roles);
             //privilegesFacade.create(privileges(idPersonnel, idMenu));
+            for (int i = 0; i < listPrivileges.size(); i++) {
+                System.out.println("le privilège numéro " + i + " de l'utilisateur courant est " + listPrivileges.get(i));
+            }
+            privilegespk.setIdmenu(idMenu);
+            privilegespk.setIdpers(idPersonnel);
+            privileges.setPrivilegesPK(privilegespk);
+            privileges.setRole(roles);
+            System.out.println(menuFacade.find(idMenu).getNom());
+
+//            privileges.setMenu(menuFacade.find(idMenu));
+//            privileges.setPersonnel(personnelFacade.find(idPersonnel));
             privilegesFacade.create(privileges);
-            logFile("Gérer les privilèges",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
-            msg = "Opération effectuée avec succès!";
+            String req = "SELECT p FROM Privileges p WHERE p.idpers != (role, idpers, idmenu) VALUES (" + roles + ", " + idPersonnel + ", " + idMenu + ")";
+//            privilegesFacade.createQuery(req,Privileges.class);
+            logFile("Gérer les privilèges", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            msg = "Opération effectuée avec succès!" + idMenu + idPersonnel + "        " + listPrivileges.get(1);
             RequestContext.getCurrentInstance().execute("PF('wv_privileges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,7 +177,7 @@ public class PrivilegesController implements Serializable {
                 break;
         }
     }
-    
+
     public void logFile(String name, String target) {
         try {
             Journalisation op = new Journalisation();
@@ -324,13 +338,20 @@ public class PrivilegesController implements Serializable {
 //            privileges.setRole(roles);
 //            return null;
 //    }
-
     public JournalisationFacadeLocal getJournalisationFacade() {
         return journalisationFacade;
     }
 
     public void setJournalisationFacade(JournalisationFacadeLocal journalisationFacade) {
         this.journalisationFacade = journalisationFacade;
+    }
+
+    public int getTestPrivilege() {
+        return testPrivilege;
+    }
+
+    public void setTestPrivilege(int testPrivilege) {
+        this.testPrivilege = testPrivilege;
     }
 
     

@@ -42,6 +42,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Conges.findByMotif", query = "SELECT c FROM Conges c WHERE c.motif = :motif")})
 public class Conges implements Serializable {
 
+    @Size(max = 20)
+    @Column(name = "Statut", length = 20)
+    private String statut;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -142,6 +146,14 @@ public class Conges implements Serializable {
     @Override
     public String toString() {
         return "entities.Conges[ idconges=" + idconges + " ]";
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
 }

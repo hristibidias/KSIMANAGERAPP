@@ -26,7 +26,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "privileges")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Privileges.findAll", query = "SELECT p FROM Privileges p")
+    @NamedQuery(name = "Privileges.findByIdPers", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idpers != :idpers")
+    ,@NamedQuery(name = "Privileges.findAll", query = "SELECT p FROM Privileges p")
     , @NamedQuery(name = "Privileges.findByPersMenu", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idpers = :idpers AND p.privilegesPK.idmenu = :idmenu")
     , @NamedQuery(name = "Privileges.findByIdpers", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idpers = :idpers")
     , @NamedQuery(name = "Privileges.findByIdmenu", query = "SELECT p FROM Privileges p WHERE p.privilegesPK.idmenu = :idmenu")
@@ -44,8 +45,6 @@ public class Privileges implements Serializable {
     @JoinColumn(name = "idpers", referencedColumnName = "idpers", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Personnel personnel;
-    private int idmenu;
-    private int idpers;
 
     public Privileges() {
     }
@@ -92,21 +91,6 @@ public class Privileges implements Serializable {
     
  
 
-    public int getIdpers() {
-        return idpers;
-    }
-
-    public void setIdpers(int idpers) {
-        this.idpers = idpers;
-    }
-
-    public int getIdmenu() {
-        return idmenu;
-    }
-
-    public void setIdmenu(int idmenu) {
-        this.idmenu = idmenu;
-    }
 
     @Override
     public int hashCode() {

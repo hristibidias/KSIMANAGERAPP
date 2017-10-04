@@ -33,13 +33,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "mission")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Mission.findAll", query = "SELECT m FROM Mission m")
+    @NamedQuery(name = "Mission.nextId", query = "SELECT MAX(m.idmission) FROM Mission m")
+    , @NamedQuery(name = "Mission.findAll", query = "SELECT m FROM Mission m")
     , @NamedQuery(name = "Mission.findByIdmission", query = "SELECT m FROM Mission m WHERE m.idmission = :idmission")
     , @NamedQuery(name = "Mission.findByDatedebmission", query = "SELECT m FROM Mission m WHERE m.datedebmission = :datedebmission")
     , @NamedQuery(name = "Mission.findByDatefinmission", query = "SELECT m FROM Mission m WHERE m.datefinmission = :datefinmission")
     , @NamedQuery(name = "Mission.findByLieumission", query = "SELECT m FROM Mission m WHERE m.lieumission = :lieumission")
     , @NamedQuery(name = "Mission.findByDescriptionmission", query = "SELECT m FROM Mission m WHERE m.descriptionmission = :descriptionmission")})
 public class Mission implements Serializable {
+
+    @Size(max = 20)
+    @Column(name = "Statut", length = 20)
+    private String statut;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -152,6 +157,14 @@ public class Mission implements Serializable {
     @Override
     public String toString() {
         return "entities.Mission[ idmission=" + idmission + " ]";
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
     
 }

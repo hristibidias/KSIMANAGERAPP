@@ -30,9 +30,10 @@ public interface PersonnelFacadeLocal {
 
     int count();
     
-    Integer nextId();
+    public Integer nextId();
     
     Personnel findByLoginMdp(String login, String password);
     
-    List<Personnel> findByLogin(String login);
+    public List<Personnel> findByLogin(String login);
+    
 }

@@ -30,6 +30,5 @@ public interface PermissionFacadeLocal {
 
     int count();
     
-    Integer nextId();
-    
+    public Integer nextId();
 }
