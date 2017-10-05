@@ -162,8 +162,6 @@ public class PersonnelController implements Serializable {
     
     public void modifyProfil() {
         try {
-            //recupIdpers.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
-            //int idrecup = recupIdpers.getIdpers();
             personnel.setIdpers(1);
             personnelFacade.edit(personnel);
             logFile("Modifier mon profil",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());

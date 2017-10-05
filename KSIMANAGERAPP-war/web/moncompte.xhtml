@@ -28,6 +28,9 @@
                                             </div>
                                             <div class="card-content">
                                                 <center style="font-size: 14px; font-weight: bold;">
+                                                    <h:form id="form_profil_msg">
+                                                        <h:outputText id="msg" value="#{sessionController.msg}   " style="color: green; font-size: 12px; font-weight: bold;"/>
+                                                    </h:form>
                                                     <span>#{lm.Matricule} : #{sessionController.currentUser.matricule}</span><br/>
                                                     <span>#{lm.Nom} : #{sessionController.currentUser.nompers}</span><br/>
                                                     <span>#{lm.Prenom} : #{sessionController.currentUser.prenompers}</span>
@@ -102,28 +105,26 @@
                                     </div><br/>
                                     <h:form id="form_infos">
                                         <center>
-                                            <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="modifyProfil"  actionListener="#{personnelController.action}" update=":form_mon_compte:fm_mon_compte" partialSubmit="true" oncomplete="PF('wv_mon_compte').show()" value="#{lm.Modifier}"/>
+                                            <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="modifyProfil"  actionListener="#{personnelController.action}" update=":form_mon_profil:fm_mon_profil" partialSubmit="true" oncomplete="PF('wv_mon_profil').show()" value="#{lm.Modifier}"/>
                                         </center>
                                     </h:form>
                                 </li>
                             </ul>
                         </p:layoutUnit>
 
-                        <h:form id="form_mon_compte" enctype="multipart/form-data">
-                            <p:dialog  id="fm_mon_compte" widgetVar="wv_mon_compte">
-                                <h:panelGrid style="text-align: justify;" columns="2">
-                                    <!--<p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="ID : " for="idpers" />
-                                    <p:inputText disabled="true" style="color: green; font-weight: bold;" value="# {sessionController.currentPersonnel.}" id="idpers" />-->
+                        <h:form id="form_mon_profil">
+                            <p:dialog  id="fm_mon_profil" widgetVar="wv_mon_profil">
+                                <h:panelGrid id="inputs" style="text-align: justify;" columns="2">
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Email} : " for="email" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.email}" id="email" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.email}" id="email" />
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Telephone} : " for="tel" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.tel}" id="tel" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.tel}" id="tel" />
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Quartier} : " for="quartier" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.quartier}" id="quartier" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.quartier}" id="quartier" />
                                     <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.Login} : " for="login" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.login}" id="login" />
+                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.login}" id="login" />
                                     <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.MotDePasse} : " for="password" />
-                                    <p:password  style="color: green; font-weight: bold;" value="#{sessionController.currentPersonnel.password}" id="password" />
+                                    <p:password  style="color: green; font-weight: bold;" value="#{sessionController.currentUser.password}" id="password" />
                                     <!--<p:outputLabel style="color: green; font-weight: bold;" value="# {lm.Photo} : " />
                                     <p:growl id="messages" showDetail="true" />
 
@@ -135,7 +136,7 @@
                                 <p:separator/>
                                 <f:facet name="footer">
                                     <center>
-                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
+                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" update="inputs" id="ok" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
                                     </center> 
                                 </f:facet>
                             </p:dialog>

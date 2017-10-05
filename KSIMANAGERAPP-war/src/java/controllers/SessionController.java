@@ -129,7 +129,7 @@ public class SessionController implements Serializable {
         try {
             currentUser = personnelFacade.findByLoginMdp(currentUser.getLogin(), ((Integer) currentUser.getPassword().hashCode()).toString());
             if (currentUser != null) {
-                msg = "Bienvenu  " + currentUser.getNompers();
+                msg = "Bienvenu  " ;
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage("Successful", msg));
                 //msg = "";
@@ -252,13 +252,17 @@ public class SessionController implements Serializable {
 
     public void modifyProfil() {
         try {
-            //recupIdpers.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
-            //int idrecup = recupIdpers.getIdpers();
             currentPersonnel.setIdpers(currentUser.getIdpers());
-            personnelFacade.edit(currentPersonnel);
+            currentPersonnel.setEmail(currentUser.getEmail());
+            currentPersonnel.setTel(currentUser.getTel());
+            currentPersonnel.setQuartier(currentUser.getQuartier());
+            currentPersonnel.setLogin(currentUser.getLogin());
+            currentPersonnel.setPassword(((Integer) currentUser.getPassword().hashCode()).toString());
+            currentUser.setPassword(((Integer) currentUser.getPassword().hashCode()).toString());
+            personnelFacade.edit(currentUser);
             logFile("Modifier mon profil", currentPersonnel.getMatricule() + currentPersonnel.getNompers() + currentPersonnel.getPrenompers());
             msg = "Modification effectuée avec succès!";
-            RequestContext.getCurrentInstance().execute("PF('wv_mon_compte').hide()");
+            RequestContext.getCurrentInstance().execute("PF('wv_mon_profil').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'opération!";
