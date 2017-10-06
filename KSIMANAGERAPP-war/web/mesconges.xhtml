@@ -78,7 +78,7 @@
                     </div> 
                 </h:form>
                 <h:form id="form_conges">
-                    <p:dialog modal="true" id="fm_conges" widgetVar="wv_conges">
+                    <p:dialog showEffect="puff" modal="true" id="fm_conges" widgetVar="wv_conges">
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge') and !congesController.operation.equals('modifyConge')}" value="Ajouter un conge" class="green-text" style="font-weight: bold;"/>
@@ -89,12 +89,12 @@
                         </center>
                         <h:panelGrid id="inputs" columns="3">
                             <p:outputLabel value="Date de depart : " for="datedep" />
-                            <p:calendar showOn="button" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="datedep" value="#{congesController.conges.datedep}" title="Datedep" >
+                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="datedep" value="#{congesController.conges.datedep}" title="Datedep" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:message for="datedep"/>
                             <p:outputLabel value="Date de retour : " for="dateretour" />
-                            <p:calendar showOn="button" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="dateretour" value="#{congesController.conges.dateretour}" title="Dateretour" >
+                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="dateretour" value="#{congesController.conges.dateretour}" title="Dateretour" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:message for="dateretour"/>

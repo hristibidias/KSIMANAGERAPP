@@ -130,7 +130,7 @@
                     </div> 
                 </h:form>
                 <h:form id="form_tr">
-                    <p:dialog modal="true" id="fm_personnel" widgetVar="wv_personnel">
+                    <p:dialog showEffect="puff" modal="true" id="fm_personnel" widgetVar="wv_personnel">
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel') and !personnelController.operation.equals('modifyPersonnel')}" value="Ajouter un personnel" class="green-text" style="font-weight: bold;"/>
@@ -149,27 +149,32 @@
                             <p:outputLabel style="font-weight: bold; color: black;" value="Email: " for="email" />
                             <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" type="email" placeholder="exemple@gmail.com" class="email" id="email" value="#{personnelController.personnel.email}" title="Email" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Pays: " for="pays" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="pays" id="pays" value="#{personnelController.personnel.pays}" title="pays" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="pays" id="pays" value="#{personnelController.personnel.pays}" title="pays" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Ville: " for="ville" />
-                            <p:password disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" feedback="true" placeholder="ville" id="ville" value="#{personnelController.personnel.ville}" title="ville" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="ville" id="ville" value="#{personnelController.personnel.ville}" title="ville" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Poste: " for="poste" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="poste" id="poste" value="#{personnelController.personnel.poste}" title="poste" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="poste" id="poste" value="#{personnelController.personnel.poste}" title="poste" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="CNI:" for="cnipers" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="cnipers" id="cnipers" value="#{personnelController.personnel.cnipers}" title="cnipers" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="cnipers" id="cnipers" value="#{personnelController.personnel.cnipers}" title="cnipers" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="sexe:" for="sexe" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="sexe" id="sexe" value="#{personnelController.personnel.sexe}" title="sexe" />
+                            <p:selectOneMenu style="width: 100%;" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" id="sexe" value="#{personnelController.personnel.sexe}" >
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Féminin" itemValue="Féminin"/>
+                                <f:selectItem itemLabel="Masculin" itemValue="Masculin"/>
+                            </p:selectOneMenu>
                             <p:outputLabel style="font-weight: bold; color: black;" value="tel:" for="tel" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="tel" id="tel" value="#{personnelController.personnel.tel}" title="tel" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="tel" id="tel" value="#{personnelController.personnel.tel}" title="tel" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="quartier" for="quartier" />
-                            <p:password disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" feedback="true" placeholder="quartier" id="quartier" value="#{personnelController.personnel.quartier}" title="quartier" />
+                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="quartier" id="quartier" value="#{personnelController.personnel.quartier}" title="quartier" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="datenaisspers" for="datenaisspers" />
-                            <p:calendar showOn="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datenaisspers" id="datenaisspers" value="#{personnelController.personnel.datenaisspers}" >
+                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datenaisspers" id="datenaisspers" value="#{personnelController.personnel.datenaisspers}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:outputLabel style="font-weight: bold; color: black;" value="datedeb" for="datedeb" />
-                            <p:calendar showOn="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datedeb" id="datedeb" value="#{personnelController.personnel.datedeb}">
+                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datedeb" id="datedeb" value="#{personnelController.personnel.datedeb}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
+
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>

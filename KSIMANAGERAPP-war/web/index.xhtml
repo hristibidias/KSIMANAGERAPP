@@ -86,6 +86,17 @@
                                     <p:menuitem immediate="true" action="permissions.xhtml?faces-redirect=true" rendered="#{sessionController.listeperm}" value="#{lm.ListePermission}" />
                                     <p:menuitem immediate="true" action="mespermissions.xhtml?faces-redirect=true" rendered="#{sessionController.mespermission}" value="#{lm.MesPermission}" />
                                 </p:submenu>
+                                <p:submenu rendered="#{sessionController.pers}" label="#{lm.Client}" icon="ui-icon-person">
+                                    <p:submenu rendered="#{sessionController.listepersonnel}" label="#{lm.Client}">
+                                        <p:menuitem rendered="#{sessionController.permanent}" immediate="true" action="personnels.xhtml?faces-redirect=true" value="#{lm.ListeClient}"/>
+                                        <p:menuitem rendered="#{sessionController.prestataire}" immediate="true" action="prestataires.xhtml?faces-redirect=true" value="#{lm.NoueauClient}"/>
+                                    </p:submenu>
+                                    <p:submenu rendered="#{sessionController.listepersonnel}" label="#{lm.PieceJointe}">
+                                        <p:menuitem rendered="#{sessionController.permanent}" immediate="true" action="personnels.xhtml?faces-redirect=true" value="#{lm.Factures}"/>
+                                        <p:menuitem rendered="#{sessionController.prestataire}" immediate="true" action="prestataires.xhtml?faces-redirect=true" value="#{lm.Inventaire}"/>
+                                        <p:menuitem rendered="#{sessionController.prestataire}" immediate="true" action="prestataires.xhtml?faces-redirect=true" value="#{lm.Autres}"/>
+                                    </p:submenu>
+                                </p:submenu>
                                 <p:submenu rendered="#{sessionController.regl}" label="#{lm.Reglage}" icon="ui-icon-gear">
                                     <p:menuitem rendered="#{sessionController.listecompte}" immediate="true" action="utilisateurs.xhtml?faces-redirect=true" value="#{lm.ListeCompte}" />
                                     <p:menuitem immediate="true" action="moncompte.xhtml?faces-redirect=true" rendered="#{sessionController.moncompte}" value="#{lm.MonCompte}" /> 

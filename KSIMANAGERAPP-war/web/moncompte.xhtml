@@ -116,9 +116,9 @@
                             <p:dialog  id="fm_mon_profil" widgetVar="wv_mon_profil">
                                 <h:panelGrid id="inputs" style="text-align: justify;" columns="2">
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Email} : " for="email" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.email}" id="email" />
+                                    <p:inputMask mask="*+@*+.*+" style="color: green; font-weight: bold;" value="#{sessionController.currentUser.email}" id="email" />
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Telephone} : " for="tel" />
-                                    <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.tel}" id="tel" />
+                                    <p:inputMask mask="999-999-999" value="#{sessionController.currentUser.tel}" id="tel" />
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Quartier} : " for="quartier" />
                                     <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.quartier}" id="quartier" />
                                     <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.Login} : " for="login" />

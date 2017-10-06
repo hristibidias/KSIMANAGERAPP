@@ -72,7 +72,7 @@
                     </div> 
                 </h:form>
                 <h:form id="form_conges">
-                    <p:dialog modal="true" id="fm_conges" widgetVar="wv_conges">
+                    <p:dialog showEffect="puff" modal="true" id="fm_conges" widgetVar="wv_conges">
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge') and !congesController.operation.equals('modifyConge')}" value="Ajouter un conge" class="green-text" style="font-weight: bold;"/>

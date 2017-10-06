@@ -130,10 +130,21 @@
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="nompers" value="#{prestataireController.prestataire.nompers}" title="Nompers" /> 
                             <p:outputLabel value="Prenompers:" for="prenompers" />
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="prenompers" value="#{prestataireController.prestataire.prenompers}" title="Prenompers" />
-                            <p:outputLabel value="Sexe:" for="sexe" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="sexe" value="#{prestataireController.prestataire.sexe}" title="Sexe" />
+                            <p:outputLabel value="Sexe: " for="sexe" />
+                            <p:selectOneMenu style="width: 100%;" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" required="false" id="sexe" value="#{prestataireController.prestataire.sexe}" >
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Féminin" itemValue="Féminin"/>
+                                <f:selectItem itemLabel="Masculin" itemValue="Masculin"/>
+                            </p:selectOneMenu>
                             <p:outputLabel value="Typeprestation:" for="typeprestation" />
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="typeprestation" value="#{prestataireController.prestataire.typeprestation}" title="Typeprestation" />
+                            <!--<p:selectOneMenu style="width: 100%;" disabled="# {prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" required="false" id="typeprestation" value="# {prestataireController.prestataire.typeprestation}" >
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Emballeur" itemValue="Emballeur"/>
+                                <f:selectItem itemLabel="Transporteur" itemValue="Transporteur"/>
+                                <f:selectItem itemLabel="Classeur" itemValue="Classeur"/>
+                                <f:selectItem itemLabel="Transporteur" itemValue="Transporteur"/>
+                            </p:selectOneMenu>-->
                             <p:outputLabel value="Cnipers:" for="cnipers" />
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="cnipers" value="#{prestataireController.prestataire.cnipers}" title="Cnipers" />
                             <p:outputLabel value="Email:" for="email" />

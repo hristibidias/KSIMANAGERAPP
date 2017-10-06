@@ -249,7 +249,15 @@ public class SessionController implements Serializable {
             return "authenticate.xhtml?faces-redirect=true";
         }
     }
-
+    
+    /*
+    Cette fonction permet à un utilisateur de modifier son profil
+    son fonctionnement est simple.
+    lors de la connexion de l'utilisateur, 
+    ces données sont stockées dans l'objet currentUser de type personnel.
+    ensuite grace à au formulaire qui se trouve sur la page moncompte, 
+    je récupère les information modifier de l'utilisateur et j'édite ces information dans la bd
+    */
     public void modifyProfil() {
         try {
             currentPersonnel.setIdpers(currentUser.getIdpers());

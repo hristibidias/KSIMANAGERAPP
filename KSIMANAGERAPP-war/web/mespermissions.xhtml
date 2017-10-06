@@ -72,7 +72,7 @@
                     </div> 
                 </h:form>
                 <h:form id="form_permission">
-                    <p:dialog modal="true" id="fm_permission" widgetVar="wv_permission">
+                    <p:dialog showEffect="drop" modal="true" id="fm_permission" widgetVar="wv_permission">
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!permissionsController.operation.equals('consultpermission') and !permissionsController.operation.equals('deletepermission') and !permissionsController.operation.equals('modifypermission')}" value="Ajouter un permission" class="green-text" style="font-weight: bold;"/>
@@ -83,11 +83,11 @@
                         </center>
                         <h:panelGrid id="inputs" columns="2">
                             <p:outputLabel value="Date de depart : " for="datedep" />
-                            <p:calendar showOn="button" id="datedep" value="#{permissionsController.permission.datedep}" title="Date de depart" >
+                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" id="datedep" value="#{permissionsController.permission.datedep}" title="Date de depart" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:outputLabel value="Date de retour : " for="dateretour" />
-                            <p:calendar showOn="button" id="dateretour" value="#{permissionsController.permission.dateretour}" title="Date de retour" >
+                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" id="dateretour" value="#{permissionsController.permission.dateretour}" title="Date de retour" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:outputLabel value="Motif : " for="motif" />

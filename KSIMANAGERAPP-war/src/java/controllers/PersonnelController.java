@@ -20,6 +20,7 @@ import javax.servlet.ServletRequest;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import sessions.JournalisationFacadeLocal;
+import sessions.MailSender;
 import sessions.PersonnelFacadeLocal;
 
 /**
@@ -34,9 +35,14 @@ public class PersonnelController implements Serializable {
     private Personnel personnel = new Personnel();
     private String operation;
     private String msg;
+    private String message;
+    private String loginNewuser;
+    private String passwordNewuser;
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
     Journalisation recupIdpers = new Journalisation();
+    @EJB
+    private MailSender sendmail = new MailSender();
 
     /**
      * Creates a new instance of PersonnelController
@@ -83,7 +89,7 @@ public class PersonnelController implements Serializable {
                 personnel.setIdpers(personnelFacade.nextId());
                 personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
                 personnelFacade.create(personnel);
-            logFile("Ajouter un compte utilisateur",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+                logFile("Ajouter un compte utilisateur", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
                 msg = "Enrégistrement effectué avec succès!";
                 RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
             } else {
@@ -103,7 +109,7 @@ public class PersonnelController implements Serializable {
             if (personnelFacade.findByLogin(personnel.getLogin()).isEmpty()) {
                 personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
                 personnelFacade.edit(personnel);
-            logFile("Modifier un compte utilisateur",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+                logFile("Modifier un compte utilisateur", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
                 msg = "Modification effectuée avec succès!";
                 RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
             } else {
@@ -120,7 +126,7 @@ public class PersonnelController implements Serializable {
     public void deleteAccount() {
         try {
             personnelFacade.remove(personnel);
-            logFile("Supprimer un compte utilisateur",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            logFile("Supprimer un compte utilisateur", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Suppression effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
         } catch (Exception e) {
@@ -134,8 +140,17 @@ public class PersonnelController implements Serializable {
     public void savePersonnel() {
         try {
             personnel.setIdpers(personnelFacade.nextId());
+            loginNewuser = "KSI_Login_"+personnel.getIdpers();
+            passwordNewuser = "KSI_Password_"+personnel.getIdpers();
+            personnel.setLogin(loginNewuser);
+            personnel.setPassword(passwordNewuser);
+            personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
             personnelFacade.create(personnel);
-            logFile("Enregistrer un personnel",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            message = "Bonjour Monsieur/Madame " + personnel.getNompers() + " " + personnel.getPrenompers() + " l'ensemble du personnel de Kevin's "
+                    + "Services International vous souhaite la bienvenu.  Voici vos identifiants. Login : " + loginNewuser + ", Mot de passe : " + passwordNewuser + ""
+                    + ".  Au plaisir de vous voir dans les prochain jours.";
+            sendmail.sendEmail("hrististoikov@gmail.com", "hristi stoikov", "borisarroga", "tonysimonadji@gmail.com", "Recrutement", message);
+            logFile("Enregistrer un personnel", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Enrégistrement effectué avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -149,7 +164,7 @@ public class PersonnelController implements Serializable {
     public void modifyPersonnel() {
         try {
             personnelFacade.edit(personnel);
-            logFile("Modifier un personnel",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            logFile("Modifier un personnel", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Modification effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -159,12 +174,12 @@ public class PersonnelController implements Serializable {
             init();
         }
     }
-    
+
     public void modifyProfil() {
         try {
             personnel.setIdpers(1);
             personnelFacade.edit(personnel);
-            logFile("Modifier mon profil",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            logFile("Modifier mon profil", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Modification effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -178,7 +193,7 @@ public class PersonnelController implements Serializable {
     public void deletePersonnel() {
         try {
             personnelFacade.remove(personnel);
-            logFile("Supprimer un personnel",personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
+            logFile("Supprimer un personnel", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Suppression effectuée avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
         } catch (Exception e) {
@@ -211,6 +226,7 @@ public class PersonnelController implements Serializable {
                 break;
         }
     }
+
     public void logFile(String name, String target) {
         try {
             Journalisation op = new Journalisation();
@@ -300,7 +316,37 @@ public class PersonnelController implements Serializable {
     public void setRecupIdpers(Journalisation recupIdpers) {
         this.recupIdpers = recupIdpers;
     }
-    
-    
+
+    public MailSender getSendmail() {
+        return sendmail;
+    }
+
+    public void setSendmail(MailSender sendmail) {
+        this.sendmail = sendmail;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getLoginNewuser() {
+        return loginNewuser;
+    }
+
+    public void setLoginNewuser(String loginNewuser) {
+        this.loginNewuser = loginNewuser;
+    }
+
+    public String getPasswordNewuser() {
+        return passwordNewuser;
+    }
+
+    public void setPasswordNewuser(String passwordNewuser) {
+        this.passwordNewuser = passwordNewuser;
+    }
 
 }

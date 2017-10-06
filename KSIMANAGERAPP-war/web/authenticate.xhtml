@@ -26,11 +26,11 @@
                     </center>
                     <h:panelGrid style="text-align: justify;" columns="3">
                         <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 20px;" value="Login : " for="login" />
-                        <p:inputText style="color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Valeur obligatoire!" />
+                        <p:inputText style=" padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Valeur obligatoire!" />
                         <p:message for="login"/>
 
                         <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 20px;" value="Password : " for="mdp" />
-                        <p:inputText style="color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" type="password" id="mdp" value="#{sessionController.currentUser.password}" title="Mot de passe" size="30" required="true" requiredMessage="Valeur obligatoire!" />
+                        <p:inputText style="padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" type="password" id="mdp" value="#{sessionController.currentUser.password}" title="Mot de passe" size="30" required="true" requiredMessage="Valeur obligatoire!" />
                         <p:message for="mdp"/>
                     </h:panelGrid>
                     <center>

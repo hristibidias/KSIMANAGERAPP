@@ -74,7 +74,7 @@
                 <p:separator/>
                 <div class="row">
                     <form id="form_mission" class="col s12">
-                        <p:dialog modal="true" id="fm_mission" widgetVar="wv_mission">
+                        <p:dialog showEffect="drop" modal="true" id="fm_mission" widgetVar="wv_mission">
                             <center>
                                 <f:facet name="header">
                                     <h:outputText rendered="#{!missionsController.operation.equals('consult') and !missionsController.operation.equals('delete') and !missionsController.operation.equals('modify')}" value="Ajouter une mission" class="green-text" style="font-weight: bold;"/>
