@@ -16,7 +16,7 @@
             <ui:define name="content">
                 <h:form  id="liste_permission">
                     <center>
-                        <h4><h:outputText value="Mes demandes de permission" style="color: green;"/></h4>
+                        <h4><h:outputText value="#{lm.MesDemandePermission}" style="color: green;"/></h4>
                         <h6><h:outputText id="msg" value="#{permissionsController.msg}" style="color: green;"/></h6>
                     </center>
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{permissionsController.listeMesPermission}" var="item" rowKey="#{item.idpermission}" selectionMode="single" selection="#{permissionsController.permission}">
@@ -28,7 +28,7 @@
                         </f:facet>
                         <p:column sortBy="#{item.datedep}" filterBy="#{item.datedep}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="Date de depart"/>
+                                <h:outputText value="#{lm.DateFin}"/>
                             </f:facet>
                             <h:outputText value="#{item.datedep}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -36,7 +36,7 @@
                         </p:column>
                         <p:column sortBy="#{item.dateretour}" filterBy="#{item.dateretour}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="Date de retour"/>
+                                <h:outputText value="#{lm.DateDebut}"/>
                             </f:facet>
                             <h:outputText value="#{item.dateretour}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -44,19 +44,19 @@
                         </p:column>
                         <p:column sortBy="#{item.motif}" filterBy="#{item.motif}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="Motif"/>
+                                <h:outputText value="#{lm.Motif}"/>
                             </f:facet>
                             <h:outputText value="#{item.motif}"/>
                         </p:column>
                         <p:column sortBy="#{item.nbrpermission}" filterBy="#{item.nbrpermission}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="Nombre de permission"/>
+                                <h:outputText value="#{lm.NombrePermission}"/>
                             </f:facet>
                             <h:outputText value="#{item.nbrpermission}"/>
                         </p:column>
                         <p:column sortBy="#{item.idpers.nompers}" filterBy="#{item.idpers.nompers}" filterMatchMode="contains">
                             <f:facet name="header">
-                                <h:outputText value="Demandeur"/>
+                                <h:outputText value="#{lm.Demandeur}"/>
                             </f:facet>
                             <h:outputText value="#{item.idpers.nompers} #{item.idpers.prenompers}"/>
                         </p:column>
@@ -83,11 +83,11 @@
                         </center>
                         <h:panelGrid id="inputs" columns="2">
                             <p:outputLabel value="Date de depart : " for="datedep" />
-                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" id="datedep" value="#{permissionsController.permission.datedep}" title="Date de depart" >
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" id="datedep" value="#{permissionsController.permission.datedep}" title="Date de depart" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:outputLabel value="Date de retour : " for="dateretour" />
-                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" id="dateretour" value="#{permissionsController.permission.dateretour}" title="Date de retour" >
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" id="dateretour" value="#{permissionsController.permission.dateretour}" title="Date de retour" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:outputLabel value="Motif : " for="motif" />

@@ -16,7 +16,7 @@
             <ui:define name="content">
                 <h:form id="liste_pres">
                     <center>
-                        <h:outputText value="Liste des prestataires" style="color: #009900; font-size: 20px;"/>
+                        <h:outputText value="#{lm.ListePrestataire}" style="color: #009900; font-size: 20px;"/>
                         <h:outputText id="msg" value="#{prestataireController.msg}" style="color: red; font-size: 20px;"/>
                     </center>
                     <p:dataTable scrollWidth="true" rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{prestataireController.listPrestataire}" var="item" rowKey="#{item.idpers}" selectionMode="single" selection="#{prestataireController.prestataire}">
@@ -116,7 +116,7 @@
                 </h:form>
 
                 <h:form id="form_prestataire">
-                    <p:dialog modal="true" id="fm_prestataire" widgetVar="wv_prestataire">
+                    <p:dialog showEffect="drop" modal="true" id="fm_prestataire" widgetVar="wv_prestataire">
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!prestataireController.operation.equals('consultPrestataire') and !prestataireController.operation.equals('deletePrestataire') and !prestataireController.operation.equals('modifyPrestataire')}" value="Ajouter un prestataire" class="green-text" style="font-weight: bold;"/>
@@ -126,18 +126,18 @@
                             </f:facet>
                         </center>
                         <h:panelGrid id="inputs" columns="6">
-                            <p:outputLabel value="Nompers:" for="nompers" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="nompers" value="#{prestataireController.prestataire.nompers}" title="Nompers" /> 
-                            <p:outputLabel value="Prenompers:" for="prenompers" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="prenompers" value="#{prestataireController.prestataire.prenompers}" title="Prenompers" />
-                            <p:outputLabel value="Sexe: " for="sexe" />
+                            <p:outputLabel value="Nom : " for="nompers" />
+                            <p:keyboard maxlength="35" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="nompers" value="#{prestataireController.prestataire.nompers}" title="Nompers" /> 
+                            <p:outputLabel value="Prenom : " for="prenompers" />
+                            <p:keyboard maxlength="35" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="prenompers" value="#{prestataireController.prestataire.prenompers}" title="Prenompers" />
+                            <p:outputLabel value="Sexe : " for="sexe" />
                             <p:selectOneMenu style="width: 100%;" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" required="false" id="sexe" value="#{prestataireController.prestataire.sexe}" >
                                 <f:selectItem itemLabel="" itemValue=""/>
                                 <f:selectItem itemLabel="Féminin" itemValue="Féminin"/>
                                 <f:selectItem itemLabel="Masculin" itemValue="Masculin"/>
                             </p:selectOneMenu>
-                            <p:outputLabel value="Typeprestation:" for="typeprestation" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="typeprestation" value="#{prestataireController.prestataire.typeprestation}" title="Typeprestation" />
+                            <p:outputLabel value="Type de prestation : " for="typeprestation" />
+                            <p:keyboard maxlength="60" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="typeprestation" value="#{prestataireController.prestataire.typeprestation}" title="Typeprestation" />
                             <!--<p:selectOneMenu style="width: 100%;" disabled="# {prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" required="false" id="typeprestation" value="# {prestataireController.prestataire.typeprestation}" >
                                 <f:selectItem itemLabel="" itemValue=""/>
                                 <f:selectItem itemLabel="Emballeur" itemValue="Emballeur"/>
@@ -145,24 +145,24 @@
                                 <f:selectItem itemLabel="Classeur" itemValue="Classeur"/>
                                 <f:selectItem itemLabel="Transporteur" itemValue="Transporteur"/>
                             </p:selectOneMenu>-->
-                            <p:outputLabel value="Cnipers:" for="cnipers" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="cnipers" value="#{prestataireController.prestataire.cnipers}" title="Cnipers" />
-                            <p:outputLabel value="Email:" for="email" />
+                            <p:outputLabel value="CNI : " for="cnipers" />
+                            <p:keyboard maxlength="20" keypadOnly="true" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="cnipers" value="#{prestataireController.prestataire.cnipers}" title="Cnipers" />
+                            <p:outputLabel value="Email : " for="email" />
                             <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="email" value="#{prestataireController.prestataire.email}" title="Email" />
-                            <p:outputLabel value="Tel:" for="tel" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="tel" value="#{prestataireController.prestataire.tel}" title="Tel" />
-                            <p:outputLabel value="Pays:" for="pays" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="pays" value="#{prestataireController.prestataire.pays}" title="Pays" />
-                            <p:outputLabel value="Ville:" for="ville" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="ville" value="#{prestataireController.prestataire.ville}" title="Ville" />
-                            <p:outputLabel value="Quartier:" for="quartier" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="quartier" value="#{prestataireController.prestataire.quartier}" title="Quartier" />
-                            <p:outputLabel value="Datenaisspers:" for="datenaisspers" />
-                            <p:calendar showOn="button" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="datenaisspers" value="#{prestataireController.prestataire.datenaisspers}" title="Datenaisspers" >
+                            <p:outputLabel value="Téléphone : " for="tel" />
+                            <p:inputMask maxlength="20" mask="999-999-999" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="tel" value="#{prestataireController.prestataire.tel}" title="Tel" />
+                            <p:outputLabel value="Pays : " for="pays" />
+                            <p:keyboard maxlength="60" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="pays" value="#{prestataireController.prestataire.pays}" title="Pays" />
+                            <p:outputLabel value="Ville : " for="ville" />
+                            <p:keyboard maxlength="60" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="ville" value="#{prestataireController.prestataire.ville}" title="Ville" />
+                            <p:outputLabel value="Quartier : " for="quartier" />
+                            <p:keyboard maxlength="60" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="quartier" value="#{prestataireController.prestataire.quartier}" title="Quartier" />
+                            <p:outputLabel value="Date de naissance : " for="datenaisspers" />
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="datenaisspers" value="#{prestataireController.prestataire.datenaisspers}" title="Datenaisspers" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
-                            <p:outputLabel value="Photos:" for="photos" />
-                            <p:inputText disabled="#{prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="photos" value="#{prestataireController.prestataire.photos}" title="Photos" />
+                            <!--<p:outputLabel value="Photos : " for="photos" />
+                            <p:inputText disabled="# {prestataireController.operation.equals('deletePrestataire') or prestataireController.operation.equals('consultPrestataire')}" id="photos" value="# {prestataireController.prestataire.photos}" title="Photos" />-->
                             
                         </h:panelGrid>
                         <f:facet name="footer">

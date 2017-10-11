@@ -126,6 +126,7 @@
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyPersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Modifier}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deletePersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Supprimer}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultPersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="print" action="#{personnelController.imprimer()}" immediate="true" ajax="false" value="Imprimer"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
                     </div> 
                 </h:form>
@@ -140,22 +141,20 @@
                             </f:facet>
                         </center>
                         <h:panelGrid id="inputs" columns="6">
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Matricule: " for="matricule" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Matricule" id="matricule" value="#{personnelController.personnel.matricule}" title="Matricule" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Nompers: " for="nompers" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Nom" id="nompers" value="#{personnelController.personnel.nompers}" title="Nom" />
+                            <p:keyboard maxlength="35" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Nom" id="nompers" value="#{personnelController.personnel.nompers}" title="Nom" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Prenompers: " for="prenompers" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Prénom" id="prenompers" value="#{personnelController.personnel.prenompers}" title="Prénom" />
+                            <p:keyboard maxlength="35" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Prénom" id="prenompers" value="#{personnelController.personnel.prenompers}" title="Prénom" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Email: " for="email" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" type="email" placeholder="exemple@gmail.com" class="email" id="email" value="#{personnelController.personnel.email}" title="Email" />
+                            <p:keyboard disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="exemple@gmail.com" class="email" id="email" value="#{personnelController.personnel.email}" title="Email" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Pays: " for="pays" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="pays" id="pays" value="#{personnelController.personnel.pays}" title="pays" />
+                            <p:keyboard maxlength="60" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="pays" id="pays" value="#{personnelController.personnel.pays}" title="pays" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Ville: " for="ville" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="ville" id="ville" value="#{personnelController.personnel.ville}" title="ville" />
+                            <p:keyboard maxlength="60" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="ville" id="ville" value="#{personnelController.personnel.ville}" title="ville" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="Poste: " for="poste" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="poste" id="poste" value="#{personnelController.personnel.poste}" title="poste" />
+                            <p:keyboard maxlength="100" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="poste" id="poste" value="#{personnelController.personnel.poste}" title="poste" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="CNI:" for="cnipers" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="cnipers" id="cnipers" value="#{personnelController.personnel.cnipers}" title="cnipers" />
+                            <p:keyboard maxlength="20" keypadOnly="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="cnipers" id="cnipers" value="#{personnelController.personnel.cnipers}" title="cnipers" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="sexe:" for="sexe" />
                             <p:selectOneMenu style="width: 100%;" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" id="sexe" value="#{personnelController.personnel.sexe}" >
                                 <f:selectItem itemLabel="" itemValue=""/>
@@ -163,18 +162,19 @@
                                 <f:selectItem itemLabel="Masculin" itemValue="Masculin"/>
                             </p:selectOneMenu>
                             <p:outputLabel style="font-weight: bold; color: black;" value="tel:" for="tel" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="tel" id="tel" value="#{personnelController.personnel.tel}" title="tel" />
+                            <p:inputMask mask="999-999-999" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="tel" id="tel" value="#{personnelController.personnel.tel}" title="tel" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="quartier" for="quartier" />
-                            <p:inputText disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="quartier" id="quartier" value="#{personnelController.personnel.quartier}" title="quartier" />
+                            <p:keyboard disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="false" placeholder="quartier" id="quartier" value="#{personnelController.personnel.quartier}" title="quartier" />
                             <p:outputLabel style="font-weight: bold; color: black;" value="datenaisspers" for="datenaisspers" />
-                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datenaisspers" id="datenaisspers" value="#{personnelController.personnel.datenaisspers}" >
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datenaisspers" id="datenaisspers" value="#{personnelController.personnel.datenaisspers}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:outputLabel style="font-weight: bold; color: black;" value="datedeb" for="datedeb" />
-                            <p:calendar pattern="dd-MM-yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datedeb" id="datedeb" value="#{personnelController.personnel.datedeb}">
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="datedeb" id="datedeb" value="#{personnelController.personnel.datedeb}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
-
+                            <p:outputLabel style="font-weight: bold; color: black;" value="Matricule: " for="matricule" />
+                            <p:inputMask maxlength="20" mask="aa-aa-999999" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" placeholder="Matricule" id="matricule" value="#{personnelController.personnel.matricule}" />
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>

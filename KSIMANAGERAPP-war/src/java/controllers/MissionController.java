@@ -106,22 +106,13 @@ public class MissionController implements Serializable{
 
     public void persist() {
         switch (operation) {
-            case "add":
+            case "addMission":
                 saveMission();
                 break;
             case "modify":
                 modifyMission();
                 break;
             case "delete":
-                deleteMission();
-                break;
-            case "addMission":
-                saveMission();
-                break;
-            case "modifyMission":
-                modifyMission();
-                break;
-            case "deleteMission":
                 deleteMission();
                 break;
         }

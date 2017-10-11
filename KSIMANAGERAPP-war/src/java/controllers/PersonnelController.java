@@ -11,12 +11,21 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import static net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfStream;
+import static net.sf.jasperreports.engine.JasperFillManager.fillReport;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import sessions.JournalisationFacadeLocal;
@@ -145,11 +154,12 @@ public class PersonnelController implements Serializable {
             personnel.setLogin(loginNewuser);
             personnel.setPassword(passwordNewuser);
             personnel.setPassword(((Integer) personnel.getPassword().hashCode()).toString());
+            personnel.setMatricule(personnel.getMatricule()+personnel.getIdpers());
             personnelFacade.create(personnel);
             message = "Bonjour Monsieur/Madame " + personnel.getNompers() + " " + personnel.getPrenompers() + " l'ensemble du personnel de Kevin's "
                     + "Services International vous souhaite la bienvenu.  Voici vos identifiants. Login : " + loginNewuser + ", Mot de passe : " + passwordNewuser + ""
                     + ".  Au plaisir de vous voir dans les prochain jours.";
-            sendmail.sendEmail("hrististoikov@gmail.com", "hristi stoikov", "borisarroga", "tonysimonadji@gmail.com", "Recrutement", message);
+            sendmail.sendEmail("hrististoikov@gmail.com", "Kevin's Services International", "borisarroga", personnel.getEmail(), "Recrutement", message);
             logFile("Enregistrer un personnel", personnel.getMatricule() + personnel.getNompers() + personnel.getPrenompers());
             msg = "Enrégistrement effectué avec succès!";
             RequestContext.getCurrentInstance().execute("PF('wv_personnel').hide()");
@@ -242,25 +252,26 @@ public class PersonnelController implements Serializable {
         }
     }
 
-//    public String imprimer() {
-//        try {
-//            JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listUtilisateur);
-//            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/etats/listUtilisateur.jasper");
-//            Map parameters = new HashMap();
-//            parameters.put("USER", connectedUser);
-//            parameters.put("REPORT_LOCALE", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-//            JasperPrint jasperPrint = fillReport(reportPath, parameters, beanCollectionDataSource);
-//            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-//            httpServletResponse.addHeader("Content-disposition", "attachment; filename=listUtilisateur.pdf");
-//            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-//            exportReportToPdfStream(jasperPrint, servletOutputStream);
-//            FacesContext.getCurrentInstance().responseComplete();
-//            //----------------------------------------------
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo() + "?faces-redirect=true";
-//    }
+    public String imprimer() {
+        try {
+            JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listPersonnel);
+            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/listPersonnel.jasper");
+            //String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/listePersonnels.jasper");
+            Map parameters = new HashMap();
+            //parameters.put("USER", connectedUser);
+            parameters.put("REPORT_LOCALE", FacesContext.getCurrentInstance().getViewRoot().getLocale()); 
+            JasperPrint jasperPrint = fillReport(reportPath, parameters, beanCollectionDataSource);
+            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.addHeader("Content-disposition", "attachment; filename=liste du Personnel.pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+            //----------------------------------------------
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo() + "?faces-redirect=true";
+    }
     public PersonnelFacadeLocal getPersonnelFacade() {
         return personnelFacade;
     }

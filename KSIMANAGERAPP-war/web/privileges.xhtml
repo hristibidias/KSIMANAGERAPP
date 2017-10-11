@@ -16,7 +16,7 @@
             <ui:define name="content">
                 <h:form id="form_list_privilege">
                     <center>
-                        <h4><h:outputText value="Liste des privilèges" style="color: green;"/></h4>
+                        <h4><h:outputText value="#{lm.ListePrivilege}" style="color: green;"/></h4>
                         <h6><h:outputText id="msg" value="      #{privilegesController.msg}" style="color: green;"/></h6>
                     </center>
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{privilegesController.listPrivileges}" var="item" rowKey="#{item.personnel.idpers} #{item.menu.idmenu}" selectionMode="single" selection="#{privilegesController.privileges}">
@@ -73,19 +73,29 @@
                                 <h3><h:outputText value="Ajouter un menu"/></h3>    
                             </center>
                         </f:facet>
-                        <h:panelGrid id="inputs" columns="2">
+                        <h:panelGrid id="inputs" columns="3">
                             <p:outputLabel value="Role:" for="role" />
-                            <p:inputText id="role" value="#{privilegesController.roles}" title="Role" required="true" requiredMessage="Valeur obligatoire"/>
+                            <p:selectOneMenu style="width: 100%;" required="true" requiredMessage="Champ obligatoire" disabled="#{privilegesController.operation.equals('deleteConge') or privilegesController.operation.equals('consultConge')}" id="role" value="#{privilegesController.roles}" >
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Personnel" itemValue="5"/>
+                                <f:selectItem itemLabel="Comptable/Chef transit/Chef service" itemValue="4"/>
+                                <f:selectItem itemLabel="Secrétaire" itemValue="3"/>
+                                <f:selectItem itemLabel="Directeur Générale" itemValue="2"/>
+                                <f:selectItem itemLabel="Administrateur" itemValue="1"/>
+                            </p:selectOneMenu>
+                            <p:message for="role"/>
                             <p:outputLabel value="Menu: " for="menu" />
                             <p:selectOneMenu style="width: 100%;" id="menu" value="#{privilegesController.idMenu}" required="true" requiredMessage="Valeur obligatoire">
                                 <f:selectItem itemLabel="" itemValue="" />
                                 <f:selectItems value="#{privilegesController.listMenu}" var="user" itemLabel="#{user.nom}" itemValue="#{user.idmenu}"/>
                             </p:selectOneMenu>
+                            <p:message for="menu"/>
                             <p:outputLabel value="Personnel: " for="personnel" />
                             <p:selectOneMenu style="width: 100%;" id="personnel" value="#{privilegesController.idPersonnel}" required="true" requiredMessage="Valeur obligatoire!">
                                 <f:selectItem itemLabel="" itemValue="" />
                                 <f:selectItems value="#{privilegesController.listPersonnel}" var="users" itemLabel="#{users.nompers} #{users.prenompers}" itemValue="#{users.idpers}"/>
                             </p:selectOneMenu>
+                            <p:message for="personnel"/>
                         </h:panelGrid>
                         <p:separator/>
                         <f:facet name="footer"> 

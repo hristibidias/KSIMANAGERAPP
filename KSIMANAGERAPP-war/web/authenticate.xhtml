@@ -18,13 +18,13 @@
             <img src="resources/images/route.jpg"/>
             <h:form class="responsive-table" id="form_con" style=" margin: auto; width: 430px; margin-top: -40%; background-color: snow; border-radius: 100px 100px 100px 100px;">
                 <!--<h:form id="form_con" style="position: absolute;">-->
-                <p:growl id="growl" showDetail="true" sticky="true" />
+                <p:growl id="msgs" showDetail="true" />
                 <p:panel class="responsive-table" style="width: 100%; text-align: center; border-radius: 100px 100px 100px 100px" id="form_con">
                     <center>
                         <h:outputText style="font-size: 22pt; color: #8bc34a; font-weight: bold; font-style: italic;" value="Connectez-vous" /><br/>
                         <h:outputText id="msg" value="#{sessionController.msg}" style="color: red; font-size: 14px;"/>
                     </center>
-                    <h:panelGrid style="text-align: justify;" columns="3">
+                    <h:panelGrid style="text-align: justify;" columns="3" cellpadding="5">
                         <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 20px;" value="Login : " for="login" />
                         <p:inputText style=" padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Valeur obligatoire!" />
                         <p:message for="login"/>
@@ -34,7 +34,8 @@
                         <p:message for="mdp"/>
                     </h:panelGrid>
                     <center>
-                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con, growl, msg" />
+                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con, msg,msgs"  icon="ui-icon-check"/>
+                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" value="Test" action="#{sessionController.displayLocation()}" update="form_con, msg,msgs"  icon="ui-icon-check"/>
                     </center> 
                 </p:panel>
 

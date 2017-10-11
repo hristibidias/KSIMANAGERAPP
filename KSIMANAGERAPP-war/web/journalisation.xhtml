@@ -6,6 +6,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{sessionController.watchOut()}" />
+    </f:metadata>
     <body>
 
         <ui:composition template="./index.xhtml">
@@ -13,7 +16,7 @@
             <ui:define name="content">
                 <h:form id="form_list_journal">
                     <center>
-                        <h4><h:outputText value="Fichier journal" style="color: green;"/></h4>
+                        <h4><h:outputText value="#{lm.FichierJournal}" style="color: green;"/></h4>
                         <h6><h:outputText id="msg" value="#{journalisationController.msg}" style="color: green;"/></h6>
                     </center>
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{journalisationController.listJournalisation}" var="item" rowKey="#{item.idjournalisation}" selectionMode="single" selection="#{journalisationController.journalisation}">

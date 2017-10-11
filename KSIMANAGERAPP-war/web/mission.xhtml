@@ -16,7 +16,7 @@
             <ui:define name="content">
                 <h:form id="liste_mission">
                     <center>
-                        <h4><h:outputText value="Liste des Missions" style="color: green;"/></h4>
+                        <h4><h:outputText value="#{lm.ListeMission}" style="color: green;"/></h4>
                         <h6><h:outputText id="msg" value="#{missionController.msg}" style="color: green;"/></h6>
                     </center>
                     <p:dataTable cellSeparator="false" rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{missionController.listMission}" var="item" rowKey="#{item.idmission}" selectionMode="single" selection="#{missionController.mission}">
@@ -64,73 +64,57 @@
                     <p:separator/>
 
                     <div class="row" style="margin: auto;">
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="add"  actionListener="#{missionController.prepareCreate}" update="msg,:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Ajouter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modify"  actionListener="#{missionController.action}" update="msg,:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Modifier}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="delete"  actionListener="#{missionController.action}" update="msg,:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Supprimer}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consult"  actionListener="#{missionController.action}" update="msg,:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addMission"  actionListener="#{missionController.prepareCreate}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modify"  actionListener="#{missionController.action}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="delete"  actionListener="#{missionController.action}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consult"  actionListener="#{missionController.action}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Consulter}"/>
                         <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.initMission()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
                     </div>
                 </h:form>
                 <p:separator/>
-                <div class="row">
-                    <form id="form_mission" class="col s12">
-                        <p:dialog showEffect="drop" modal="true" id="fm_mission" widgetVar="wv_mission">
-                            <center>
-                                <f:facet name="header">
-                                    <h:outputText rendered="#{!missionsController.operation.equals('consult') and !missionsController.operation.equals('delete') and !missionsController.operation.equals('modify')}" value="Ajouter une mission" class="green-text" style="font-weight: bold;"/>
-                                    <h:outputText rendered="#{!missionsController.operation.equals('consult') and !missionsController.operation.equals('delete') and !missionsController.operation.equals('add')}" value="Modifier une mission" class="green-text" style="font-weight: bold;"/>
-                                    <h:outputText rendered="#{!missionsController.operation.equals('consult') and !missionsController.operation.equals('add') and !missionsController.operation.equals('modify')}" value="Supprimer une mission" class="green-text" style="font-weight: bold;"/>
-                                    <h:outputText rendered="#{!missionsController.operation.equals('add') and !missionsController.operation.equals('delete') and !missionsController.operation.equals('modify')}" value="Consulter une mission" class="green-text" style="font-weight: bold;"/>
-                                </f:facet>
-                            </center>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input placeholder="Placeholder" id="first_name" type="text" class="validate"/>
-                                    <label for="first_name">First Name</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input id="last_name" type="text" class="validate"/>
-                                    <label for="last_name">Last Name</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input value="I am not editable" id="disabled" type="text" class="validate"/>
-                                    <label for="disabled">Disabled</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="password" type="password" class="validate"/>
-                                    <label for="password">Password</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="email" type="email" class="validate"/>
-                                    <label for="email">Email</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s12">
-                                    This is an inline input field:
-                                    <div class="input-field inline">
-                                        <input id="email" type="email" class="validate"/>
-                                        <label for="email" data-error="wrong" data-success="right">Email</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <f:facet name="footer">
-                                <center>
-                                    <a onclick="Materialize.toast('#{missionController.msg}', 4000)">
-                                        <p:commandButton  rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Enregistrer"/>
-                                        <p:commandButton  rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('add') and !missionController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Supprimer"/>
-                                    </a>
-                                </center>
+                <h:form id="form_mission">
+                    <p:dialog showEffect="drop" modal="true" id="fm_mission" widgetVar="wv_mission">
+                        <center>
+                            <f:facet name="header">
+                                <h:outputText rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete') and !missionController.operation.equals('modify')}" value="Ajouter une mission" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete') and !missionController.operation.equals('addMission')}" value="Modifier une mission" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('addMission') and !missionController.operation.equals('modify')}" value="Supprimer une mission" class="green-text" style="font-weight: bold;"/>
+                                <h:outputText rendered="#{!missionController.operation.equals('addMission') and !missionController.operation.equals('delete') and !missionController.operation.equals('modify')}" value="Consulter une mission" class="green-text" style="font-weight: bold;"/>
                             </f:facet>
-                        </p:dialog>
-                    </form>
-                </div>
+                        </center>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value="#{lm.DateDebut} : " for="datedebmission" />
+                            <p:calendar disabled="#{missionController.operation.equals('delete') or missionController.operation.equals('consult')}" pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" id="datedebmission" value="#{missionController.mission.datedebmission}" title="Datedebmission" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:message for="datedebmission"/>
+                            <p:outputLabel value="#{lm.DateFin} : " for="datefinmission" />
+                            <p:calendar disabled="#{missionController.operation.equals('delete') or missionController.operation.equals('consult')}" pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" id="datefinmission" value="#{missionController.mission.datefinmission}" title="Datefinmission" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:calendar>
+                            <p:message for="datedebmission"/>
+                            <p:outputLabel value="Lieu de la mission:" for="lieumission" />
+                            <p:inputText disabled="#{missionController.operation.equals('delete') or missionController.operation.equals('consult')}" id="lieumission" required="true" requiredMessage="Champ obligatoire" value="#{missionController.mission.lieumission}" title="Lieumission" />
+                            <p:message for="lieumission"/>
+                            <p:outputLabel value="Description : " for="descriptionmission" />
+                            <p:inputTextarea disabled="#{missionController.operation.equals('delete') or missionController.operation.equals('consult')}" id="descriptionmission" required="true" requiredMessage="Champ obligatoire" value="#{missionController.mission.descriptionmission}" title="Descriptionmission" />
+                            <p:message for="descriptionmission"/>
+                            <p:outputLabel value="Statut:" for="statut" />
+                            <p:selectOneMenu style="width: 100%;" required="true" requiredMessage="Champ obligatoire" disabled="#{missionController.operation.equals('delete') or missionController.operation.equals('consult')}" id="statut" value="#{missionController.mission.statut}" >
+                                <f:selectItem itemLabel="En attente" itemValue="En attente"/>
+                                <f:selectItem itemLabel="En cours" itemValue="En cours"/>
+                                <f:selectItem itemLabel="Terminée" itemValue="Terminée"/>
+                            </p:selectOneMenu>
+                            <p:message for="statut"/>
+                        </h:panelGrid>
+                        <f:facet name="footer">
+                            <center>
+                                <p:commandButton rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('addMission') and !missionController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
             </ui:define>
 
         </ui:composition>

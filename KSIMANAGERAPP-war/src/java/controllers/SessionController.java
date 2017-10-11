@@ -9,6 +9,10 @@ import entities.Journalisation;
 import entities.Personnel;
 import entities.Privileges;
 import entities.PrivilegesPK;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import sessions.JournalisationFacadeLocal;
 import sessions.PersonnelFacadeLocal;
@@ -78,6 +83,7 @@ public class SessionController implements Serializable {
     private int prestataireT = 19;
 
     private String message;
+    private String fileName;
 
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
@@ -129,10 +135,7 @@ public class SessionController implements Serializable {
         try {
             currentUser = personnelFacade.findByLoginMdp(currentUser.getLogin(), ((Integer) currentUser.getPassword().hashCode()).toString());
             if (currentUser != null) {
-                msg = "Bienvenu  " ;
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage("Successful", msg));
-                //msg = "";
+                msg = "" ;
                 saveMessage();
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
                 logFile("Connexion", "Système");
@@ -235,21 +238,39 @@ public class SessionController implements Serializable {
                 return "index.xhtml?faces-redirect=true";
 
             } else {
+                FacesMessage messages;
+                messages = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalide", "Login ou mot de passe incorrecte!");
+                FacesContext.getCurrentInstance().addMessage(null, messages); 
+//                FacesContext context = FacesContext.getCurrentInstance();
+//                context.addMessage(null, new FacesMessage("Failed", msg));
+//                context.addMessage(null, new FacesMessage("Second Message", "Veillez rééssayer"));
                 msg = "Login ou mot de passe incorrecte";
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.addMessage(null, new FacesMessage("Failed", msg));
-                context.addMessage(null, new FacesMessage("Second Message", "Veillez rééssayer"));
                 currentUser = new Personnel();
+                displayLocation();
                 return "authenticate.xhtml?faces-redirect=true";
             }
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Login ou mot de passe incorrecte";
+                FacesMessage messages;
+                messages = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalide", "Login ou mot de passe incorrecte!");
             currentUser = new Personnel();
+            displayLocation();
             return "authenticate.xhtml?faces-redirect=true";
         }
     }
     
+    String city = "oui";
+    String country = "oui";
+     public void displayLocation() {
+        FacesMessage msg;
+        if(city != null && country != null)
+            msg = new FacesMessage("Selected", city + " of " + country);
+        else
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid", "City is not selected."); 
+             
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }
     /*
     Cette fonction permet à un utilisateur de modifier son profil
     son fonctionnement est simple.
@@ -305,6 +326,43 @@ public class SessionController implements Serializable {
         }
     }
 
+    public void handleFileUpload(FileUploadEvent event) {
+        fileName = "D:\\Dossier Application Stage 2016-2017\\KSIMANAGERAPP\\KSIMANAGERAPP\\KSIMANAGERAPP-war\\web\\resources\\images\\photo_profil" + event.getFile().getFileName();    // chemin d'accés au fichier 
+        //fileName = "D:\\Dossier Application Stage 2016-2017\\KSIMANAGERAPP\\KSIMANAGERAPP\\KSIMANAGERAPP-war\\web\\resources\\images\\photo_profil" + event.getFile().getFileName();
+        currentUser.setPhotos(fileName);
+        personnelFacade.edit(currentUser);
+        try {
+
+            File result = new File(currentUser.getPhotos());
+
+            FileOutputStream fileOutputStream = new FileOutputStream(result);
+            byte[] buffer = new byte[8192];
+
+            int bulk;
+            InputStream inputStream = event.getFile().getInputstream();
+
+            while (true) {
+                bulk = inputStream.read(buffer);
+                if (bulk < 0) {
+                    break;
+                }
+                fileOutputStream.write(buffer, 0, bulk);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            FacesMessage message = new FacesMessage("Success", event.getFile().getFileName() + " a été chargé.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            RequestContext.getCurrentInstance().execute("PF('wv_ma_photo').hide()");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            FacesMessage error = new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "le(s) fichiers n'a pas été chargé(s)");
+            FacesContext.getCurrentInstance().addMessage(null, error);
+        }
+    }
     public void upload() {
         if (file != null) {
             FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
@@ -730,4 +788,14 @@ public class SessionController implements Serializable {
         this.message = message;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    
+    
 }

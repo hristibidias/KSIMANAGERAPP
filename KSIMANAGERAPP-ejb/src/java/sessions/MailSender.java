@@ -24,6 +24,7 @@ public class MailSender {
         try {
             Properties props = System.getProperties();
             props.put("mail.smtp.starttls", "true");
+            props.put("mail.smtp.starttls.enable", "true");
             props.put("mail.smtp.host", "smtp.gmail.com");
             props.put("mail.smtp.user", fromEmail);
             props.put("mail.smtp.password", password);
