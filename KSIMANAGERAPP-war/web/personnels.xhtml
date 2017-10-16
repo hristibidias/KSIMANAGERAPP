@@ -15,15 +15,12 @@
 
             <ui:define name="content">
                 <h:form id="liste_pers">
-                    <center>
-                        <h:outputText value="#{lm.ListeUtilisateur}" style="color: #009900; font-size: 20px;"/>
-                        <h:outputText id="msg" value="#{personnelController.msg}" style="color: red; font-size: 20px;"/>
-                    </center>      
                     <p:dataTable scrollWidth="true" rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{personnelController.listPersonnel}" var="item" rowKey="#{item.idpers}" selectionMode="single" selection="#{personnelController.personnel}">
 
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <h:outputText value="#{lm.ListePersonnel}" style="color: #009900; font-size: 20px;"/>
+                                <h:outputText style="margin-left: 50px;" value=" #{lm.Rechercher}  :" />
                                 <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
                             </p:outputPanel>
                         </f:facet>
@@ -111,27 +108,28 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column sortBy="#{item.photos}" filterBy="#{item.photos}" filterMatchMode="contains">
-                            <f:facet name="header">
-                                <h:outputText value="Photo"/>
-                            </f:facet>
-                            <h:outputText value="#{item.photos}"/>
-                        </p:column>
                     </p:dataTable> 
 
                     <p:separator/>
 
-                    <div class="row" style="margin: auto;">
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addPersonnel"  actionListener="#{personnelController.prepareCreate}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Ajouter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modifyPersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Modifier}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="deletePersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Supprimer}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consultPersonnel"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Consulter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="print" action="#{personnelController.imprimer()}" immediate="true" ajax="false" value="Imprimer"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
-                    </div> 
+                    <center>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="addPersonnel"  actionListener="#{personnelController.prepareCreate}" update=":form_tr:msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="modifyPersonnel"  actionListener="#{personnelController.action}" update=":form_tr:msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="deletePersonnel"  actionListener="#{personnelController.action}" update=":form_tr:msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="consultPersonnel"  actionListener="#{personnelController.action}" update=":form_tr:msg,:form_tr:fm_personnel" partialSubmit="true" oncomplete="PF('wv_personnel').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="print" action="#{personnelController.imprimer()}" immediate="true" ajax="false" value="Imprimer"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </center> 
                 </h:form>
                 <h:form id="form_tr">
                     <p:dialog showEffect="puff" modal="true" id="fm_personnel" widgetVar="wv_personnel">
+                    <h:outputText id="msgs" value="#{personnelController.msg}" style="color: red; font-size: 20px;"/>
+                    <center>
+                        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                            <h:outputText id="msg" value="#{personnelController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                            <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                        </p:notificationBar>
+                    </center>      
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel') and !personnelController.operation.equals('modifyPersonnel')}" value="Ajouter un personnel" class="green-text" style="font-weight: bold;"/>
@@ -178,8 +176,8 @@
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>
-                                <p:commandButton  rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_pers:table,:liste_pers:msg,:liste_pers:" partialSubmit="true" value="Enregistrer"/>
-                                <p:commandButton  rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('addPersonnel') and !personnelController.operation.equals('modifyPersonnel')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_pers:table,:liste_pers:msg,:liste_pers:" partialSubmit="true" value="Supprimer"/>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s"  rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('deletePersonnel')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="msg,msgs,inputs,:liste_pers:table" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s"  rendered="#{!personnelController.operation.equals('consultPersonnel') and !personnelController.operation.equals('addPersonnel') and !personnelController.operation.equals('modifyPersonnel')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="msg,msgs,inputs,:liste_pers:table" partialSubmit="true" value="Supprimer"/>
                             </center>
                         </f:facet>
                     </p:dialog>

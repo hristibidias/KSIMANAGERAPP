@@ -42,6 +42,16 @@ public class PersonnelFacade extends AbstractFacade<Personnel> implements Person
     }
     
     @Override
+    public Integer nextNbrConnect(){
+        try {
+            Query query = em.createNamedQuery("Personnel.nextNbrConnect");
+            return ((Integer) query.getSingleResult()) + 1;
+        } catch (Exception e) {
+            return 1;
+        }
+    }
+    
+    @Override
     public Personnel findByLoginMdp(String login, String password) {
 	    try {
             Query query = em.createNamedQuery("Personnel.findByLoginMdp");
@@ -58,6 +68,17 @@ public class PersonnelFacade extends AbstractFacade<Personnel> implements Person
             Query query = em.createNamedQuery("Personnel.findByLogin");
             query.setParameter("login", login);
             return query.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    @Override
+    public Personnel findByMatriculeEmail(String email, String matricule) {
+	    try {
+            Query query = em.createNamedQuery("Personnel.findByMatriculeEmail");
+            query.setParameter("email", email).setParameter("matricule", matricule);
+            return (Personnel) query.getSingleResult();
         } catch (Exception e) {
             return null;
         }

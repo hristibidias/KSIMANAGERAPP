@@ -15,14 +15,11 @@
 
             <ui:define name="content">
                 <h:form id="liste_mission">
-                    <center>
-                        <h4><h:outputText value="#{lm.ListeMission}" style="color: green;"/></h4>
-                        <h6><h:outputText id="msg" value="#{missionController.msg}" style="color: green;"/></h6>
-                    </center>
                     <p:dataTable cellSeparator="false" rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{missionController.listMission}" var="item" rowKey="#{item.idmission}" selectionMode="single" selection="#{missionController.mission}">
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <h:outputText value="#{lm.ListeMission}" style="color: #009900; font-size: 20px;"/>
+                                <h:outputText style="margin-left: 50px;" value=" #{lm.Rechercher}  :" />
                                 <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
                             </p:outputPanel>
                         </f:facet>
@@ -62,18 +59,28 @@
                         </p:column>
                     </p:dataTable>
                     <p:separator/>
-
-                    <div class="row" style="margin: auto;">
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="addMission"  actionListener="#{missionController.prepareCreate}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Ajouter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modify"  actionListener="#{missionController.action}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Modifier}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="delete"  actionListener="#{missionController.action}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Supprimer}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consult"  actionListener="#{missionController.action}" update="msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Consulter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.initMission()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
-                    </div>
+                    <center>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="addMission"  actionListener="#{missionController.prepareCreate}" update=":form_add_personnelmission:mssg,:form_add_personnelmission:form_add_personnelmission_dialog,:form_mission:msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Ajouter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="modify"  actionListener="#{missionController.action}" update=":form_mission:msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="delete"  actionListener="#{missionController.action}" update=":form_mission:msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Supprimer}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="consult"  actionListener="#{missionController.action}" update=":form_mission:msg,:form_mission:fm_mission" partialSubmit="true" oncomplete="PF('wv_mission').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="addPersonnelmission"  actionListener="#{personnelMissionController.action}" update=":form_add_personnelmission:mssg,:form_add_personnelmission:form_add_personnelmission_dialog" partialSubmit="true" oncomplete="PF('wv_personnelmission').show()" value="Ajouter personnel"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="modifyPersonnelmission"  actionListener="#{personnelMissionController.action}" update=":form_add_personnelmission:mssg,:form_add_personnelmission:form_add_personnelmission_dialog" partialSubmit="true" oncomplete="PF('wv_personnelmission').show()" value="Modifier personnel"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="addPrestatairemission"  actionListener="#{prestatairemissionController.action}" update=":form_prestatairemission:prestatairemission_msg,:form_prestatairemission:form_prestatairemission_dialog" partialSubmit="true" oncomplete="PF('wv_prestatairemission').show()" value="Ajouter prestataire"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" widgetVar="modifyPrestatairemission"  actionListener="#{prestatairemissionController.action}" update=":form_prestatairemission:prestatairemission_msg,:form_prestatairemission:form_prestatairemission_dialog" partialSubmit="true" oncomplete="PF('wv_prestatairemission').show()" value="Modifier prestataire"/>
+                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s1" actionListener="#{missionController.initMission()}" update="table" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </center>
                 </h:form>
                 <p:separator/>
                 <h:form id="form_mission">
                     <p:dialog showEffect="drop" modal="true" id="fm_mission" widgetVar="wv_mission">
+                        <h:outputText id="msgs" value="#{missionController.msg}" style="color: red;"/>
+                        <center>
+                            <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                                <h:outputText id="msg" value="#{missionController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                                <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                            </p:notificationBar>
+                        </center>
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete') and !missionController.operation.equals('modify')}" value="Ajouter une mission" class="green-text" style="font-weight: bold;"/>
@@ -82,7 +89,7 @@
                                 <h:outputText rendered="#{!missionController.operation.equals('addMission') and !missionController.operation.equals('delete') and !missionController.operation.equals('modify')}" value="Consulter une mission" class="green-text" style="font-weight: bold;"/>
                             </f:facet>
                         </center>
-                        <h:panelGrid columns="3">
+                        <h:panelGrid id="inputs" columns="3">
                             <p:outputLabel value="#{lm.DateDebut} : " for="datedebmission" />
                             <p:calendar disabled="#{missionController.operation.equals('delete') or missionController.operation.equals('consult')}" pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" id="datedebmission" value="#{missionController.mission.datedebmission}" title="Datedebmission" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -109,8 +116,85 @@
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>
-                                <p:commandButton rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Enregistrer"/>
-                                <p:commandButton rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('addMission') and !missionController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update=":liste_mission:table,:liste_mission:msg" partialSubmit="true" value="Supprimer"/>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('delete')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update="msg,msgs,inputs,:liste_mission:table" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" rendered="#{!missionController.operation.equals('consult') and !missionController.operation.equals('addMission') and !missionController.operation.equals('modify')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{missionController.persist()}" update="msg,msgs,inputs,:liste_mission:table" partialSubmit="true" value="Supprimer"/>
+                            </center>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+                <h:form id="form_add_personnelmission">
+                    <p:dialog showEffect="puff" id="form_add_personnelmission_dialog" widgetVar="wv_personnelmission">
+                        <h:outputText id="msgs" value="#{personnelMissionController.msg}" style="color: red;"/>
+                        <center>
+                            <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                                <h:outputText id="mssg" value="#{personnelMissionController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                                <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                            </p:notificationBar>
+                        </center>
+                        <f:facet name="header"> 
+                            <center>
+                                <h3><h:outputText value="Ajouter un personnel"/></h3>    
+                            </center>
+                        </f:facet>
+                        <h:panelGrid id="inputs" columns="3">
+                            <p:outputLabel value="Prime : " for="prime" />
+                            <p:inputMask mask="999999"  required="true" requiredMessage="Champ obligatoire" disabled="#{personnelMissionController.operation.equals('deletePersonnelmission') or personnelMissionController.operation.equals('consultPersonnelmission')}" id="prime" value="#{personnelMissionController.prime}" />
+                            <p:message for="prime"/>
+                            <p:outputLabel value="Mission : " for="mission" />
+                            <p:selectOneMenu style="width: 100%;" id="mission" value="#{personnelMissionController.idMission}" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="" itemValue="" />
+                                <f:selectItems value="#{personnelMissionController.listMission}" var="user" itemLabel="#{user.lieumission} #{user.datedebmission} #{user.descriptionmission}" itemValue="#{user.idmission}"/>
+                            </p:selectOneMenu>
+                            <p:message for="mission"/>
+                            <p:outputLabel value="Personnel: " for="personnel" />
+                            <p:selectOneMenu style="width: 100%;" id="personnel" value="#{personnelMissionController.idPersonnel}" required="true" requiredMessage="Valeur obligatoire!">
+                                <f:selectItem itemLabel="" itemValue="" />
+                                <f:selectItems value="#{personnelMissionController.listPersonnel}" var="users" itemLabel="#{users.nompers} #{users.prenompers}" itemValue="#{users.idpers}"/>
+                            </p:selectOneMenu>
+                            <p:message for="personnel"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <f:facet name="footer"> 
+                            <center>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" actionListener="#{personnelMissionController.persist()}" update="mssg,msgs,inputs,:liste_mission:table" value="Enregistrer"/>    
+                            </center>
+                        </f:facet>
+                    </p:dialog> 
+                </h:form>
+                <h:form id="form_prestatairemission">
+                    <p:dialog showEffect="puff" id="form_prestatairemission_dialog" widgetVar="wv_prestatairemission">
+                        <center>
+                            <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar_prestatairemission">
+                                <h:outputText id="prestatairemission_msg" value="#{prestatairemissionController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                                <p:commandButton style="margin-left: 100px;" value="Fermer" onclick="PF('bar_prestatairemission')" type="button" icon="ui-icon-arrow-1-n" />
+                            </p:notificationBar>
+                        </center>
+                        <f:facet name="header">
+                            <center>
+                                <h3><h:outputText value="Ajouter un Prestataire"/></h3>
+                            </center>
+                        </f:facet>
+                        <h:panelGrid id="inputs_prestatairemission" columns="3">
+                            <p:outputLabel value="Prime : " for="prime" />
+                            <p:inputMask mask="999999"  required="true" requiredMessage="Champ obligatoire" disabled="#{prestatairemissionController.operation.equals('deletePrestatairemission') or prestatairemissionController.operation.equals('consultPrestatairemission')}" id="prime" value="#{prestatairemissionController.prime}" />
+                            <p:message for="prime"/>
+                            <p:outputLabel value="Mission : " for="mission" />
+                            <p:selectOneMenu style="width: 100%;" id="mission" value="#{prestatairemissionController.missionId}" required="true" requiredMessage="Valeur obligatoire">
+                                <f:selectItem itemLabel="" itemValue="" />
+                                <f:selectItems value="#{prestatairemissionController.listMission}" var="mission" itemLabel="#{mission.lieumission} #{mission.datedebmission}" itemValue="#{mission.idmission}"/>
+                            </p:selectOneMenu>
+                            <p:message for="mission"/>
+                            <p:outputLabel value="Prestataire : " for="prestataire" />
+                            <p:selectOneMenu style="width: 100%;" id="prestataire" value="#{prestatairemissionController.personnelId}" required="true" requiredMessage="Valeur obligatoire!">
+                                <f:selectItem itemLabel="" itemValue="" />
+                                <f:selectItems value="#{prestatairemissionController.listPrestataire}" var="prestataire" itemLabel="#{prestataire.nompers} #{prestataire.prenompers}" itemValue="#{prestataire.idpers}"/>
+                            </p:selectOneMenu>
+                            <p:message for="prestataire"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <f:facet name="footer"> 
+                            <center>
+                                <p:commandButton oncomplete="PF('bar_prestatairemission').show()" icon="ui-icon-arrow-1-s" actionListener="#{prestatairemissionController.persist()}" update="prestatairemission_msg,prestatairemission_msg,inputs_prestatairemission,:liste_mission:table" value="Enregistrer"/>    
                             </center>
                         </f:facet>
                     </p:dialog>

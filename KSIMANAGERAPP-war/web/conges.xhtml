@@ -16,13 +16,17 @@
             <ui:define name="content">
                 <h:form  id="liste_conge">
                     <center>
-                        <h4><h:outputText value="#{lm.ListeConge}" style="color: green;"/></h4>
-                        <h6><h:outputText id="msg" value="#{congesController.msg}" style="color: green;"/></h6>
+                        <h6><h:outputText value="#{congesController.msg}" style="color: green;"/></h6>
+                        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                            <h:outputText id="msg" value="#{congesController.msg}" style="font-size:24px;" />
+                            <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                        </p:notificationBar>
                     </center>
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{congesController.listeConges}" var="item" rowKey="#{item.idconges}" selectionMode="single" selection="#{congesController.conges}">
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <h:outputText value="#{lm.ListeConge}" style="color: #009900; font-size: 20px;"/>
+                                <h:outputText style="margin-left: 50px;" value=" #{lm.Rechercher}  :" />
                                 <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
                             </p:outputPanel>
                         </f:facet>
@@ -108,8 +112,8 @@
                         <f:facet name="footer">
                             <center>
                                 <a onclick="Materialize.toast('#{congesController.msg}', 4000)">
-                                    <p:commandButton  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Enregistrer"/>
-                                    <p:commandButton  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('addConge') and !congesController.operation.equals('modifyConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Supprimer"/>
+                                    <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s"  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Enregistrer"/>
+                                    <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s"  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('addConge') and !congesController.operation.equals('modifyConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Supprimer"/>
                                 </a>
                             </center>
                         </f:facet>

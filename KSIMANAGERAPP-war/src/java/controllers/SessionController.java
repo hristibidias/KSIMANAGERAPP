@@ -27,6 +27,7 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import sessions.JournalisationFacadeLocal;
+import sessions.MailSender;
 import sessions.PersonnelFacadeLocal;
 import sessions.PrivilegesFacadeLocal;
 
@@ -42,6 +43,9 @@ public class SessionController implements Serializable {
     private Personnel currentPersonnel = new Personnel();
     private String langue = "fr";
     private String msg;
+    private String mail;
+    private String loginReinilize;
+    private String passwordReinilize;
     private Boolean pers = false;
     private Boolean miss = false;
     private Boolean conge = false;
@@ -88,6 +92,8 @@ public class SessionController implements Serializable {
     @EJB
     private JournalisationFacadeLocal journalisationFacade;
     @EJB
+    private MailSender sendmail = new MailSender();
+    @EJB
     private PrivilegesFacadeLocal privilegesFacade;
     private List<Privileges> listPrivileges = new ArrayList<>();
     private Privileges privileges = new Privileges();
@@ -125,7 +131,6 @@ public class SessionController implements Serializable {
         listPrivileges.clear();
         listPrivileges.addAll(privilegesFacade.findByIdPers(idpersonn));
         listPrivileges.addAll(privilegesFacade.findAll());
-        //listPrivileges.addAll(privilegesFacade.findByPersMenu(currentUser.getIdpers(), persT));
         for (int i = 0; i < listPrivileges.size(); i++) {
             System.out.println("le privilège numéro " + i + " de l'utilisateur courant est " + listPrivileges.get(i));
         }
@@ -135,23 +140,14 @@ public class SessionController implements Serializable {
         try {
             currentUser = personnelFacade.findByLoginMdp(currentUser.getLogin(), ((Integer) currentUser.getPassword().hashCode()).toString());
             if (currentUser != null) {
-                msg = "" ;
+                msg = "";
+                currentUser.setLastconnect(new Date(System.currentTimeMillis()));
+                currentUser.setNbrconnect(personnelFacade.nextNbrConnect());
+                personnelFacade.edit(currentUser);
                 saveMessage();
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
                 logFile("Connexion", "Système");
                 int idpersonn = currentUser.getIdpers();
-//                configuaration des privilèges
-//                listPrivileges.clear();
-//                listPrivileges.addAll(privilegesFacade.findByIdPers(idpersonn));
-//                listPrivileges.addAll(privilegesFacade.findAll());
-//                listPrivileges.addAll(privilegesFacade.findByPersMenu(currentUser.getIdpers(), persT));
-//                for (int i = 0; i < listPrivileges.size(); i++) {
-//                    System.out.println("le privilège numéro " + i + " de l'utilisateur courant est " + listPrivileges.get(i));
-//                }
-//                if(){
-//                    
-//                }
-
                 listPrivileges.clear();
                 listPrivileges.addAll(privilegesFacade.findByIdpers(idpersonn));
                 pers = false;
@@ -232,7 +228,6 @@ public class SessionController implements Serializable {
                     if (idpriv1 == prestataireT) {
                         prestataire = true;
                     }
-                    System.out.println("le privilège numéro " + i + " de l'utilisateur courant est " + listPrivileges.get(i));
                 }
                 //UserPrivileges();
                 return "index.xhtml?faces-redirect=true";
@@ -240,37 +235,19 @@ public class SessionController implements Serializable {
             } else {
                 FacesMessage messages;
                 messages = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalide", "Login ou mot de passe incorrecte!");
-                FacesContext.getCurrentInstance().addMessage(null, messages); 
-//                FacesContext context = FacesContext.getCurrentInstance();
-//                context.addMessage(null, new FacesMessage("Failed", msg));
-//                context.addMessage(null, new FacesMessage("Second Message", "Veillez rééssayer"));
+                FacesContext.getCurrentInstance().addMessage(null, messages);
                 msg = "Login ou mot de passe incorrecte";
                 currentUser = new Personnel();
-                displayLocation();
                 return "authenticate.xhtml?faces-redirect=true";
             }
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Login ou mot de passe incorrecte";
-                FacesMessage messages;
-                messages = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalide", "Login ou mot de passe incorrecte!");
             currentUser = new Personnel();
-            displayLocation();
             return "authenticate.xhtml?faces-redirect=true";
         }
     }
-    
-    String city = "oui";
-    String country = "oui";
-     public void displayLocation() {
-        FacesMessage msg;
-        if(city != null && country != null)
-            msg = new FacesMessage("Selected", city + " of " + country);
-        else
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid", "City is not selected."); 
-             
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
-    }
+
     /*
     Cette fonction permet à un utilisateur de modifier son profil
     son fonctionnement est simple.
@@ -278,7 +255,7 @@ public class SessionController implements Serializable {
     ces données sont stockées dans l'objet currentUser de type personnel.
     ensuite grace à au formulaire qui se trouve sur la page moncompte, 
     je récupère les information modifier de l'utilisateur et j'édite ces information dans la bd
-    */
+     */
     public void modifyProfil() {
         try {
             currentPersonnel.setIdpers(currentUser.getIdpers());
@@ -298,10 +275,47 @@ public class SessionController implements Serializable {
         }
     }
 
+    /*
+    Cette fonction permet de réinitialiser les mots de passe des utilisateurs
+     */
+    public String reinitialiseIdentifiant() {
+        try {
+            currentUser = personnelFacade.findByMatriculeEmail(currentUser.getEmail(), currentUser.getMatricule());
+            if (currentUser != null) {
+                msg = "";
+                loginReinilize = "New_KSI_Login_" + currentUser.getIdpers();
+                passwordReinilize = "New_KSI_Password" + currentUser.getIdpers();
+                currentUser.setLogin(loginReinilize);
+                currentUser.setPassword(passwordReinilize);
+                currentUser.setPassword(((Integer) currentUser.getPassword().hashCode()).toString());
+                personnelFacade.edit(currentUser);
+                mail = "Salut Monsieur/Madame " + currentUser.getNompers() + " " + currentUser.getPrenompers() + " "
+                        + "Voici vos nouveaux parametres de connexion. Login : " + loginReinilize + ", Mot de passe : " + passwordReinilize + ". Une fois connecté, veillez réinitialiser"
+                        + " vos parametres de connexion via votre espace personnel."
+                        + " Si c'est pas vous qui avez initier ce processus veillez contacter l'administrateur. Merci";
+                sendmail.sendEmail("hrististoikov@gmail.com", "Kevin's Services International", "borisarroga", currentUser.getEmail(), "Réinitialisation des paramètres de connexion", mail);
+                logFile("Réinitialiser ses parametres", currentUser.getMatricule() + currentUser.getNompers() + currentUser.getPrenompers());
+                msg = "Connectez-vous pour récupérer vos identifiants";
+                return "authenticate.xhtml?faces-redirect=true";
+            } else {
+                msg = "Matricule ou Email incorrecte";
+                currentUser = new Personnel();
+                return "reinitialize.xhtml?faces-redirect=true";
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            msg = "Login ou mot de passe incorrecte";
+            currentUser = new Personnel();
+            return "reinitialize.xhtml?faces-redirect=true";
+        }
+    }
+
     public String logOut() {
         try {
             msg = "";
             logFile("Deconnexion", "Système");
+            currentUser.setLastlogout(new Date(System.currentTimeMillis()));
+            personnelFacade.edit(currentUser);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("currentUser");
             ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false)).invalidate();
         } catch (Exception e) {
@@ -327,13 +341,13 @@ public class SessionController implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        fileName = "D:\\Dossier Application Stage 2016-2017\\KSIMANAGERAPP\\KSIMANAGERAPP\\KSIMANAGERAPP-war\\web\\resources\\images\\photo_profil" + event.getFile().getFileName();    // chemin d'accés au fichier 
+        fileName = "D:\\Dossier Application Stage 2016-2017\\KSIMANAGERAPP\\KSIMANAGERAPP\\KSIMANAGERAPP-war\\web\\resources\\images\\photo_profil\\" + event.getFile().getFileName();    // chemin d'accés au fichier 
         //fileName = "D:\\Dossier Application Stage 2016-2017\\KSIMANAGERAPP\\KSIMANAGERAPP\\KSIMANAGERAPP-war\\web\\resources\\images\\photo_profil" + event.getFile().getFileName();
-        currentUser.setPhotos(fileName);
+        currentUser.setPhotos(event.getFile().getFileName());
         personnelFacade.edit(currentUser);
         try {
 
-            File result = new File(currentUser.getPhotos());
+            File result = new File(fileName);
 
             FileOutputStream fileOutputStream = new FileOutputStream(result);
             byte[] buffer = new byte[8192];
@@ -363,6 +377,7 @@ public class SessionController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, error);
         }
     }
+
     public void upload() {
         if (file != null) {
             FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
@@ -780,12 +795,28 @@ public class SessionController implements Serializable {
         this.currentPersonnel = currentPersonnel;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     public String getMessage() {
         return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public MailSender getSendmail() {
+        return sendmail;
+    }
+
+    public void setSendmail(MailSender sendmail) {
+        this.sendmail = sendmail;
     }
 
     public String getFileName() {
@@ -796,6 +827,20 @@ public class SessionController implements Serializable {
         this.fileName = fileName;
     }
 
-    
-    
+    public String getLoginReinilize() {
+        return loginReinilize;
+    }
+
+    public void setLoginReinilize(String loginReinilize) {
+        this.loginReinilize = loginReinilize;
+    }
+
+    public String getPasswordReinilize() {
+        return passwordReinilize;
+    }
+
+    public void setPasswordReinilize(String passwordReinilize) {
+        this.passwordReinilize = passwordReinilize;
+    }
+
 }

@@ -16,13 +16,16 @@
             <ui:define name="content">
                 <h:form  id="liste_conge">
                     <center>
-                        <h4><h:outputText value="#{lm.MesDemandeConge}" style="color: green;"/></h4>
-                        <h6><h:outputText id="msg" value="#{congesController.msg}" style="color: green;"/></h6>
+                        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                            <h:outputText id="msg" value="#{congesController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                            <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                        </p:notificationBar>
                     </center>
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{congesController.listeMesConges}" var="item" rowKey="#{item.idconges}" selectionMode="single" selection="#{congesController.conges}">
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <h:outputText value="#{lm.MesDemandeConge}" style="color: #009900; font-size: 20px;"/>
+                                <h:outputText style="margin-left: 50px;" value=" #{lm.Rechercher}  :" />
                                 <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
                             </p:outputPanel>
                         </f:facet>
@@ -79,6 +82,7 @@
                 </h:form>
                 <h:form id="form_conges">
                     <p:dialog showEffect="puff" modal="true" id="fm_conges" widgetVar="wv_conges">
+                        <h:outputText id="msgEchec" value="#{congesController.msg}" style="color: red;"/>
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge') and !congesController.operation.equals('modifyConge')}" value="Ajouter un conge" class="green-text" style="font-weight: bold;"/>
@@ -88,18 +92,19 @@
                             </f:facet>
                         </center>
                         <h:panelGrid id="inputs" columns="3">
-                            <p:outputLabel value="Date de depart : " for="datedep" />
-                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="datedep" value="#{congesController.conges.datedep}" title="Datedep" >
+                            <p:outputLabel value="#{lm.DateDebut} : " for="datedep" />
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" mindate="#{congesController.mindatedeb}" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="datedep" value="#{congesController.datedeb}" title="Datedep" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
+                                <p:ajax event="keyup" update="dateretour" listener="#{congesController.verifDate()}"/>
                             </p:calendar>
                             <p:message for="datedep"/>
-                            <p:outputLabel value="Date de retour : " for="dateretour" />
-                            <p:calendar pattern="dd/MM/yyyy" mask="true" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="dateretour" value="#{congesController.conges.dateretour}" title="Dateretour" >
+                            <p:outputLabel value="#{lm.DateFin} : " for="dateretour" />
+                            <p:calendar pattern="dd/MM/yyyy" mask="true" mindate="#{congesController.mindatefin}" effect="size" locale="de" navigator="true" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="dateretour" value="#{congesController.datefin}" title="Dateretour" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </p:calendar>
                             <p:message for="dateretour"/>
-                            <p:outputLabel value="Type de conge:" for="typeconge" />
-                            <p:selectOneMenu required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="typeconge" value="#{congesController.conges.typeconge}" >
+                            <p:outputLabel value="#{lm.TypeConge}:" for="typeconge" />
+                            <p:selectOneMenu style="width: 100px;" required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="typeconge" value="#{congesController.conges.typeconge}" >
                                 <f:selectItem itemLabel="" itemValue=""/>
                                 <f:selectItem itemLabel="Annuel" itemValue="Annuel"/>
                                 <f:selectItem itemLabel="Maladie" itemValue="Maladie"/>
@@ -107,14 +112,14 @@
                                 <f:selectItem itemLabel="Paternité" itemValue="Paternité"/>
                             </p:selectOneMenu>
                             <p:message for="typeconge"/>
-                            <p:outputLabel value="Motif :" for="motif" /> 
+                            <p:outputLabel value="#{lm.Motif} :" for="motif" /> 
                             <p:inputTextarea required="true" requiredMessage="Champ obligatoire" disabled="#{congesController.operation.equals('deleteConge') or congesController.operation.equals('consultConge')}" id="motif" value="#{congesController.conges.motif}" title="Motif" />
                             <p:message for="motif"/>
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>
-                                <p:commandButton  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Enregistrer"/>
-                                <p:commandButton  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('addConge') and !congesController.operation.equals('modifyConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Supprimer"/>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s"  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('deleteConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="msgEchec,inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s"  rendered="#{!congesController.operation.equals('consultConge') and !congesController.operation.equals('addConge') and !congesController.operation.equals('modifyConge')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{congesController.persist()}" update="msgEchec,inputs,:liste_conge:table,:liste_conge:msg" partialSubmit="true" value="Supprimer"/>
                             </center>
                         </f:facet>
                     </p:dialog>

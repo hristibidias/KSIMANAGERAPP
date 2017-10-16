@@ -23,7 +23,7 @@
                                     <h:form>
                                         <div style="height: 500px; width: 300px;" class="card">
                                             <div class="card-image">
-                                                <img style="height: 400px;" src="#{sessionController.currentUser.photos}"/>
+                                                <img style="height: 400px;" src="resources/images/photo_profil/#{sessionController.currentUser.photos}"/>
                                                 <span class="card-title">#{lm.MonProfil}</span>
                                             </div>
                                             <div class="card-content">
@@ -33,7 +33,7 @@
                                                     </h:form>
                                                     <span>#{sessionController.currentUser.nompers}  #{sessionController.currentUser.prenompers}</span>
                                                     <center>
-                                                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="wv_mon_profil"  actionListener="#{personnelController.action}" partialSubmit="true" oncomplete="PF('wv_ma_photo').show()" value="#{lm.Modifier}"/>
+                                                        <p:commandButton class="btn waves-effect waves-light btn col s2 circle" widgetVar="wv_mon_profil"  actionListener="#{personnelController.action}" partialSubmit="true" oncomplete="PF('wv_ma_photo').show()" value="+"/>
                                                     </center>
                                                 </center>
                                             </div>
@@ -114,6 +114,10 @@
                         </p:layoutUnit>
 
                         <h:form id="form_mon_profil">
+                            <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                                <h:outputText id="msg" value="#{sessionController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                                <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                            </p:notificationBar>
                             <p:dialog showEffect="drop" modal="true" id="fm_mon_profil" widgetVar="wv_mon_profil">
                                 <h:panelGrid id="inputs" style="text-align: justify;" columns="2">
                                     <p:outputLabel style="color: green; font-weight: bold; text-decoration: underline;" value="#{lm.Email} : " for="email" />
@@ -126,15 +130,11 @@
                                     <p:inputText style="color: green; font-weight: bold;" value="#{sessionController.currentUser.login}" id="login" />
                                     <p:outputLabel style="color: green; font-weight: bold;" value="#{lm.MotDePasse} : " for="password" />
                                     <p:password feedback="true"  style="color: green; font-weight: bold;" value="#{sessionController.currentUser.password}" id="password" />
-                                    <p:fileUpload fileUploadListener="#{sessionController.handleFileUpload}" mode="advanced" dragDropSupport="false" cancelLabel="Annulé" uploadLabel="Envoyé" label="choisir" 
-                                                  multiple="true" update="inputs" fileLimitMessage="nombre de pieces limite atteind" 
-                                                  invalidFileMessage="fichiers incorrect" invalidSizeMessage="taille invalide" requiredMessage="champs requis" required="true" 
-                                                  sizeLimit="99999999" fileLimit="8" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx|xls|xlsx|xlsm)$/i" />
                                 </h:panelGrid>
                                 <p:separator/>
                                 <f:facet name="footer">
                                     <center>
-                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" update="inputs" id="ok" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
+                                        <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" class="btn waves-effect waves-light btn btn-flat" update="inputs" id="ok" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
                                     </center> 
                                 </f:facet>
                             </p:dialog>
@@ -148,7 +148,7 @@
                                 <p:separator/>
                                 <f:facet name="footer">
                                     <center>
-                                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" update="inputs" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
+                                        <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" class="btn waves-effect waves-light btn btn-flat" update="inputs" value="#{lm.Modifier}" action="#{sessionController.modifyProfil()}" />
                                     </center> 
                                 </f:facet>
                             </p:dialog>

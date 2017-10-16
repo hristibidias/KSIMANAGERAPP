@@ -16,13 +16,16 @@
             <ui:define name="content">
                 <h:form id="form_list_journal">
                     <center>
-                        <h4><h:outputText value="#{lm.FichierJournal}" style="color: green;"/></h4>
-                        <h6><h:outputText id="msg" value="#{journalisationController.msg}" style="color: green;"/></h6>
+                        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                            <h:outputText id="msg" value="#{congesController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                            <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                        </p:notificationBar>
                     </center>
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{journalisationController.listJournalisation}" var="item" rowKey="#{item.idjournalisation}" selectionMode="single" selection="#{journalisationController.journalisation}">
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value=" #{lm.Rechercher}  :" />
+                                <h:outputText value="#{lm.FichierJournal}" style="color: #009900; font-size: 20px;"/>
+                                <h:outputText style="margin-left: 50px;" value=" #{lm.Rechercher}  :" />
                                 <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
                             </p:outputPanel>
                         </f:facet>
@@ -68,10 +71,10 @@
                         </p:column>
                     </p:dataTable>
                     <p:separator/>
-                    <h:panelGrid columns="3" style="margin: auto;">
-                        <p:commandButton class="btn waves-effect waves-light btn col s2" partialSubmit="true" actionListener="#{journalisationController.deleteAll()}" update="table" value="Réinitialiser le fichier"/>
-                        <p:commandButton class="btn waves-effect waves-light btn col s2" actionListener="#{journalisationController.init()}" update="table" value="#{lm.Rafraichir}"/>
-                    </h:panelGrid>
+                    <center>
+                        <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" class="btn waves-effect waves-light btn col s2" partialSubmit="true" actionListener="#{journalisationController.deleteAll()}" update="msg,table" value="Réinitialiser le fichier"/>
+                        <p:commandButton oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" class="btn waves-effect waves-light btn col s2" actionListener="#{journalisationController.init()}" update="table" value="#{lm.Rafraichir}"/>
+                    </center>
                 </h:form>
             </ui:define>
 

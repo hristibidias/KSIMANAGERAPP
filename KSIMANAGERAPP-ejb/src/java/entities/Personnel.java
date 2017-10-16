@@ -34,9 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Personnel.nextId", query = "SELECT MAX(p.idpers) FROM Personnel p")
+    ,@NamedQuery(name = "Personnel.nextNbrConnect", query = "SELECT MAX(p.nbrconnect) FROM Personnel p")
     ,@NamedQuery(name = "Personnel.findAll", query = "SELECT p FROM Personnel p")
     , @NamedQuery(name = "Personnel.findByIdpers", query = "SELECT p FROM Personnel p WHERE p.idpers = :idpers")
     , @NamedQuery(name = "Personnel.findByLoginMdp", query = "SELECT p FROM Personnel p WHERE p.login = :login AND p.password = :password")
+    , @NamedQuery(name = "Personnel.findByMatriculeEmail", query = "SELECT p FROM Personnel p WHERE p.email = :email AND p.matricule = :matricule")
     , @NamedQuery(name = "Personnel.findByLogin", query = "SELECT p FROM Personnel p WHERE p.login = :login")
     , @NamedQuery(name = "Personnel.findByPassword", query = "SELECT p FROM Personnel p WHERE p.password = :password")
     , @NamedQuery(name = "Personnel.findByDatedeb", query = "SELECT p FROM Personnel p WHERE p.datedeb = :datedeb")

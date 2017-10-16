@@ -7,7 +7,6 @@ package controllers;
 
 import entities.Journalisation;
 import entities.Personnel;
-import static entities.Personnelmission_.personnel;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletRequest;
-import org.primefaces.context.RequestContext;
 import sessions.JournalisationFacadeLocal;
 
 /**
@@ -52,7 +50,6 @@ public class JournalisationController implements Serializable{
                 journalisationFacade.edit(journalisation);
             logFile("Supprimer le journal","");
                 msg = "Suppression effectuée avec succès!";
-                RequestContext.getCurrentInstance().execute("PF('wv_utilisateur').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             msg = "Echec de l'opération!";

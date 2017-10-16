@@ -17,25 +17,24 @@
         <div id="arriere">
             <img src="resources/images/route.jpg"/>
             <h:form class="responsive-table" id="form_con" style=" margin: auto; width: 470px; margin-top: -40%; background-color: snow; border-radius: 100px 100px 100px 100px;">
-                <!--<h:form id="form_con" style="position: absolute;">-->
                 <p:growl id="msgs" showDetail="true" />
                 <p:panel class="responsive-table" style="width: 100%; text-align: center; border-radius: 100px 100px 100px 100px" id="form_con">
                     <center>
-                        <h:outputText style="font-size: 22pt; color: #8bc34a; font-weight: bold; font-style: italic;" value="Connectez-vous" /><br/>
+                        <h:outputText style="font-size: 22pt; color: #8bc34a; font-weight: bold; font-style: italic;" value="Réinitiliser vos paramètres" /><br/>
                         <h:outputText id="msg" value="#{sessionController.msg}" style="color: red; font-size: 14px;"/>
                     </center>
                     <h:panelGrid style="text-align: justify;" columns="3" cellpadding="5">
-                        <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 18px;" value="Login : " for="login" />
-                        <p:inputText style=" padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" id="login" value="#{sessionController.currentUser.login}" title="Login" size="30" required="true" requiredMessage="Valeur obligatoire!" />
-                        <p:message for="login"/>
+                        <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 20px;" value="Matricule : " for="matricule" />
+                        <p:inputText style=" padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" id="matricule" value="#{sessionController.currentUser.matricule}" title="matricule" size="30" required="true" requiredMessage="Valeur obligatoire!" />
+                        <p:message for="matricule"/>
 
-                        <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 18px;" value="Password : " for="mdp" />
-                        <p:inputText style="padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" type="password" id="mdp" value="#{sessionController.currentUser.password}" title="Mot de passe" size="30" required="true" requiredMessage="Valeur obligatoire!" />
-                        <p:message for="mdp"/>
+                        <p:outputLabel style="color: #64dd17; font-weight: bold; font-size: 20px;" value="Email : " for="email" />
+                        <p:inputText style="padding-left: 15px;color: #64dd17; font-size: 14pt; font-weight: normal; font-style: italic; font-weight: bold; background-color: whitesmoke;" type="email" id="email" value="#{sessionController.currentUser.email}" title="email" size="30" required="true" requiredMessage="Valeur obligatoire!" />
+                        <p:message for="email"/>
                     </h:panelGrid>
                     <center>
-                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="#{lm.Connexion}" action="#{sessionController.authenticate()}" update="form_con, msg,msgs"  icon="ui-icon-check"/>
-                        <li><a href="reinitialize.xhtml?faces-redirect=true" style="color: red; font-size: 10px; font-style: italic; text-decoration: underline; margin-left: 20px;">Mot de passe oublié</a></li>
+                        <p:commandButton class="btn waves-effect waves-light btn btn-flat" id="ok" value="Réinitialiser" action="#{sessionController.reinitialiseIdentifiant()}" update="form_con, msg,msgs"  icon="ui-icon-check"/>
+                        <li><a href="authenticate.xhtml?faces-redirect=true" style="color: red; font-size: 10px; font-style: italic; text-decoration: underline; margin-left: 20px;">Connectez-vous</a></li>
                     </center> 
                 </p:panel>
 

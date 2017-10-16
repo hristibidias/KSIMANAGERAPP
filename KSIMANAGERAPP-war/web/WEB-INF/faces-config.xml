@@ -60,4 +60,19 @@
         <managed-bean-class>controllers.MissionController</managed-bean-class>
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>personnelMissionController</managed-bean-name>
+        <managed-bean-class>controllers.PersonnelMissionController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>personnelMissionController1</managed-bean-name>
+        <managed-bean-class>controllers.PersonnelMissionController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>prestatairemissionController</managed-bean-name>
+        <managed-bean-class>controllers.PrestatairemissionController</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
 </faces-config>

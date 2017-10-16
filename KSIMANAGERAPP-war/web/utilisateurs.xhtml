@@ -16,16 +16,15 @@
 
             <ui:define name="content"> 
                 <h:form id="liste_user">
-                    <center>
-                        <h:outputText value="#{lm.ListeUtilisateur}" style="color: #009900; font-size: 20px;"/>
-                        <h:outputText id="msg" value="#{personnelController.msg}" style="color: red; font-size: 20px;"/>
-                    </center>      
                     <p:dataTable rows="10" paginator="true" id="table" widgetVar="ordM" sortMode="multiple" scrollable="true" emptyMessage="aucun resultats avec ce critére" scrollHeight="282" value="#{personnelController.listPersonnel}" var="item" rowKey="#{item.idpers}" selectionMode="single" selection="#{personnelController.personnel}">
 
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value=" #{lm.Rechercher}  :" />
-                                <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                                <center>
+                                    <h:outputText value="#{lm.ListeUtilisateur}" style="color: #009900; font-size: 20px;"/>
+                                    <h:outputText style="margin-left: 50px;" value=" #{lm.Rechercher}  :" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('ordM').filter()" style="width:100px" placeholder="#{lm.Motcle}"/>
+                                </center>
                             </p:outputPanel>
                         </f:facet>
 
@@ -46,18 +45,6 @@
                                 <h:outputText value="#{lm.Prenom}"/>
                             </f:facet>
                             <h:outputText value="#{item.prenompers}"/>
-                        </p:column>
-                        <p:column sortBy="#{item.login}" filterBy="#{item.login}" filterMatchMode="contains">
-                            <f:facet name="header">
-                                <h:outputText value="#{lm.Login}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.login}"/>
-                        </p:column>
-                        <p:column sortBy="#{item.password}" filterBy="#{item.password}" filterMatchMode="contains">
-                            <f:facet name="header">
-                                <h:outputText value="#{lm.MotDePasse}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.password}"/>
                         </p:column>
                         <p:column sortBy="#{item.nbrconnect}" filterBy="#{item.nbrconnect}" filterMatchMode="contains">
                             <f:facet name="header">
@@ -91,21 +78,28 @@
 
                     <p:separator/>
 
-                    <div class="row" style="margin: auto;">
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="modify"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Modifier}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" widgetVar="consult"  actionListener="#{personnelController.action}" update="msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Consulter}"/>
-                        <p:commandButton style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
-                    </div> 
+                    <center>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="modify"  actionListener="#{personnelController.action}" update=":form_tr:msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Modifier}"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" widgetVar="consult"  actionListener="#{personnelController.action}" update=":form_tr:msg,:form_tr:fm_utilisateur" partialSubmit="true" oncomplete="PF('wv_utilisateur').show()" value="#{lm.Consulter}"/>
+                        <p:commandButton class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.init()}" partialSubmit="true" value="#{lm.Rafraichir}"/>
+                    </center>
                 </h:form>
                 <h:form id="form_tr">
                     <p:dialog showEffect="drop" modal="true" id="fm_utilisateur" widgetVar="wv_utilisateur">
+                    <h:outputText id="msgs" value="#{personnelController.msg}" style="color: red; font-size: 20px;"/>
+                    <center>
+                        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+                            <h:outputText id="msg" value="#{personnelController.msg}" style="font-size:30px; font-weight: bold; font-style: italic;color: #009900;" />
+                            <p:commandButton style="margin-left: 100px;" value="Hide" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                        </p:notificationBar>
+                    </center>      
                         <center>
                             <f:facet name="header">
                                 <h:outputText rendered="#{!personnelController.operation.equals('consult')}" value="Modifier un utilisateur" class="green-text" style="font-weight: bold;"/>
                                 <h:outputText rendered="#{!personnelController.operation.equals('modify')}" value="Consulter un utilisateur" class="green-text" style="font-weight: bold;"/>
                             </f:facet>
                         </center>
-                        <h:panelGrid id="inputs" columns="8">
+                        <h:panelGrid id="inputs" columns="3">
                             <center>
                                 <p:outputLabel style="font-weight: bold; color: black; width: 100%;" value="Statut du compte : " for="referent" />
                                 <p:selectOneMenu id="referent" style="width: 100%;" disabled="#{personnelController.operation.equals('deletePersonnel') or personnelController.operation.equals('consultPersonnel')}" required="true" value="#{personnelController.personnel.referent}" >
@@ -115,28 +109,10 @@
                                 </p:selectOneMenu>
                                 <p:message for="referent"/>
                             </center>
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Matricule:" for="matricule" />
-                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Matricule" id="matricule" value="#{personnelController.personnel.matricule}" title="Matricule" />
-                            <p:message for="matricule"/>
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Nompers:" for="nompers" />
-                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Nom" id="nompers" value="#{personnelController.personnel.nompers}" title="Nom" />
-                            <p:message for="nompers"/>
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Prenompers:" for="prenompers" />
-                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Prénom" id="prenompers" value="#{personnelController.personnel.prenompers}" title="Prénom" />
-                            <p:message for="prenompers"/>
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Email:" for="email" />
-                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" type="email" required="true" placeholder="exemple@gmail.com" class="email" id="email" value="#{personnelController.personnel.email}" title="Email" />
-                            <p:message for="email"/>
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Login:" for="login" />
-                            <p:inputText disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" required="true" placeholder="Login" id="login" value="#{personnelController.personnel.login}" title="Login" />
-                            <p:message for="login"/>
-                            <p:outputLabel style="font-weight: bold; color: black;" value="Password:" for="password" />
-                            <p:password disabled="#{personnelController.operation.equals('delete') or personnelController.operation.equals('consult')}" feedback="true" required="true" placeholder="Mot de passe" id="password" value="#{personnelController.personnel.password}" title="Password" />
-                            <p:message for="password"/>
                         </h:panelGrid>
                         <f:facet name="footer">
                             <center>
-                                <p:commandButton  rendered="#{!personnelController.operation.equals('consult')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="inputs,:liste_user:table,:liste_user:msg,:liste_user:" partialSubmit="true" value="Enregistrer"/>
+                                <p:commandButton  oncomplete="PF('bar').show()" icon="ui-icon-arrow-1-s" rendered="#{!personnelController.operation.equals('consult')}" style="margin-left: 30px;" class="btn waves-effect waves-light btn col s2" actionListener="#{personnelController.persist()}" update="msg,msgs,inputs,:liste_user:table" partialSubmit="true" value="Enregistrer"/>
                             </center>
                         </f:facet>
                     </p:dialog>

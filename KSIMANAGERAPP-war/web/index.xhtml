@@ -36,7 +36,7 @@
                                                     <div class="background">
                                                         <img src="resources/images/toff/passi.JPG"></img>
                                                     </div>
-                                                    <a href="#!user"><img class="circle" src="#{sessionController.currentUser.photos}"></img></a>
+                                                    <a href="#!user"><img class="circle" src="resources/images/photo_profil/#{sessionController.currentUser.photos}"></img></a>
                                                     <a href="#!name"><span class="white-text name">#{sessionController.currentUser.nompers} #{sessionController.currentUser.prenompers}</span></a>
                                                     <a href="#!email"><span class="white-text email">#{sessionController.currentUser.email}</span></a>
                                                 </div>
@@ -120,7 +120,7 @@
                         <li>
                             <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
                                 <!--<i class="material-icons">filter_drama</i>-->
-                                Actualité
+                                #{lm.Actualité}
                                 <span class="new badge" style="margin-left: 90%;">4</span>
                             </div>
                             <div class="collapsible-body">
@@ -131,7 +131,7 @@
                         <li>
                             <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
                                 <!--<i class="material-icons">filter_drama</i>-->
-                                Notification Message
+                                #{lm.NotificationMessage}
                                 <span class="new badge" style="margin-left: 82%;">4</span>
                             </div>
                             <div class="collapsible-body">
@@ -142,7 +142,7 @@
                         <li>
                             <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
                                 <!--<i class="material-icons">place</i>-->
-                                Notification Permission
+                                #{lm.NotificationPermission}
                                 <span class="new badge" style="margin-left: 80.4%;">1</span>
                             </div>
                             <div class="collapsible-body">
@@ -153,7 +153,7 @@
                         <li><br/>
                             <div style="font-size: 14px; font-weight: bold;" class="collapsible-header">
                                 <!--<i class="material-icons">place</i>-->
-                                Notification Congé
+                                #{lm.NotificationConge}
                                 <span class="new badge" style="margin-left: 83.6%;">1</span>
                             </div>
                             <div class="collapsible-body">

@@ -12,13 +12,21 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import static net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfStream;
+import static net.sf.jasperreports.engine.JasperFillManager.fillReport;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.context.RequestContext;
 import sessions.CongesFacadeLocal;
@@ -41,6 +49,10 @@ public class CongesController implements Serializable{
     private int idconge;
     private String operation;
     private String msg;
+    private Date datedeb;
+    private Date datefin;
+    private Date mindatedeb = new Date(System.currentTimeMillis());
+    private Date mindatefin = new Date(System.currentTimeMillis());
     @EJB
     private PersonnelFacadeLocal personnelFacade;
     private List<Personnel> listPersonnel = new ArrayList<>();
@@ -104,19 +116,24 @@ public class CongesController implements Serializable{
         action(e);
     }
 
+    public void verifDate(){
+        mindatefin.setDate(datedeb.getDate());
+    }
     public void saveConge() {
         try {
             conges.setIdconges(congesFacade.nextId());
             conges.setIdpers((Personnel) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser"));
+            conges.setDatedep(datedeb);
+            conges.setDateretour(datefin);
             congesFacade.create(conges);
             logFile("Initier une demande de congé", conges.getMotif() + conges.getTypeconge());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Enregistrement effectué."));
-            //msg = "Enregistrement effectué" + idpersonnel;
+            msg = "Enregistrement effectué";
             RequestContext.getCurrentInstance().execute("PF('wv_conges').hide()");
         } catch (Exception e) {
             e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR!", "Echec de l'enregistrement."));
-            //msg = "Echec de l'enregistrement";
+            msg = "Echec de l'enregistrement";
         } finally {
             initconges();
         }
@@ -177,6 +194,27 @@ public class CongesController implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public String imprimer() {
+        try {
+            JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listeConges);
+            //String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/listPersonnel.jasper");
+            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/listeConges.jasper");
+            Map parameters = new HashMap();
+            //parameters.put("USER", connectedUser);
+            parameters.put("REPORT_LOCALE", FacesContext.getCurrentInstance().getViewRoot().getLocale()); 
+            JasperPrint jasperPrint = fillReport(reportPath, parameters, beanCollectionDataSource);
+            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.addHeader("Content-disposition", "attachment; filename=liste des congés.pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+            //----------------------------------------------
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo() + "?faces-redirect=true";
     }
 
     public CongesFacadeLocal getCongesFacade() {
@@ -290,6 +328,38 @@ public class CongesController implements Serializable{
 
     public void setPersonnelId(Personnel personnelId) {
         this.personnelId = personnelId;
+    }
+
+    public Date getDatedeb() {
+        return datedeb;
+    }
+
+    public void setDatedeb(Date datedeb) {
+        this.datedeb = datedeb;
+    }
+
+    public Date getDatefin() {
+        return datefin;
+    }
+
+    public void setDatefin(Date datefin) {
+        this.datefin = datefin;
+    }
+
+    public Date getMindatedeb() {
+        return mindatedeb;
+    }
+
+    public void setMindatedeb(Date mindatedeb) {
+        this.mindatedeb = mindatedeb;
+    }
+
+    public Date getMindatefin() {
+        return mindatefin;
+    }
+
+    public void setMindatefin(Date mindatefin) {
+        this.mindatefin = mindatefin;
     }
     
     

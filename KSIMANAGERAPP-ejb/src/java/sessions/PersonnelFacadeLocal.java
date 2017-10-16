@@ -36,4 +36,8 @@ public interface PersonnelFacadeLocal {
     
     public List<Personnel> findByLogin(String login);
     
+    Integer nextNbrConnect();
+    
+    Personnel findByMatriculeEmail(String email, String matricule);
+    
 }

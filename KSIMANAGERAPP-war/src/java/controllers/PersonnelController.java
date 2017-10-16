@@ -255,7 +255,7 @@ public class PersonnelController implements Serializable {
     public String imprimer() {
         try {
             JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listPersonnel);
-            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/listPersonnel.jasper");
+            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/ListePersonnelNew.jasper");
             //String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("resources/report/listePersonnels.jasper");
             Map parameters = new HashMap();
             //parameters.put("USER", connectedUser);
